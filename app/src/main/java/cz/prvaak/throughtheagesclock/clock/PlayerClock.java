@@ -1,6 +1,6 @@
 package cz.prvaak.throughtheagesclock.clock;
 
-import cz.prvaak.throughtheagesclock.clock.timer.LimitedBasicTimer;
+import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedBasicTimer;
 import cz.prvaak.throughtheagesclock.clock.timer.BasicTimer;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 

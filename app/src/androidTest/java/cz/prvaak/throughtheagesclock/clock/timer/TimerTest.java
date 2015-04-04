@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.clock;
+package cz.prvaak.throughtheagesclock.clock.timer;
 
 import android.test.InstrumentationTestCase;
 
@@ -9,7 +9,7 @@ import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 /**
  * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.Timer} class.
  */
-public class TimerClockTest extends InstrumentationTestCase {
+public class TimerTest extends InstrumentationTestCase {
 
 	public void testStop() throws Exception {
 		Timer elapsedTime = new Timer();

@@ -1,10 +1,8 @@
-package cz.prvaak.throughtheagesclock.clock;
+package cz.prvaak.throughtheagesclock.clock.timer;
 
 import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
-
-import cz.prvaak.throughtheagesclock.clock.timer.BasicTimer;
 
 /**
  * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.BasicTimer} class.

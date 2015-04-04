@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.clock.timer;
+package cz.prvaak.throughtheagesclock.clock.timer.adapter;
 
 import cz.prvaak.throughtheagesclock.clock.PausableClock;
 

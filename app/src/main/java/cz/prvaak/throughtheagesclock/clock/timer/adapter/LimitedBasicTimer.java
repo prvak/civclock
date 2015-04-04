@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.clock.timer;
+package cz.prvaak.throughtheagesclock.clock.timer.adapter;
 
 import cz.prvaak.throughtheagesclock.clock.PausableClock;
 
@@ -17,6 +17,6 @@ public class LimitedBasicTimer extends BasicTimerAdapter {
 	@Override
 	public long getTime(long when) {
 		long realTime = super.getTime(when);
-		return Math.max(realTime, timeLimit);
+		return Math.min(realTime, timeLimit);
 	}
 }
