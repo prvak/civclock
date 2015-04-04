@@ -4,15 +4,15 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
-import cz.prvaak.throughtheagesclock.clock.timer.BasicTimer;
+import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 
 /**
- * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedBasicTimer} class.
+ * Tests of {@link LimitedTimer} class.
  */
-public class LimitedBasicTimerTest extends InstrumentationTestCase {
+public class LimitedTimerTest extends InstrumentationTestCase {
 
 	public void testGetTime() throws Exception {
-		LimitedBasicTimer timer = new LimitedBasicTimer(new BasicTimer(), 10000L);
+		LimitedTimer timer = new LimitedTimer(new Timer(), 10000L);
 		timer.start(0L);
 		Assert.assertEquals(2000L, timer.getTime(2000L));
 		Assert.assertEquals(5000L, timer.getTime(5000L));
@@ -24,7 +24,7 @@ public class LimitedBasicTimerTest extends InstrumentationTestCase {
 	}
 
 	public void testRestart() throws Exception {
-		LimitedBasicTimer timer = new LimitedBasicTimer(new BasicTimer(), 10000L);
+		LimitedTimer timer = new LimitedTimer(new Timer(), 10000L);
 		timer.start(0L);
 		Assert.assertEquals(10000L, timer.getTime(20000L));
 		timer.start(30000L);

@@ -4,9 +4,11 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
+import cz.prvaak.throughtheagesclock.player.PlayerClock;
+
 
 /**
- * Tests of {@link PlayerClock} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.player.PlayerClock} class.
  */
 public class PlayerClockTest extends InstrumentationTestCase {
 
@@ -137,7 +139,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		assertEquals(29000L, playerClock.getRemainingUpkeepTime(4000L));
 		assertEquals(59000L, playerClock.getRemainingTime(60000L));
 		assertEquals(29000L, playerClock.getRemainingUpkeepTime(60000L));
-		playerClock.resume(60000L);
+		playerClock.unstop(60000L);
 		assertEquals(1000L, playerClock.getRemainingUpkeepTime(88000L));
 		assertEquals(58000L, playerClock.getRemainingTime(90000L));
 	}
@@ -150,7 +152,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(4000L));
 		assertEquals(58000L, playerClock.getRemainingTime(60000L));
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(60000L));
-		playerClock.resume(60000L);
+		playerClock.unstop(60000L);
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(70000L));
 		assertEquals(48000L, playerClock.getRemainingTime(90000L));
 	}

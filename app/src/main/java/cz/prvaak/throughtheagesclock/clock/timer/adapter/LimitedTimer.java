@@ -1,15 +1,15 @@
 package cz.prvaak.throughtheagesclock.clock.timer.adapter;
 
-import cz.prvaak.throughtheagesclock.clock.PausableClock;
+import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 
 /**
  * Timer that cannot accumulate more than given amount of time.
  */
-public class LimitedBasicTimer extends BasicTimerAdapter {
+public class LimitedTimer extends TimerAdapter {
 
 	private final long timeLimit;
 
-	public LimitedBasicTimer(PausableClock target, long timeLimit) {
+	public LimitedTimer(Timer target, long timeLimit) {
 		super(target);
 		this.timeLimit = timeLimit;
 	}

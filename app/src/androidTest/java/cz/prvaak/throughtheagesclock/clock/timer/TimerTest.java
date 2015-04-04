@@ -4,12 +4,34 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
-import cz.prvaak.throughtheagesclock.clock.timer.Timer;
-
 /**
- * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.Timer} class.
+ * Tests of {@link Timer} class.
  */
 public class TimerTest extends InstrumentationTestCase {
+
+	public void testGetTimeOfStopped() throws Exception {
+		Timer elapsedTime = new Timer();
+		try {
+			elapsedTime.getTime(1000L);
+			Assert.fail("Should have thrown IllegalStateException.");
+		} catch (IllegalStateException e) {
+			// success
+		}
+	}
+
+	public void testGetTimeOfStarted() throws Exception {
+		Timer elapsedTime = new Timer();
+		elapsedTime.start(1000L);
+		assertEquals(1000L, elapsedTime.getTime(2000L));
+	}
+
+	public void testRestart() throws Exception {
+		Timer elapsedTime = new Timer();
+		elapsedTime.start(1000L);
+		assertEquals(2000L, elapsedTime.getTime(3000L));
+		elapsedTime.start(4000L);
+		assertEquals(1000L, elapsedTime.getTime(5000L));
+	}
 
 	public void testStop() throws Exception {
 		Timer elapsedTime = new Timer();
@@ -47,4 +69,21 @@ public class TimerTest extends InstrumentationTestCase {
 			// success
 		}
 	}
+
+	public void testPause() throws Exception {
+		Timer elapsedTime = new Timer();
+		elapsedTime.start(1000L);
+		elapsedTime.pause(2000L);
+		assertEquals(1000L, elapsedTime.getTime(2000L));
+		assertEquals(1000L, elapsedTime.getTime(3000L));
+	}
+
+	public void testUnpause() throws Exception {
+		Timer elapsedTime = new Timer();
+		elapsedTime.start(1000L);
+		elapsedTime.pause(2000L);
+		elapsedTime.unpause(3000L);
+		assertEquals(2000L, elapsedTime.getTime(4000L));
+	}
+
 }

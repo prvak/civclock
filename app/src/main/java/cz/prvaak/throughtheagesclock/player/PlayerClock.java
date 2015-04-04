@@ -1,8 +1,9 @@
-package cz.prvaak.throughtheagesclock.clock;
+package cz.prvaak.throughtheagesclock.player;
 
-import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedBasicTimer;
-import cz.prvaak.throughtheagesclock.clock.timer.BasicTimer;
+import cz.prvaak.throughtheagesclock.clock.countdown.CountdownClock;
+import cz.prvaak.throughtheagesclock.clock.UniversalClock;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
+import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
 
 /**
  * Class for keeping track of how much time remains to a player.
@@ -10,15 +11,15 @@ import cz.prvaak.throughtheagesclock.clock.timer.Timer;
  * Limited upkeep protection period can be enabled by {@link #upkeep(long)}. Time reserve does not
  * decrease during upkeep period but upkeep timer is running even if the main timer is stopped.
  *
- * Clock can by paused by {@link #pause(long)} method and resumed by {@link #resume(long)}. Both
+ * Clock can by paused by {@link #pause(long)} method and resumed by {@link #unstop(long)}. Both
  * main and upkeep timers are paused.
  */
-public class PlayerClock {
+public class PlayerClock implements CountdownClock {
 
 	/** Counter of elapsed reserve time. */
 	private final Timer reserveTime = new Timer();
 	/** Counter of elapsed upkeep time. */
-	private final LimitedBasicTimer upkeepTime;
+	private final LimitedTimer upkeepTime;
 	/** How many milliseconds was remaining before {@link #reserveTime} was started. */
 	private long remainingReserveTime;
 	/**
@@ -39,23 +40,15 @@ public class PlayerClock {
 		}
 
 		this.remainingReserveTime = initialTime;
-		this.upkeepTime = new LimitedBasicTimer(new BasicTimer(), defaultUpkeepTime);
+		this.upkeepTime = new LimitedTimer(new Timer(), defaultUpkeepTime);
 	}
 
-	/**
-	 * Start the clock.
-	 *
-	 * @param when Current time in milliseconds.
-	 */
+	@Override
 	public void start(long when) {
 		reserveTime.start(when);
 	}
 
-	/**
-	 * Stop the clock. The upkeep protection timer is not affected.
-	 *
-	 * @param when Current time in milliseconds.
-	 */
+	@Override
 	public void stop(long when) {
 		remainingReserveTime -= getElapsedReserveTime(when);
 		remainingUpkeepTime -= getElapsedUpkeepTime(when);
@@ -68,6 +61,23 @@ public class PlayerClock {
 		*/
 	}
 
+
+	@Override
+	public void unstop(long when) {
+	}
+
+	@Override
+	public void pause(long when) {
+		upkeepTime.pause(when);
+		reserveTime.pause(when);
+	}
+
+	@Override
+	public void unpause(long when) {
+		upkeepTime.unpause(when);
+		reserveTime.unpause(when);
+	}
+
 	/**
 	 * Start the upkeep protection period.
 	 * The protection period timer cannot be stopped, only paused. Calling this method again
@@ -77,26 +87,6 @@ public class PlayerClock {
 	 */
 	public void upkeep(long when) {
 		upkeepTime.start(when);
-	}
-
-	/**
-	 * Pause the clock. This pauses both main and upkeep timer.
-	 *
-	 * @param when Current time in milliseconds.
-	 */
-	public void pause(long when) {
-		upkeepTime.pause(when);
-		reserveTime.pause(when);
-	}
-
-	/**
-	 * Resume paused clock. Both the main and upkeep timer are resumed.
-	 *
-	 * @param when Current time in milliseconds.
-	 */
-	public void resume(long when) {
-		upkeepTime.unpause(when);
-		reserveTime.unpause(when);
 	}
 
 	/**
@@ -117,6 +107,11 @@ public class PlayerClock {
 	 */
 	public long getRemainingTime(long when) {
 		return remainingReserveTime - getElapsedReserveTime(when);
+	}
+
+	@Override
+	public void addTime(long amount) {
+
 	}
 
 	/**

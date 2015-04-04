@@ -1,9 +1,12 @@
 package cz.prvaak.throughtheagesclock.clock;
 
+import cz.prvaak.throughtheagesclock.player.GameClock;
+import cz.prvaak.throughtheagesclock.player.PlayerClock;
+
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Tests of {@link GameClock} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.player.GameClock} class.
  */
 public class GameClockTest {
 

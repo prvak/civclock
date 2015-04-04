@@ -1,6 +1,6 @@
 package cz.prvaak.throughtheagesclock;
 
-import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.player.PlayerClock;
 
 /**
  * Created by michal on 3/1/15.

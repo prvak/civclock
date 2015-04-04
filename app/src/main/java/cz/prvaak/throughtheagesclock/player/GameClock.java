@@ -1,4 +1,6 @@
-package cz.prvaak.throughtheagesclock.clock;
+package cz.prvaak.throughtheagesclock.player;
+
+import cz.prvaak.throughtheagesclock.player.PlayerClock;
 
 /**
  * High level game clock.
@@ -26,7 +28,7 @@ public class GameClock {
 		} else {
 			PlayerClock currentPlayerClock = playerClocks[currentPlayer];
 
-			currentPlayerClock.resume(when);
+			currentPlayerClock.unstop(when);
 		}
 	}
 
