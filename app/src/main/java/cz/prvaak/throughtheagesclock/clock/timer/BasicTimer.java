@@ -1,9 +1,11 @@
-package cz.prvaak.throughtheagesclock.clock;
+package cz.prvaak.throughtheagesclock.clock.timer;
+
+import cz.prvaak.throughtheagesclock.clock.PausableClock;
 
 /**
- * Class for measuring elapsed time.
+ * Class for measuring elapsed time. Does not support stopping.
  */
-public class ProtectedTimerClock implements PausableClock {
+public class BasicTimer implements PausableClock {
 
 	/** Time (in milliseconds) when the counter was started. */
 	protected long initialTime;

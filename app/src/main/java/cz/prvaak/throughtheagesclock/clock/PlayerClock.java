@@ -1,5 +1,9 @@
 package cz.prvaak.throughtheagesclock.clock;
 
+import cz.prvaak.throughtheagesclock.clock.timer.LimitedBasicTimer;
+import cz.prvaak.throughtheagesclock.clock.timer.BasicTimer;
+import cz.prvaak.throughtheagesclock.clock.timer.Timer;
+
 /**
  * Class for keeping track of how much time remains to a player.
  *
@@ -12,9 +16,9 @@ package cz.prvaak.throughtheagesclock.clock;
 public class PlayerClock {
 
 	/** Counter of elapsed reserve time. */
-	private final TimerClock reserveTime = new TimerClock();
+	private final Timer reserveTime = new Timer();
 	/** Counter of elapsed upkeep time. */
-	private final ProtectedTimerClock upkeepTime = new ProtectedTimerClock();
+	private final LimitedBasicTimer upkeepTime;
 	/** How many milliseconds was remaining before {@link #reserveTime} was started. */
 	private long remainingReserveTime;
 	/**
@@ -22,8 +26,6 @@ public class PlayerClock {
 	 * was started.
 	 */
 	private long remainingUpkeepTime;
-	/** How long (in ms) is the upkeep protection period. */
-	private final long defaultUpkeepTime;
 
 	/**
 	 * Create new clock.
@@ -37,7 +39,7 @@ public class PlayerClock {
 		}
 
 		this.remainingReserveTime = initialTime;
-		this.defaultUpkeepTime = defaultUpkeepTime;
+		this.upkeepTime = new LimitedBasicTimer(new BasicTimer(), defaultUpkeepTime);
 	}
 
 	/**
@@ -74,7 +76,6 @@ public class PlayerClock {
 	 * @param when Current time in milliseconds.
 	 */
 	public void upkeep(long when) {
-		remainingUpkeepTime = defaultUpkeepTime;
 		upkeepTime.start(when);
 	}
 

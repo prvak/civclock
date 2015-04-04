@@ -1,9 +1,11 @@
-package cz.prvaak.throughtheagesclock.clock;
+package cz.prvaak.throughtheagesclock.clock.timer;
+
+import cz.prvaak.throughtheagesclock.clock.StoppableClock;
 
 /**
  * Created by michal on 4/4/15.
  */
-public class TimerClock extends ProtectedTimerClock implements StoppableClock {
+public class Timer extends BasicTimer implements StoppableClock {
 
 	private boolean isStopped;
 

@@ -4,13 +4,15 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
+import cz.prvaak.throughtheagesclock.clock.timer.Timer;
+
 /**
- * Tests of {@link TimerClock} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.Timer} class.
  */
 public class TimerClockTest extends InstrumentationTestCase {
 
 	public void testStop() throws Exception {
-		TimerClock elapsedTime = new TimerClock();
+		Timer elapsedTime = new Timer();
 		elapsedTime.start(1000L);
 		elapsedTime.stop(3000L);
 		assertEquals(2000L, elapsedTime.getTime(3000L));
@@ -18,7 +20,7 @@ public class TimerClockTest extends InstrumentationTestCase {
 	}
 
 	public void testUnstop() throws Exception {
-		TimerClock elapsedTime = new TimerClock();
+		Timer elapsedTime = new Timer();
 		elapsedTime.start(1000L);
 		elapsedTime.stop(3000L);
 		elapsedTime.unstop(4000L);
@@ -26,7 +28,7 @@ public class TimerClockTest extends InstrumentationTestCase {
 	}
 
 	public void testStopOfStoppedCounter() throws Exception {
-		TimerClock elapsedTime = new TimerClock();
+		Timer elapsedTime = new Timer();
 		try {
 			elapsedTime.stop(1000L);
 			Assert.fail("Should have thrown IllegalStateException.");
@@ -36,7 +38,7 @@ public class TimerClockTest extends InstrumentationTestCase {
 	}
 
 	public void testStopWithEarlierTime() throws Exception {
-		TimerClock elapsedTime = new TimerClock();
+		Timer elapsedTime = new Timer();
 		elapsedTime.start(2000L);
 		try {
 			elapsedTime.stop(1000L);
