@@ -12,9 +12,9 @@ package cz.prvaak.throughtheagesclock.clock;
 public class PlayerClock {
 
 	/** Counter of elapsed reserve time. */
-	private final ElapsedTimeClock reserveTime = new ElapsedTimeClock();
+	private final TimerClock reserveTime = new TimerClock();
 	/** Counter of elapsed upkeep time. */
-	private final ElapsedTimeClock upkeepTime = new ElapsedTimeClock();
+	private final ProtectedTimerClock upkeepTime = new ProtectedTimerClock();
 	/** How many milliseconds was remaining before {@link #reserveTime} was started. */
 	private long remainingReserveTime;
 	/**
