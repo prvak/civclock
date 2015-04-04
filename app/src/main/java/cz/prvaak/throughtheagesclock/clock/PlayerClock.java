@@ -12,9 +12,9 @@ package cz.prvaak.throughtheagesclock.clock;
 public class PlayerClock {
 
 	/** Counter of elapsed reserve time. */
-	private final ElapsedTime reserveTime = new ElapsedTime();
+	private final ElapsedTimeClock reserveTime = new ElapsedTimeClock();
 	/** Counter of elapsed upkeep time. */
-	private final ElapsedTime upkeepTime = new ElapsedTime();
+	private final ElapsedTimeClock upkeepTime = new ElapsedTimeClock();
 	/** How many milliseconds was remaining before {@link #reserveTime} was started. */
 	private long remainingReserveTime;
 	/**
@@ -57,11 +57,13 @@ public class PlayerClock {
 	public void stop(long when) {
 		remainingReserveTime -= getElapsedReserveTime(when);
 		remainingUpkeepTime -= getElapsedUpkeepTime(when);
-		reserveTime.reset();
+		reserveTime.stop(when);
+		/*
 		if (upkeepTime.isStarted()) {
 			upkeepTime.reset();
 			upkeepTime.start(when);
 		}
+		*/
 	}
 
 	/**
@@ -73,7 +75,6 @@ public class PlayerClock {
 	 */
 	public void upkeep(long when) {
 		remainingUpkeepTime = defaultUpkeepTime;
-		upkeepTime.reset();
 		upkeepTime.start(when);
 	}
 
@@ -93,8 +94,8 @@ public class PlayerClock {
 	 * @param when Current time in milliseconds.
 	 */
 	public void resume(long when) {
-		upkeepTime.resume(when);
-		reserveTime.resume(when);
+		upkeepTime.unpause(when);
+		reserveTime.unpause(when);
 	}
 
 	/**
@@ -128,8 +129,8 @@ public class PlayerClock {
 	}
 
 	private long getElapsedReserveTime(long when) {
-		long elapsedReserveTime = reserveTime.getElapsedTime(when);
-		long elapsedUpkeepTime = upkeepTime.getElapsedTime(when);
+		long elapsedReserveTime = reserveTime.getTime(when);
+		long elapsedUpkeepTime = upkeepTime.getTime(when);
 		long result = 0L;
 		if (elapsedUpkeepTime > remainingUpkeepTime) {
 			result += elapsedUpkeepTime - remainingUpkeepTime;
@@ -141,7 +142,7 @@ public class PlayerClock {
 	}
 
 	private long getElapsedUpkeepTime(long when) {
-		long elapsedUpkeepTime = upkeepTime.getElapsedTime(when);
+		long elapsedUpkeepTime = upkeepTime.getTime(when);
 		return Math.min(elapsedUpkeepTime, remainingUpkeepTime);
 	}
 }
