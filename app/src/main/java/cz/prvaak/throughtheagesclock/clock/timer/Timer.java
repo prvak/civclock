@@ -25,9 +25,9 @@ public class Timer implements TimerClock {
 
 	@Override
 	public long getTime(long when) {
-		checkForStarted();
-
-		if (isStopped || isPaused) {
+		if (!wasStarted) {
+			return 0;
+		} else if (isStopped || isPaused) {
 			return elapsedTime;
 		} else {
 			return when - initialTime + elapsedTime;
@@ -67,7 +67,6 @@ public class Timer implements TimerClock {
 
 	@Override
 	public void pause(long when) {
-		checkForStarted();
 		checkForTimeShift(when);
 		if (isPaused) {
 			throw new IllegalStateException("Cannot pause counter that is already paused!");
@@ -80,7 +79,6 @@ public class Timer implements TimerClock {
 
 	@Override
 	public void unpause(long when) {
-		checkForStarted();
 		checkForTimeShift(when);
 		if (!isPaused) {
 			throw new IllegalStateException("Cannot unpause counter that is not paused!");

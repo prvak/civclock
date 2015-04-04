@@ -1,34 +1,32 @@
 package cz.prvaak.throughtheagesclock.player;
 
-import cz.prvaak.throughtheagesclock.player.PlayerClock;
-
 /**
  * High level game clock.
  */
 public class GameClock {
 
-	private final PlayerClock[] playerClocks;
+	private final PlayerCountdown[] playerCountdowns;
 	private int currentPlayer;
 	private boolean isRunning;
 
-	public GameClock(PlayerClock[] playerClocks) {
-		this.playerClocks = playerClocks;
+	public GameClock(PlayerCountdown[] playerCountdowns) {
+		this.playerCountdowns = playerCountdowns;
 	}
 
 	public void nextPlayer(long when) {
 		if (isRunning) {
-			PlayerClock currentPlayerClock = playerClocks[currentPlayer];
-			int nextPlayer = (currentPlayer + 1) % playerClocks.length;
-			PlayerClock nextPlayerClock = playerClocks[nextPlayer];
+			PlayerCountdown currentPlayerCountdown = playerCountdowns[currentPlayer];
+			int nextPlayer = (currentPlayer + 1) % playerCountdowns.length;
+			PlayerCountdown nextPlayerCountdown = playerCountdowns[nextPlayer];
 
-			currentPlayerClock.stop(when);
-			currentPlayerClock.upkeep(when);
-			nextPlayerClock.start(when);
+			currentPlayerCountdown.stop(when);
+			currentPlayerCountdown.upkeep(when);
+			nextPlayerCountdown.start(when);
 			currentPlayer = nextPlayer;
 		} else {
-			PlayerClock currentPlayerClock = playerClocks[currentPlayer];
+			PlayerCountdown currentPlayerCountdown = playerCountdowns[currentPlayer];
 
-			currentPlayerClock.unstop(when);
+			currentPlayerCountdown.unstop(when);
 		}
 	}
 

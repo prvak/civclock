@@ -16,6 +16,11 @@ public class CountdownAdapter implements CountdownClock {
 	}
 
 	@Override
+	public long getTime(long when) {
+		return target.getTime(when);
+	}
+
+	@Override
 	public long getRemainingTime(long when) {
 		return target.getRemainingTime(when);
 	}

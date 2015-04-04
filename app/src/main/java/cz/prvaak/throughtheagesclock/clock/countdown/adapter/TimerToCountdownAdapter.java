@@ -17,6 +17,11 @@ public class TimerToCountdownAdapter implements CountdownClock {
 	}
 
 	@Override
+	public long getTime(long when) {
+		return timer.getTime(when);
+	}
+
+	@Override
 	public long getRemainingTime(long when) {
 		return baseTime - timer.getTime(when);
 	}

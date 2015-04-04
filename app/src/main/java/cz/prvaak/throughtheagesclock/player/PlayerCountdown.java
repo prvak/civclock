@@ -1,8 +1,10 @@
 package cz.prvaak.throughtheagesclock.player;
 
+import cz.prvaak.throughtheagesclock.clock.countdown.Countdown;
 import cz.prvaak.throughtheagesclock.clock.countdown.CountdownClock;
-import cz.prvaak.throughtheagesclock.clock.UniversalClock;
+import cz.prvaak.throughtheagesclock.clock.countdown.adapter.LimitedCountdown;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
+import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
 import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
 
 /**
@@ -14,68 +16,71 @@ import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
  * Clock can by paused by {@link #pause(long)} method and resumed by {@link #unstop(long)}. Both
  * main and upkeep timers are paused.
  */
-public class PlayerClock implements CountdownClock {
+public class PlayerCountdown implements CountdownClock {
 
+	private final TimerClock totalTime;
 	/** Counter of elapsed reserve time. */
-	private final Timer reserveTime = new Timer();
+	private final CountdownClock reserveTime;
 	/** Counter of elapsed upkeep time. */
-	private final LimitedTimer upkeepTime;
-	/** How many milliseconds was remaining before {@link #reserveTime} was started. */
-	private long remainingReserveTime;
-	/**
-	 * How many milliseconds of upkeep protection period was remaining before {@link #upkeepTime}
-	 * was started.
-	 */
-	private long remainingUpkeepTime;
+	private final CountdownClock upkeepTime;
 
 	/**
 	 * Create new clock.
 	 *
-	 * @param initialTime How many milliseconds the player initially has.
-	 * @param defaultUpkeepTime How many milliseconds each upkeep protection has.
+	 * @param baseTime How many milliseconds the player initially has.
+	 * @param upkeepTime How many milliseconds each upkeep protection has.
 	 */
-	public PlayerClock(long initialTime, long defaultUpkeepTime) {
-		if (defaultUpkeepTime < 0) {
-			throw new IllegalArgumentException("Upkeep time cannot be negative!");
-		}
-
-		this.remainingReserveTime = initialTime;
-		this.upkeepTime = new LimitedTimer(new Timer(), defaultUpkeepTime);
+	public PlayerCountdown(long baseTime, long upkeepTime) {
+		this.totalTime = new Timer();
+		this.reserveTime = new Countdown(baseTime);
+		this.upkeepTime = new LimitedCountdown(upkeepTime);
 	}
 
 	@Override
 	public void start(long when) {
+		totalTime.start(when);
 		reserveTime.start(when);
 	}
 
 	@Override
 	public void stop(long when) {
-		remainingReserveTime -= getElapsedReserveTime(when);
-		remainingUpkeepTime -= getElapsedUpkeepTime(when);
+		totalTime.stop(when);
 		reserveTime.stop(when);
-		/*
-		if (upkeepTime.isStarted()) {
-			upkeepTime.reset();
-			upkeepTime.start(when);
-		}
-		*/
 	}
-
 
 	@Override
 	public void unstop(long when) {
+		totalTime.start(when);
+		reserveTime.unstop(when);
 	}
 
 	@Override
 	public void pause(long when) {
-		upkeepTime.pause(when);
 		reserveTime.pause(when);
+		upkeepTime.pause(when);
 	}
 
 	@Override
 	public void unpause(long when) {
-		upkeepTime.unpause(when);
 		reserveTime.unpause(when);
+		upkeepTime.unpause(when);
+	}
+
+	@Override
+	public long getTime(long when) {
+		return reserveTime.getTime(when);
+	}
+
+	@Override
+	public long getRemainingTime(long when) {
+		long remainingReserve = reserveTime.getRemainingTime(when);
+		long elapsedUpkeep = upkeepTime.getTime(when);
+		return remainingReserve + elapsedUpkeep;
+	}
+
+	@Override
+	public void addTime(long amount) {
+		reserveTime.addTime(amount);
 	}
 
 	/**
@@ -90,40 +95,15 @@ public class PlayerClock implements CountdownClock {
 	}
 
 	/**
-	 * Increase remaining time.
-	 *
-	 * @param amount How many milliseconds to add to remaining time. Use negative value to substract
-	 *	time.
-	 */
-	public void add(long amount) {
-		remainingReserveTime += amount;
-	}
-
-	/**
-	 * How many milliseconds are actually remaining.
-	 *
-	 * @param when Current time in milliseconds.
-	 * @return Remaining time in milliseconds.
-	 */
-	public long getRemainingTime(long when) {
-		return remainingReserveTime - getElapsedReserveTime(when);
-	}
-
-	@Override
-	public void addTime(long amount) {
-
-	}
-
-	/**
 	 * How many milliseconds of upkeep protection period are remaining.
 	 *
 	 * @param when Current time in milliseconds.
 	 * @return Remaining upkeep protection in milliseconds.
 	 */
 	public long getRemainingUpkeepTime(long when) {
-		return remainingUpkeepTime - getElapsedUpkeepTime(when);
+		return upkeepTime.getRemainingTime(when);
 	}
-
+/*
 	private long getElapsedReserveTime(long when) {
 		long elapsedReserveTime = reserveTime.getTime(when);
 		long elapsedUpkeepTime = upkeepTime.getTime(when);
@@ -141,4 +121,5 @@ public class PlayerClock implements CountdownClock {
 		long elapsedUpkeepTime = upkeepTime.getTime(when);
 		return Math.min(elapsedUpkeepTime, remainingUpkeepTime);
 	}
+	*/
 }

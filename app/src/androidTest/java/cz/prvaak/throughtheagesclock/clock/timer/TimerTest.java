@@ -11,12 +11,7 @@ public class TimerTest extends InstrumentationTestCase {
 
 	public void testGetTimeOfStopped() throws Exception {
 		Timer elapsedTime = new Timer();
-		try {
-			elapsedTime.getTime(1000L);
-			Assert.fail("Should have thrown IllegalStateException.");
-		} catch (IllegalStateException e) {
-			// success
-		}
+		assertEquals(0L, elapsedTime.getTime(2000L));
 	}
 
 	public void testGetTimeOfStarted() throws Exception {

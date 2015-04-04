@@ -11,6 +11,9 @@ public class LimitedTimer extends TimerAdapter {
 
 	public LimitedTimer(Timer target, long timeLimit) {
 		super(target);
+		if (timeLimit < 0) {
+			throw new IllegalArgumentException("Time limit cannot be negative!");
+		}
 		this.timeLimit = timeLimit;
 	}
 

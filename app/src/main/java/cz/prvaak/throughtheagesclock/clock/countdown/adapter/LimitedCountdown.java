@@ -8,7 +8,24 @@ import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
  */
 public class LimitedCountdown extends CountdownAdapter {
 
+	boolean wasStarted;
+
 	public LimitedCountdown(long timeLimit) {
 		super(new TimerToCountdownAdapter(new LimitedTimer(new Timer(), timeLimit), timeLimit));
+	}
+
+	@Override
+	public void start(long when) {
+		super.start(when);
+		wasStarted = true;
+	}
+
+	@Override
+	public long getRemainingTime(long when) {
+		if (wasStarted) {
+			return super.getRemainingTime(when);
+		} else {
+			return 0;
+		}
 	}
 }

@@ -1,7 +1,7 @@
 package cz.prvaak.throughtheagesclock.clock;
 
 import cz.prvaak.throughtheagesclock.player.GameClock;
-import cz.prvaak.throughtheagesclock.player.PlayerClock;
+import cz.prvaak.throughtheagesclock.player.PlayerCountdown;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -11,9 +11,9 @@ import static junit.framework.TestCase.assertEquals;
 public class GameClockTest {
 
 	private GameClock createGameClock() {
-		PlayerClock playerClock0 = new PlayerClock(60000L, 30000L);
-		PlayerClock playerClock1 = new PlayerClock(60000L, 30000L);
-		return new GameClock(new PlayerClock[]{playerClock0, playerClock1});
+		PlayerCountdown playerCountdown0 = new PlayerCountdown(60000L, 30000L);
+		PlayerCountdown playerCountdown1 = new PlayerCountdown(60000L, 30000L);
+		return new GameClock(new PlayerCountdown[]{playerCountdown0, playerCountdown1});
 	}
 
 	public void testStart() throws Exception {
