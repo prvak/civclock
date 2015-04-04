@@ -10,7 +10,8 @@ public class ElapsedTime {
 	/** How much time elapsed before starting. It is updated when the counter is stopped. */
 	private long elapsedTime;
 	/** Whether the counter is running or not. */
-	private boolean isRunning;
+	private boolean isStarted;
+	private boolean isPaused;
 
 	/**
 	 * Start the counter.
@@ -18,12 +19,12 @@ public class ElapsedTime {
 	 * @param when Time in milliseconds when the counter was started.
 	 */
 	public void start(long when) {
-		if (isRunning) {
+		if (isStarted) {
 			throw new IllegalArgumentException("Cannot start counter that is already started!");
 		}
 
 		startedTime = when;
-		isRunning = true;
+		isStarted = true;
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class ElapsedTime {
 	 * @return Total elapsed time.
 	 */
 	public long stop(long when) {
-		if (!isRunning) {
+		if (!isStarted) {
 			throw new IllegalArgumentException("Cannot stop counter that is not running!");
 		}
 		if (when < startedTime) {
@@ -42,15 +43,38 @@ public class ElapsedTime {
 
 		elapsedTime += when - startedTime;
 		startedTime = 0L;
-		isRunning = false;
+		isStarted = false;
 		return elapsedTime;
 	}
 
 	/** Stops the counter and discards elapsed time. */
 	public void reset() {
-		isRunning = false;
+		isStarted = false;
 		startedTime = 0L;
 		elapsedTime = 0L;
+	}
+
+	public void pause(long when) {
+		if (isPaused) {
+			return;
+		}
+
+		isPaused = true;
+		if (isStarted) {
+			elapsedTime += when - startedTime;
+			startedTime = 0L;
+		}
+	}
+
+	public void resume(long when) {
+		if (!isPaused) {
+			return;
+		}
+
+		if (isStarted) {
+			startedTime = when;
+		}
+		isPaused = false;
 	}
 
 	/**
@@ -61,7 +85,7 @@ public class ElapsedTime {
 	 *	Zero if the counter is stopped.
 	 */
 	public long getElapsedTime(long when) {
-		if (!isRunning) {
+		if (!isStarted || isPaused) {
 			return elapsedTime;
 		}
 		if (when < startedTime) {
@@ -71,7 +95,7 @@ public class ElapsedTime {
 		return when - startedTime + elapsedTime;
 	}
 
-	public boolean isRunning() {
-		return isRunning;
+	public boolean isStarted() {
+		return isStarted;
 	}
 }

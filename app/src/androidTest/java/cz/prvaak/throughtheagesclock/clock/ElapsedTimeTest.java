@@ -28,6 +28,14 @@ public class ElapsedTimeTest extends InstrumentationTestCase {
 		assertEquals(2000L, elapsedTime.getElapsedTime(4000L));
 	}
 
+	public void testStartPauseResumeStop() throws Exception {
+		ElapsedTime elapsedTime = new ElapsedTime();
+		elapsedTime.start(1000L);
+		elapsedTime.pause(2000L);
+		elapsedTime.resume(3000L);
+		assertEquals(2000L, elapsedTime.stop(4000L));
+	}
+
 	public void testRepeatedStartStop() throws Exception {
 		ElapsedTime elapsedTime = new ElapsedTime();
 		elapsedTime.start(0L);

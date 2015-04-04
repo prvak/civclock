@@ -2,7 +2,8 @@ package cz.prvaak.throughtheagesclock.clock;
 
 import android.test.InstrumentationTestCase;
 
-import org.junit.Assert;
+import junit.framework.Assert;
+
 
 /**
  * Tests of {@link PlayerClock} class.
@@ -127,7 +128,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(50000L));
 	}
 
-	public void testPauseAndResume() throws Exception {
+	public void testStartUpkeepPauseResume() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.start(1000L);
 		playerClock.upkeep(2000L);
@@ -139,6 +140,19 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.resume(60000L);
 		assertEquals(1000L, playerClock.getRemainingUpkeepTime(88000L));
 		assertEquals(58000L, playerClock.getRemainingTime(90000L));
+	}
+
+	public void testStartPauseResume() throws Exception {
+		PlayerClock playerClock = createPlayerClock();
+		playerClock.start(1000L);
+		playerClock.pause(3000L);
+		assertEquals(58000L, playerClock.getRemainingTime(4000L));
+		assertEquals(0L, playerClock.getRemainingUpkeepTime(4000L));
+		assertEquals(58000L, playerClock.getRemainingTime(60000L));
+		assertEquals(0L, playerClock.getRemainingUpkeepTime(60000L));
+		playerClock.resume(60000L);
+		assertEquals(0L, playerClock.getRemainingUpkeepTime(70000L));
+		assertEquals(48000L, playerClock.getRemainingTime(90000L));
 	}
 
 	public void testNegativeUpkeepTimeNotAllowed() throws Exception {

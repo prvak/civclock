@@ -58,7 +58,7 @@ public class PlayerClock {
 		remainingReserveTime -= getElapsedReserveTime(when);
 		remainingUpkeepTime -= getElapsedUpkeepTime(when);
 		reserveTime.reset();
-		if (upkeepTime.isRunning()) {
+		if (upkeepTime.isStarted()) {
 			upkeepTime.reset();
 			upkeepTime.start(when);
 		}
@@ -83,8 +83,8 @@ public class PlayerClock {
 	 * @param when Current time in milliseconds.
 	 */
 	public void pause(long when) {
-		upkeepTime.stop(when);
-		reserveTime.stop(when);
+		upkeepTime.pause(when);
+		reserveTime.pause(when);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class PlayerClock {
 	 * @param when Current time in milliseconds.
 	 */
 	public void resume(long when) {
-		upkeepTime.start(when);
-		reserveTime.start(when);
+		upkeepTime.resume(when);
+		reserveTime.resume(when);
 	}
 
 	/**
