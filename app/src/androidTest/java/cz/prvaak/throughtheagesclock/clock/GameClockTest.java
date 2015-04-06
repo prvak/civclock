@@ -1,11 +1,11 @@
 package cz.prvaak.throughtheagesclock.clock;
 
-import static junit.framework.TestCase.assertEquals;
+import android.test.InstrumentationTestCase;
 
 /**
  * Tests of {@link GameClock} class.
  */
-public class GameClockTest {
+public class GameClockTest extends InstrumentationTestCase{
 
 	private GameClock createGameClock() {
 		PlayerClock playerClock0 = new PlayerClock(60000L, 30000L);
@@ -19,6 +19,4 @@ public class GameClockTest {
 		assertEquals(59000L, gameClock.getRemainingTime(2000L, 0));
 		assertEquals(60000L, gameClock.getRemainingTime(2000L, 1));
 	}
-
-
 }
