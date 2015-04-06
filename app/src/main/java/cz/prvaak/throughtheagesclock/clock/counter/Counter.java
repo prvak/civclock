@@ -87,6 +87,11 @@ public class Counter implements CounterClock {
 		start(when);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Initial: %d", initialTime);
+	}
+
 	private void updateElapsedTime(long when) {
 		if (isInitialized) {
 			elapsedTime += when - initialTime;

@@ -8,10 +8,12 @@ import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
  */
 public class LimitedTimer extends TimerAdapter {
 
-	boolean wasStarted;
+	private boolean wasStarted;
+	private long timeLimit;
 
 	public LimitedTimer(long timeLimit) {
-		super(new CounterToTimerAdapter(new LimitedCounter(new Counter(), timeLimit), timeLimit));
+		super(new Timer(timeLimit));
+		this.timeLimit = timeLimit;
 	}
 
 	@Override
@@ -27,11 +29,24 @@ public class LimitedTimer extends TimerAdapter {
 	}
 
 	@Override
+	public void restart(long when, long newBaseTime) {
+		super.restart(when, newBaseTime);
+		timeLimit = newBaseTime;
+		wasStarted = true;
+	}
+
+	@Override
+	public long getElapsedTime(long when) {
+		long realTime = super.getElapsedTime(when);
+		return Math.min(realTime, timeLimit);
+	}
+
+	@Override
 	public long getRemainingTime(long when) {
 		if (wasStarted) {
-			return super.getRemainingTime(when);
+			return Math.max(0L, super.getRemainingTime(when));
 		} else {
-			return 0;
+			return 0L;
 		}
 	}
 }

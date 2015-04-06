@@ -6,22 +6,25 @@ import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
  *
  */
 public class CounterToTimerAdapter implements TimerClock {
-	private final CounterClock timer;
+	private final CounterClock counter;
 	private long baseTime;
 
-	public CounterToTimerAdapter(CounterClock timer, long baseTime) {
-		this.timer = timer;
+	public CounterToTimerAdapter(CounterClock counter, long baseTime) {
+		this.counter = counter;
+		if (baseTime < 0) {
+			throw new IllegalArgumentException("Base time cannot be negative!");
+		}
 		this.baseTime = baseTime;
 	}
 
 	@Override
 	public long getElapsedTime(long when) {
-		return timer.getElapsedTime(when);
+		return counter.getElapsedTime(when);
 	}
 
 	@Override
 	public long getRemainingTime(long when) {
-		return baseTime - timer.getElapsedTime(when);
+		return baseTime - counter.getElapsedTime(when);
 	}
 
 	@Override
@@ -30,27 +33,41 @@ public class CounterToTimerAdapter implements TimerClock {
 	}
 
 	@Override
+	public void restart(long when) {
+		counter.restart(when);
+	}
+
+	@Override
+	public void restart(long when, long newBaseTime) {
+		counter.restart(when);
+		if (newBaseTime < 0) {
+			throw new IllegalArgumentException("Base time cannot be negative!");
+		}
+		baseTime = newBaseTime;
+	}
+
+	@Override
 	public void stop(long when) {
-		timer.stop(when);
+		counter.stop(when);
 	}
 
 	@Override
 	public void start(long when) {
-		timer.start(when);
-	}
-
-	@Override
-	public void restart(long when) {
-		timer.restart(when);
+		counter.start(when);
 	}
 
 	@Override
 	public void pause(long when) {
-		timer.pause(when);
+		counter.pause(when);
 	}
 
 	@Override
 	public void resume(long when) {
-		timer.resume(when);
+		counter.resume(when);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s Base: %d", counter.toString(), baseTime);
 	}
 }

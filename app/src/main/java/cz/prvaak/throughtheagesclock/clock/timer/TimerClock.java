@@ -8,6 +8,14 @@ import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
 public interface TimerClock extends CounterClock {
 
 	/**
+	 * Restart the timer with new time limit.
+	 *
+	 * @param when Time in milliseconds when the timer was restarted.
+	 * @param newBaseTime How much time in milliseconds is remaining.
+	 */
+	void restart(long when, long newBaseTime);
+
+	/**
 	 * Get remaining time.
 	 *
 	 * @param when Time in milliseconds when the question was asked.

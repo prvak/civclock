@@ -1,7 +1,6 @@
 package cz.prvaak.throughtheagesclock.player;
 
 import cz.prvaak.throughtheagesclock.clock.Clock;
-import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
 import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
@@ -15,7 +14,7 @@ import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
  * Clock can by paused by {@link #pause(long)} method and resumed by {@link #start(long)}. Both
  * main and upkeep timers are paused.
  */
-public class PlayerCountdown implements Clock {
+public class PlayerClock implements Clock {
 
 	/** Counter of elapsed reserve time. */
 	private final TimerClock reserveTime;
@@ -23,38 +22,34 @@ public class PlayerCountdown implements Clock {
 	private final TimerClock upkeepTime;
 	/** How long did the reserve clock overlapped with upkeep clock. This time does not count
 	 * towards the reserve time. */
-	private LimitedCounter overlapTime;
-	private boolean isRunning;
+	private final TimerClock overlapTime;
+	/** Whether the clock has been started and not stopped yet. */
+	private boolean isStarted;
 	/**
 	 * Create new clock.
 	 *
 	 * @param baseTime How many milliseconds the player initially has.
 	 * @param upkeepTime How many milliseconds each upkeep protection has.
 	 */
-	public PlayerCountdown(long baseTime, long upkeepTime) {
+	public PlayerClock(long baseTime, long upkeepTime) {
 		this.reserveTime = new Timer(baseTime);
 		this.upkeepTime = new LimitedTimer(upkeepTime);
-		this.overlapTime = new LimitedCounter(0L);
+		this.overlapTime = new LimitedTimer(0L);
 	}
 
 	@Override
 	public void start(long when) {
 		reserveTime.start(when);
 		reserveTime.addTime(overlapTime.getElapsedTime(when));
-		overlapTime = new LimitedCounter(upkeepTime.getRemainingTime(when));
-		overlapTime.start(when);
-		isRunning = true;
+		overlapTime.restart(when, upkeepTime.getRemainingTime(when));
+		isStarted = true;
 	}
 
 	@Override
 	public void stop(long when) {
 		reserveTime.stop(when);
 		overlapTime.stop(when);
-		isRunning = false;
-	}
-
-	@Override
-	public void restart(long when) {
+		isStarted = false;
 	}
 
 	@Override
@@ -85,10 +80,9 @@ public class PlayerCountdown implements Clock {
 	 */
 	public void upkeep(long when) {
 		upkeepTime.restart(when);
-		if (isRunning) {
+		if (isStarted) {
 			reserveTime.addTime(overlapTime.getElapsedTime(when));
-			overlapTime = new LimitedCounter(upkeepTime.getRemainingTime(when));
-			overlapTime.start(when);
+			overlapTime.restart(when, upkeepTime.getRemainingTime(when));
 		}
 	}
 

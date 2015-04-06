@@ -14,4 +14,11 @@ public interface CounterClock extends Clock {
 	 * @return Total elapsed time since the clock was started.
 	 */
 	long getElapsedTime(long when);
+
+	/**
+	 * Restart the counter.
+	 *
+	 * @param when Time in milliseconds when the clock was restarted.
+	 */
+	void restart(long when);
 }

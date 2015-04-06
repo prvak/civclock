@@ -20,13 +20,6 @@ public interface Clock {
 	void start(long when);
 
 	/**
-	 * Start the clock.
-	 *
-	 * @param when Time in milliseconds when the clock was started.
-	 */
-	void restart(long when);
-
-	/**
 	 * Pause the clock.
 	 *
 	 * @param when Time in milliseconds when the clock was paused.

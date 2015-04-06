@@ -10,7 +10,7 @@ import junit.framework.Assert;
 public class LimitedCounterTest extends InstrumentationTestCase {
 
 	public void testGetTime() throws Exception {
-		LimitedCounter timer = new LimitedCounter(new Counter(), 10000L);
+		LimitedCounter timer = new LimitedCounter(10000L);
 		timer.restart(0L);
 		Assert.assertEquals(2000L, timer.getElapsedTime(2000L));
 		Assert.assertEquals(5000L, timer.getElapsedTime(5000L));
@@ -22,11 +22,20 @@ public class LimitedCounterTest extends InstrumentationTestCase {
 	}
 
 	public void testRestart() throws Exception {
-		LimitedCounter timer = new LimitedCounter(new Counter(), 10000L);
+		LimitedCounter timer = new LimitedCounter(10000L);
 		timer.restart(0L);
 		Assert.assertEquals(10000L, timer.getElapsedTime(20000L));
 		timer.restart(30000L);
 		Assert.assertEquals(1000L, timer.getElapsedTime(31000L));
 		Assert.assertEquals(10000L, timer.getElapsedTime(40000L));
+	}
+
+	public void testNegativeTimeLimitNotAllowed() throws Exception {
+		try {
+			new LimitedCounter(-5000);
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
 	}
 }

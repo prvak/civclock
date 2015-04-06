@@ -1,10 +1,11 @@
 package cz.prvaak.throughtheagesclock.clock.counter;
 
 /**
- * Timer that cannot accumulate more than given amount of time.
+ * Counter that cannot accumulate more than given amount of time.
  */
 public class LimitedCounter extends CounterAdapter {
 
+	/** How much time in milliseconds can this counter accumulate. */
 	private final long timeLimit;
 
 	public LimitedCounter(long timeLimit) {

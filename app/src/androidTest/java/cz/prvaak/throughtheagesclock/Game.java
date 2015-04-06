@@ -1,18 +1,18 @@
 package cz.prvaak.throughtheagesclock;
 
-import cz.prvaak.throughtheagesclock.player.PlayerCountdown;
+import cz.prvaak.throughtheagesclock.player.PlayerClock;
 
 /**
  * Created by michal on 3/1/15.
  */
 public class Game {
 	private enum State {NORMAL, NEGOTIATION, OFFER};
-	private final PlayerCountdown[] playerCountdowns;
+	private final PlayerClock[] playerClocks;
 	private State state = State.NORMAL;
 	private boolean isRunning;
 
-	public Game(PlayerCountdown[] playerCountdowns) {
-		this.playerCountdowns = playerCountdowns;
+	public Game(PlayerClock[] playerClocks) {
+		this.playerClocks = playerClocks;
 	}
 
 

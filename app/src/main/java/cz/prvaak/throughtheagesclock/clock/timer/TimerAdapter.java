@@ -42,6 +42,11 @@ public class TimerAdapter implements TimerClock {
 	}
 
 	@Override
+	public void restart(long when, long newBaseTime) {
+		target.restart(when, newBaseTime);
+	}
+
+	@Override
 	public void pause(long when) {
 		target.pause(when);
 	}
@@ -49,5 +54,10 @@ public class TimerAdapter implements TimerClock {
 	@Override
 	public void resume(long when) {
 		target.resume(when);
+	}
+
+	@Override
+	public String toString() {
+		return target.toString();
 	}
 }

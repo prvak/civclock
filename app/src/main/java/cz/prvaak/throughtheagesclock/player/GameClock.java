@@ -5,28 +5,28 @@ package cz.prvaak.throughtheagesclock.player;
  */
 public class GameClock {
 
-	private final PlayerCountdown[] playerCountdowns;
+	private final PlayerClock[] playerClocks;
 	private int currentPlayer;
 	private boolean isRunning;
 
-	public GameClock(PlayerCountdown[] playerCountdowns) {
-		this.playerCountdowns = playerCountdowns;
+	public GameClock(PlayerClock[] playerClocks) {
+		this.playerClocks = playerClocks;
 	}
 
 	public void nextPlayer(long when) {
 		if (isRunning) {
-			PlayerCountdown currentPlayerCountdown = playerCountdowns[currentPlayer];
-			int nextPlayer = (currentPlayer + 1) % playerCountdowns.length;
-			PlayerCountdown nextPlayerCountdown = playerCountdowns[nextPlayer];
+			PlayerClock currentPlayerClock = playerClocks[currentPlayer];
+			int nextPlayer = (currentPlayer + 1) % playerClocks.length;
+			PlayerClock nextPlayerClock = playerClocks[nextPlayer];
 
-			currentPlayerCountdown.stop(when);
-			currentPlayerCountdown.upkeep(when);
-			nextPlayerCountdown.restart(when);
+			currentPlayerClock.stop(when);
+			currentPlayerClock.upkeep(when);
+			nextPlayerClock.start(when);
 			currentPlayer = nextPlayer;
 		} else {
-			PlayerCountdown currentPlayerCountdown = playerCountdowns[currentPlayer];
+			PlayerClock currentPlayerClock = playerClocks[currentPlayer];
 
-			currentPlayerCountdown.start(when);
+			currentPlayerClock.start(when);
 		}
 	}
 

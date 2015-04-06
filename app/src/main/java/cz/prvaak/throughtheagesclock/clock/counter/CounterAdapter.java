@@ -5,9 +5,9 @@ package cz.prvaak.throughtheagesclock.clock.counter;
  */
 public class CounterAdapter implements CounterClock {
 
-	private final Counter target;
+	private final CounterClock target;
 
-	public CounterAdapter(Counter target) {
+	public CounterAdapter(CounterClock target) {
 		this.target = target;
 	}
 
@@ -39,5 +39,10 @@ public class CounterAdapter implements CounterClock {
 	@Override
 	public void resume(long when) {
 		target.resume(when);
+	}
+
+	@Override
+	public String toString() {
+		return target.toString();
 	}
 }
