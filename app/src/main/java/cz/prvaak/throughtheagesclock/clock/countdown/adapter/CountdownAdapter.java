@@ -1,7 +1,5 @@
 package cz.prvaak.throughtheagesclock.clock.countdown.adapter;
 
-import cz.prvaak.throughtheagesclock.clock.UniversalClock;
-import cz.prvaak.throughtheagesclock.clock.countdown.Countdown;
 import cz.prvaak.throughtheagesclock.clock.countdown.CountdownClock;
 
 /**
@@ -36,13 +34,13 @@ public class CountdownAdapter implements CountdownClock {
 	}
 
 	@Override
-	public void unstop(long when) {
-		target.unstop(when);
+	public void start(long when) {
+		target.start(when);
 	}
 
 	@Override
-	public void start(long when) {
-		target.start(when);
+	public void restart(long when) {
+		target.restart(when);
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class CountdownAdapter implements CountdownClock {
 	}
 
 	@Override
-	public void unpause(long when) {
-		target.unpause(when);
+	public void resume(long when) {
+		target.resume(when);
 	}
 }

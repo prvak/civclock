@@ -21,12 +21,12 @@ public class GameClock {
 
 			currentPlayerCountdown.stop(when);
 			currentPlayerCountdown.upkeep(when);
-			nextPlayerCountdown.start(when);
+			nextPlayerCountdown.restart(when);
 			currentPlayer = nextPlayer;
 		} else {
 			PlayerCountdown currentPlayerCountdown = playerCountdowns[currentPlayer];
 
-			currentPlayerCountdown.unstop(when);
+			currentPlayerCountdown.start(when);
 		}
 	}
 

@@ -10,6 +10,6 @@ public interface Clock {
 	 *
 	 * @param when Time in milliseconds when the clock was started.
 	 */
-	void start(long when);
+	void restart(long when);
 
 }

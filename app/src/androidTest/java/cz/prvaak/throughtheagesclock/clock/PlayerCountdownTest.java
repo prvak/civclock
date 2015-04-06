@@ -87,7 +87,7 @@ public class PlayerCountdownTest extends InstrumentationTestCase {
 		playerCountdown.start(0L);
 		playerCountdown.stop(1000L);
 		playerCountdown.upkeep(2000L);
-		playerCountdown.unstop(3000L);
+		playerCountdown.start(3000L);
 		assertEquals(59000L, playerCountdown.getRemainingTime(3000L)); // time is not decreasing
 		assertEquals(28000L, playerCountdown.getRemainingUpkeepTime(4000L));
 		assertEquals(59000L, playerCountdown.getRemainingTime(5000L)); // time is not decreasing
@@ -139,12 +139,12 @@ public class PlayerCountdownTest extends InstrumentationTestCase {
 		assertEquals(29000L, playerCountdown.getRemainingUpkeepTime(4000L));
 		assertEquals(59000L, playerCountdown.getRemainingTime(60000L));
 		assertEquals(29000L, playerCountdown.getRemainingUpkeepTime(60000L));
-		playerCountdown.unstop(60000L);
+		playerCountdown.resume(60000L);
 		assertEquals(1000L, playerCountdown.getRemainingUpkeepTime(88000L));
 		assertEquals(58000L, playerCountdown.getRemainingTime(90000L));
 	}
 
-	public void testStartPauseUnpause() throws Exception {
+	public void testStartPauseResume() throws Exception {
 		PlayerCountdown playerCountdown = createPlayerClock();
 		playerCountdown.start(1000L);
 		playerCountdown.pause(3000L);
@@ -152,9 +152,9 @@ public class PlayerCountdownTest extends InstrumentationTestCase {
 		assertEquals(0L, playerCountdown.getRemainingUpkeepTime(4000L));
 		assertEquals(58000L, playerCountdown.getRemainingTime(60000L));
 		assertEquals(0L, playerCountdown.getRemainingUpkeepTime(60000L));
-		playerCountdown.unpause(60000L);
+		playerCountdown.resume(60000L);
 		assertEquals(0L, playerCountdown.getRemainingUpkeepTime(70000L));
-		assertEquals(48000L, playerCountdown.getRemainingTime(90000L));
+		assertEquals(28000L, playerCountdown.getRemainingTime(90000L));
 	}
 
 	public void testNegativeUpkeepTimeNotAllowed() throws Exception {

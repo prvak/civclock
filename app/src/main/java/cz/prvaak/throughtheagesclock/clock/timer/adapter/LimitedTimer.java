@@ -9,6 +9,10 @@ public class LimitedTimer extends TimerAdapter {
 
 	private final long timeLimit;
 
+	public LimitedTimer(long timeLimit) {
+		this(new Timer(), timeLimit);
+	}
+
 	public LimitedTimer(Timer target, long timeLimit) {
 		super(target);
 		if (timeLimit < 0) {

@@ -13,7 +13,7 @@ public class LimitedTimerTest extends InstrumentationTestCase {
 
 	public void testGetTime() throws Exception {
 		LimitedTimer timer = new LimitedTimer(new Timer(), 10000L);
-		timer.start(0L);
+		timer.restart(0L);
 		Assert.assertEquals(2000L, timer.getTime(2000L));
 		Assert.assertEquals(5000L, timer.getTime(5000L));
 		Assert.assertEquals(9999L, timer.getTime(9999L));
@@ -25,9 +25,9 @@ public class LimitedTimerTest extends InstrumentationTestCase {
 
 	public void testRestart() throws Exception {
 		LimitedTimer timer = new LimitedTimer(new Timer(), 10000L);
-		timer.start(0L);
+		timer.restart(0L);
 		Assert.assertEquals(10000L, timer.getTime(20000L));
-		timer.start(30000L);
+		timer.restart(30000L);
 		Assert.assertEquals(1000L, timer.getTime(31000L));
 		Assert.assertEquals(10000L, timer.getTime(40000L));
 	}

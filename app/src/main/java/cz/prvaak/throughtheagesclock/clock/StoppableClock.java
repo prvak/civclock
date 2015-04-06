@@ -17,6 +17,6 @@ public interface StoppableClock extends Clock {
 	 *
 	 * @param when Time in milliseconds when the clock was resumed.
 	 */
-	void unstop(long when);
+	void start(long when);
 
 }

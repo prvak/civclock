@@ -4,9 +4,6 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
-import cz.prvaak.throughtheagesclock.clock.timer.Timer;
-import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
-
 /**
  * Tests of {@link LimitedCountdown} class.
  */
@@ -46,9 +43,18 @@ public class LimitedCountdownTest extends InstrumentationTestCase {
 		LimitedCountdown countdown = new LimitedCountdown(10000L);
 		countdown.start(0L);
 		Assert.assertEquals(0L, countdown.getRemainingTime(20000L));
-		countdown.start(30000L);
+		countdown.restart(30000L);
 		Assert.assertEquals(9000L, countdown.getRemainingTime(31000L));
 		Assert.assertEquals(0L, countdown.getRemainingTime(40000L));
 	}
 
+	public void testFirstStartEqualsRestart() throws Exception {
+		LimitedCountdown countdown1 = new LimitedCountdown(10000L);
+		countdown1.start(30000L);
+		Assert.assertEquals(9000L, countdown1.getRemainingTime(31000L));
+
+		LimitedCountdown countdown2 = new LimitedCountdown(10000L);
+		countdown2.restart(30000L);
+		Assert.assertEquals(9000L, countdown2.getRemainingTime(31000L));
+	}
 }

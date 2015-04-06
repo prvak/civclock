@@ -1,7 +1,5 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
-import cz.prvaak.throughtheagesclock.clock.PausableClock;
-
 /**
  * Class for measuring elapsed time. Does not support stopping.
  */
@@ -11,21 +9,14 @@ public class Timer implements TimerClock {
 	protected long initialTime;
 	/** How much time elapsed before starting. It is updated when the counter is stopped. */
 	protected long elapsedTime;
-	/** Set to true when {@link #start(long)} method is called. */
-	private boolean wasStarted;
+	/** Set to true when {@link #restart(long)} method is called. */
+	private boolean isInitialized;
 	private boolean isPaused;
-	private boolean isStopped;
-
-	@Override
-	public void start(long when) {
-		initialTime = when;
-		elapsedTime = 0;
-		wasStarted = true;
-	}
+	private boolean isStopped = true;
 
 	@Override
 	public long getTime(long when) {
-		if (!wasStarted) {
+		if (!isInitialized) {
 			return 0;
 		} else if (isStopped || isPaused) {
 			return elapsedTime;
@@ -35,8 +26,21 @@ public class Timer implements TimerClock {
 	}
 
 	@Override
+	public void start(long when) {
+		checkForTimeShift(when);
+		if (isPaused) {
+			throw new IllegalStateException("Cannot start counter that is paused!");
+		}
+		if (!isStopped) {
+			throw new IllegalStateException("Cannot start counter that is not stopped!");
+		}
+
+		setInitialTime(when);
+		isStopped = false;
+	}
+
+	@Override
 	public void stop(long when) {
-		checkForStarted();
 		checkForTimeShift(when);
 		if (isPaused) {
 			throw new IllegalStateException("Cannot stop counter that is paused!");
@@ -45,24 +49,9 @@ public class Timer implements TimerClock {
 			throw new IllegalStateException("Cannot stop counter that is already stopped!");
 		}
 
+		updateElapsedTime(when);
+		setInitialTime(when);
 		isStopped = true;
-		elapsedTime += when - initialTime;
-		initialTime = when; // to detect time travel
-	}
-
-	@Override
-	public void unstop(long when) {
-		checkForStarted();
-		checkForTimeShift(when);
-		if (isPaused) {
-			throw new IllegalStateException("Cannot unstop counter that is paused!");
-		}
-		if (!isStopped) {
-			throw new IllegalStateException("Cannot unstop counter that is not stopped!");
-		}
-
-		isStopped = false;
-		initialTime = when;
 	}
 
 	@Override
@@ -72,29 +61,42 @@ public class Timer implements TimerClock {
 			throw new IllegalStateException("Cannot pause counter that is already paused!");
 		}
 
+		updateElapsedTime(when);
+		setInitialTime(when);
 		isPaused = true;
-		elapsedTime += when - initialTime;
-		initialTime = when; // to detect time travel
 	}
 
 	@Override
-	public void unpause(long when) {
+	public void resume(long when) {
 		checkForTimeShift(when);
 		if (!isPaused) {
-			throw new IllegalStateException("Cannot unpause counter that is not paused!");
+			throw new IllegalStateException("Cannot resume counter that is not paused!");
 		}
 
+		setInitialTime(when);
 		isPaused = false;
-		initialTime = when;
 	}
 
-	protected void checkForStarted() {
-		if (!wasStarted) {
-			throw new IllegalStateException("Clock have not been started yet!");
+	@Override
+	public void restart(long when) {
+		isStopped = false;
+		stop(when);
+		elapsedTime = 0;
+		start(when);
+	}
+
+	private void updateElapsedTime(long when) {
+		if (isInitialized) {
+			elapsedTime += when - initialTime;
 		}
 	}
 
-	protected void checkForTimeShift(long when) {
+	private void setInitialTime(long when) {
+		initialTime = when;
+		isInitialized = true;
+	}
+
+	private void checkForTimeShift(long when) {
 		if (initialTime > when) {
 			throw new IllegalArgumentException("Cannot travel in time!");
 		}

@@ -21,6 +21,12 @@ public class LimitedCountdown extends CountdownAdapter {
 	}
 
 	@Override
+	public void restart(long when) {
+		super.restart(when);
+		wasStarted = true;
+	}
+
+	@Override
 	public long getRemainingTime(long when) {
 		if (wasStarted) {
 			return super.getRemainingTime(when);

@@ -17,5 +17,5 @@ public interface PausableClock extends Clock {
 	 *
 	 * @param when Time in milliseconds when the clock was resumed.
 	 */
-	void unpause(long when);
+	void resume(long when);
 }

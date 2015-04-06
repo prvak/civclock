@@ -1,7 +1,5 @@
 package cz.prvaak.throughtheagesclock.clock.timer.adapter;
 
-import cz.prvaak.throughtheagesclock.clock.StoppableClock;
-import cz.prvaak.throughtheagesclock.clock.UniversalClock;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
 
@@ -17,8 +15,8 @@ public class TimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public void start(long when) {
-		target.start(when);
+	public void restart(long when) {
+		target.restart(when);
 	}
 
 	@Override
@@ -32,8 +30,8 @@ public class TimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public void unstop(long when) {
-		target.unstop(when);
+	public void start(long when) {
+		target.start(when);
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class TimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public void unpause(long when) {
-		target.unpause(when);
+	public void resume(long when) {
+		target.resume(when);
 	}
 }
