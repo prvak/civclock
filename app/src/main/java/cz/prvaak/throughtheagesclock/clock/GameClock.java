@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.player;
+package cz.prvaak.throughtheagesclock.clock;
 
 /**
  * High level game clock.

@@ -4,11 +4,9 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
-import cz.prvaak.throughtheagesclock.player.PlayerClock;
-
 
 /**
- * Tests of {@link cz.prvaak.throughtheagesclock.player.PlayerClock} class.
+ * Tests of {@link PlayerClock} class.
  */
 public class PlayerClockTest extends InstrumentationTestCase {
 
@@ -19,7 +17,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testGetRemainingTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		assertEquals(60000L, playerClock.getRemainingTime(0L));
+		assertEquals(60000L, playerClock.getRemainingReserveTime(0L));
 	}
 
 	public void testGetRemainingUpkeepTime() throws Exception {
@@ -34,52 +32,52 @@ public class PlayerClockTest extends InstrumentationTestCase {
 	public void testGetRemainingTimeAfterStart() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.start(1000L);
-		assertEquals(60000L, playerClock.getRemainingTime(1000L)); // initial time
-		assertEquals(59000L, playerClock.getRemainingTime(2000L));
-		assertEquals(-1000L, playerClock.getRemainingTime(62000L)); // negative value is allowed
+		assertEquals(60000L, playerClock.getRemainingReserveTime(1000L)); // initial time
+		assertEquals(59000L, playerClock.getRemainingReserveTime(2000L));
+		assertEquals(-1000L, playerClock.getRemainingReserveTime(62000L)); // negative value is allowed
 	}
 
 	public void testGetRemainingTimeAfterStop() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.start(0L);
 		playerClock.stop(1000L);
-		assertEquals(59000L, playerClock.getRemainingTime(2000L));
-		assertEquals(59000L, playerClock.getRemainingTime(3000L)); // time is not decreasing
-		assertEquals(59000L, playerClock.getRemainingTime(100000L)); // time is not decreasing
+		assertEquals(59000L, playerClock.getRemainingReserveTime(2000L));
+		assertEquals(59000L, playerClock.getRemainingReserveTime(3000L)); // time is not decreasing
+		assertEquals(59000L, playerClock.getRemainingReserveTime(100000L)); // time is not decreasing
 	}
 
 	public void testAdd() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		playerClock.addTime(1000L);
-		assertEquals(61000L, playerClock.getRemainingTime(1000L));
+		playerClock.addReserveTime(1000L);
+		assertEquals(61000L, playerClock.getRemainingReserveTime(1000L));
 	}
 
 	public void testUpkeepStartShort() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.upkeep(0L);
 		playerClock.start(10000L);
-		assertEquals(60000L, playerClock.getRemainingTime(20000L));
+		assertEquals(60000L, playerClock.getRemainingReserveTime(20000L));
 	}
 
 	public void testUpkeepStartLong() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.upkeep(0L);
 		playerClock.start(10000L);
-		assertEquals(50000L, playerClock.getRemainingTime(40000L));
+		assertEquals(50000L, playerClock.getRemainingReserveTime(40000L));
 	}
 
 	public void testStartUpkeepShort() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.start(0L);
 		playerClock.upkeep(10000L);
-		assertEquals(50000L, playerClock.getRemainingTime(20000L));
+		assertEquals(50000L, playerClock.getRemainingReserveTime(20000L));
 	}
 
 	public void testStartUpkeepLong() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.start(0L);
 		playerClock.upkeep(10000L);
-		assertEquals(40000L, playerClock.getRemainingTime(50000L));
+		assertEquals(40000L, playerClock.getRemainingReserveTime(50000L));
 	}
 
 	public void testGetRemainingUpkeepTimeAfterRepeatedStart() throws Exception {
@@ -88,10 +86,10 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.stop(1000L);
 		playerClock.upkeep(2000L);
 		playerClock.start(3000L);
-		assertEquals(59000L, playerClock.getRemainingTime(3000L)); // time is not decreasing
+		assertEquals(59000L, playerClock.getRemainingReserveTime(3000L)); // time is not decreasing
 		assertEquals(28000L, playerClock.getRemainingUpkeepTime(4000L));
-		assertEquals(59000L, playerClock.getRemainingTime(5000L)); // time is not decreasing
-		assertEquals(58000L, playerClock.getRemainingTime(33000L)); // upkeep protection exhausted
+		assertEquals(59000L, playerClock.getRemainingReserveTime(5000L)); // time is not decreasing
+		assertEquals(58000L, playerClock.getRemainingReserveTime(33000L)); // upkeep protection exhausted
 	}
 
 	public void testUpkeepStartStopShort() throws Exception {
@@ -99,7 +97,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.upkeep(0L);
 		playerClock.start(1000L);
 		playerClock.stop(2000L);
-		assertEquals(60000L, playerClock.getRemainingTime(3000L)); // time is not decreasing
+		assertEquals(60000L, playerClock.getRemainingReserveTime(3000L)); // time is not decreasing
 		assertEquals(26000L, playerClock.getRemainingUpkeepTime(4000L));
 	}
 
@@ -108,7 +106,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.upkeep(0L);
 		playerClock.start(1000L);
 		playerClock.stop(40000L);
-		assertEquals(50000L, playerClock.getRemainingTime(40000L));
+		assertEquals(50000L, playerClock.getRemainingReserveTime(40000L));
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(40000L));
 	}
 
@@ -117,7 +115,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.start(0L);
 		playerClock.upkeep(1000L);
 		playerClock.stop(2000L);
-		assertEquals(59000L, playerClock.getRemainingTime(3000L)); // time is not decreasing
+		assertEquals(59000L, playerClock.getRemainingReserveTime(3000L)); // time is not decreasing
 		assertEquals(27000L, playerClock.getRemainingUpkeepTime(4000L));
 	}
 
@@ -126,7 +124,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.start(0L);
 		playerClock.upkeep(1000L);
 		playerClock.stop(50000L);
-		assertEquals(40000L, playerClock.getRemainingTime(50000L));
+		assertEquals(40000L, playerClock.getRemainingReserveTime(50000L));
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(50000L));
 	}
 
@@ -135,26 +133,26 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		playerClock.start(1000L);
 		playerClock.upkeep(2000L);
 		playerClock.pause(3000L);
-		assertEquals(59000L, playerClock.getRemainingTime(4000L));
+		assertEquals(59000L, playerClock.getRemainingReserveTime(4000L));
 		assertEquals(29000L, playerClock.getRemainingUpkeepTime(4000L));
-		assertEquals(59000L, playerClock.getRemainingTime(60000L));
+		assertEquals(59000L, playerClock.getRemainingReserveTime(60000L));
 		assertEquals(29000L, playerClock.getRemainingUpkeepTime(60000L));
 		playerClock.resume(60000L);
 		assertEquals(1000L, playerClock.getRemainingUpkeepTime(88000L));
-		assertEquals(58000L, playerClock.getRemainingTime(90000L));
+		assertEquals(58000L, playerClock.getRemainingReserveTime(90000L));
 	}
 
 	public void testStartPauseResume() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.start(1000L);
 		playerClock.pause(3000L);
-		assertEquals(58000L, playerClock.getRemainingTime(4000L));
+		assertEquals(58000L, playerClock.getRemainingReserveTime(4000L));
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(4000L));
-		assertEquals(58000L, playerClock.getRemainingTime(60000L));
+		assertEquals(58000L, playerClock.getRemainingReserveTime(60000L));
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(60000L));
 		playerClock.resume(60000L);
 		assertEquals(0L, playerClock.getRemainingUpkeepTime(70000L));
-		assertEquals(28000L, playerClock.getRemainingTime(90000L));
+		assertEquals(28000L, playerClock.getRemainingReserveTime(90000L));
 	}
 
 	public void testNegativeUpkeepTimeNotAllowed() throws Exception {

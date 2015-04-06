@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.player;
+package cz.prvaak.throughtheagesclock.clock;
 
 import cz.prvaak.throughtheagesclock.clock.Clock;
 import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
@@ -20,11 +20,14 @@ public class PlayerClock implements Clock {
 	private final TimerClock reserveTime;
 	/** Counter of elapsed upkeep time. */
 	private final TimerClock upkeepTime;
-	/** How long did the reserve clock overlapped with upkeep clock. This time does not count
-	 * towards the reserve time. */
+	/**
+	 * How long did the reserve clock overlapped with upkeep clock. This time does not count
+	 * towards the reserve time.
+	 */
 	private final TimerClock overlapTime;
 	/** Whether the clock has been started and not stopped yet. */
 	private boolean isStarted;
+
 	/**
 	 * Create new clock.
 	 *
@@ -66,7 +69,13 @@ public class PlayerClock implements Clock {
 		overlapTime.resume(when);
 	}
 
-	public void addTime(long amount) {
+	/**
+	 * Add given amount of time to the reserve time.
+	 *
+	 * @param amount How many milliseconds to add to the reserve time. If the value is negative
+	 *	the reserve time is reduced.
+	 */
+	public void addReserveTime(long amount) {
 		reserveTime.addTime(amount);
 	}
 
@@ -86,7 +95,13 @@ public class PlayerClock implements Clock {
 		}
 	}
 
-	public long getRemainingTime(long when) {
+	/**
+	 * How many milliseconds of reserve time are remaining.
+	 *
+	 * @param when Current time in milliseconds.
+	 * @return Remaining reserve time in milliseconds.
+	 */
+	public long getRemainingReserveTime(long when) {
 		long remainingReserve = reserveTime.getRemainingTime(when);
 		long upkeepOverlap = overlapTime.getElapsedTime(when);
 		return remainingReserve + upkeepOverlap;
@@ -101,23 +116,4 @@ public class PlayerClock implements Clock {
 	public long getRemainingUpkeepTime(long when) {
 		return upkeepTime.getRemainingTime(when);
 	}
-/*
-	private long getElapsedReserveTime(long when) {
-		long elapsedReserveTime = reserveTime.getTime(when);
-		long elapsedUpkeepTime = upkeepTime.getTime(when);
-		long result = 0L;
-		if (elapsedUpkeepTime > remainingUpkeepTime) {
-			result += elapsedUpkeepTime - remainingUpkeepTime;
-		}
-		if (elapsedReserveTime > elapsedUpkeepTime) {
-			result += elapsedReserveTime - elapsedUpkeepTime;
-		}
-		return result;
-	}
-
-	private long getElapsedUpkeepTime(long when) {
-		long elapsedUpkeepTime = upkeepTime.getTime(when);
-		return Math.min(elapsedUpkeepTime, remainingUpkeepTime);
-	}
-	*/
 }
