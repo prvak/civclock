@@ -1,20 +1,25 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
-import cz.prvaak.throughtheagesclock.clock.Clock;
-import cz.prvaak.throughtheagesclock.clock.PausableClock;
-import cz.prvaak.throughtheagesclock.clock.StoppableClock;
 import cz.prvaak.throughtheagesclock.clock.UniversalClock;
+import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
 
 /**
- * Interface for clocks that count elapsed time.
+ * Interface for clocks that count remaining time.
  */
-public interface TimerClock extends UniversalClock {
+public interface TimerClock extends UniversalClock, CounterClock {
 
 	/**
-	 * Get total elapsed time.
+	 * Get remaining time.
 	 *
 	 * @param when Time in milliseconds when the question was asked.
-	 * @return Total elapsed time since the clock was started.
+	 * @return Remaining time in milliseconds. Can be negative.
 	 */
-	long getTime(long when);
+	long getRemainingTime(long when);
+
+	/**
+	 * Add given amount of time to remaining time.
+	 *
+	 * @param amount How many milliseconds to add.
+	 */
+	void addTime(long amount);
 }

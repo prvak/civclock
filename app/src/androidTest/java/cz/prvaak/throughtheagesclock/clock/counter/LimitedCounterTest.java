@@ -1,18 +1,19 @@
-package cz.prvaak.throughtheagesclock.clock.timer.adapter;
+package cz.prvaak.throughtheagesclock.clock.counter;
 
 import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
-import cz.prvaak.throughtheagesclock.clock.timer.Timer;
+import cz.prvaak.throughtheagesclock.clock.counter.Counter;
+import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
 
 /**
- * Tests of {@link LimitedTimer} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter} class.
  */
-public class LimitedTimerTest extends InstrumentationTestCase {
+public class LimitedCounterTest extends InstrumentationTestCase {
 
 	public void testGetTime() throws Exception {
-		LimitedTimer timer = new LimitedTimer(new Timer(), 10000L);
+		LimitedCounter timer = new LimitedCounter(new Counter(), 10000L);
 		timer.restart(0L);
 		Assert.assertEquals(2000L, timer.getTime(2000L));
 		Assert.assertEquals(5000L, timer.getTime(5000L));
@@ -24,7 +25,7 @@ public class LimitedTimerTest extends InstrumentationTestCase {
 	}
 
 	public void testRestart() throws Exception {
-		LimitedTimer timer = new LimitedTimer(new Timer(), 10000L);
+		LimitedCounter timer = new LimitedCounter(new Counter(), 10000L);
 		timer.restart(0L);
 		Assert.assertEquals(10000L, timer.getTime(20000L));
 		timer.restart(30000L);

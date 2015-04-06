@@ -1,17 +1,17 @@
-package cz.prvaak.throughtheagesclock.clock.countdown.adapter;
+package cz.prvaak.throughtheagesclock.clock.timer;
 
-import cz.prvaak.throughtheagesclock.clock.timer.Timer;
-import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
+import cz.prvaak.throughtheagesclock.clock.counter.Counter;
+import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
 
 /**
  * Countdown that starts at given value and never goes below zero.
  */
-public class LimitedCountdown extends CountdownAdapter {
+public class LimitedTimer extends TimerAdapter {
 
 	boolean wasStarted;
 
-	public LimitedCountdown(long timeLimit) {
-		super(new TimerToCountdownAdapter(new LimitedTimer(new Timer(), timeLimit), timeLimit));
+	public LimitedTimer(long timeLimit) {
+		super(new CounterToTimerAdapter(new LimitedCounter(new Counter(), timeLimit), timeLimit));
 	}
 
 	@Override

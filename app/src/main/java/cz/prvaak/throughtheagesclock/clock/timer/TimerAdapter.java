@@ -1,15 +1,13 @@
-package cz.prvaak.throughtheagesclock.clock.countdown.adapter;
-
-import cz.prvaak.throughtheagesclock.clock.countdown.CountdownClock;
+package cz.prvaak.throughtheagesclock.clock.timer;
 
 /**
  * Adapter that delegates all calls to another countdown.
  */
-public class CountdownAdapter implements CountdownClock {
+public class TimerAdapter implements TimerClock {
 
-	private final CountdownClock target;
+	private final TimerClock target;
 
-	public CountdownAdapter(CountdownClock target) {
+	public TimerAdapter(TimerClock target) {
 		this.target = target;
 	}
 

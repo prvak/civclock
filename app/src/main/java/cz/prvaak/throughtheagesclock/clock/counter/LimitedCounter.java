@@ -1,19 +1,17 @@
-package cz.prvaak.throughtheagesclock.clock.timer.adapter;
-
-import cz.prvaak.throughtheagesclock.clock.timer.Timer;
+package cz.prvaak.throughtheagesclock.clock.counter;
 
 /**
  * Timer that cannot accumulate more than given amount of time.
  */
-public class LimitedTimer extends TimerAdapter {
+public class LimitedCounter extends CounterAdapter {
 
 	private final long timeLimit;
 
-	public LimitedTimer(long timeLimit) {
-		this(new Timer(), timeLimit);
+	public LimitedCounter(long timeLimit) {
+		this(new Counter(), timeLimit);
 	}
 
-	public LimitedTimer(Timer target, long timeLimit) {
+	public LimitedCounter(Counter target, long timeLimit) {
 		super(target);
 		if (timeLimit < 0) {
 			throw new IllegalArgumentException("Time limit cannot be negative!");

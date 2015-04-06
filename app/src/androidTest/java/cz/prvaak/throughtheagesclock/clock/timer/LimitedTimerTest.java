@@ -1,16 +1,18 @@
-package cz.prvaak.throughtheagesclock.clock.countdown.adapter;
+package cz.prvaak.throughtheagesclock.clock.timer;
 
 import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
+import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
+
 /**
- * Tests of {@link LimitedCountdown} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer} class.
  */
-public class LimitedCountdownTest extends InstrumentationTestCase {
+public class LimitedTimerTest extends InstrumentationTestCase {
 
 	public void testGetRemainingTime() throws Exception {
-		LimitedCountdown countdown = new LimitedCountdown(10000L);
+		LimitedTimer countdown = new LimitedTimer(10000L);
 		Assert.assertEquals(0L, countdown.getRemainingTime(0L));
 		Assert.assertEquals(0L, countdown.getRemainingTime(1000L));
 		Assert.assertEquals(0L, countdown.getRemainingTime(100000L));
@@ -25,7 +27,7 @@ public class LimitedCountdownTest extends InstrumentationTestCase {
 	}
 
 	public void testGetTime() throws Exception {
-		LimitedCountdown countdown = new LimitedCountdown(10000L);
+		LimitedTimer countdown = new LimitedTimer(10000L);
 		Assert.assertEquals(0L, countdown.getTime(0L));
 		Assert.assertEquals(0L, countdown.getTime(1000L));
 		Assert.assertEquals(0L, countdown.getTime(100000L));
@@ -40,7 +42,7 @@ public class LimitedCountdownTest extends InstrumentationTestCase {
 	}
 
 	public void testRestart() throws Exception {
-		LimitedCountdown countdown = new LimitedCountdown(10000L);
+		LimitedTimer countdown = new LimitedTimer(10000L);
 		countdown.start(0L);
 		Assert.assertEquals(0L, countdown.getRemainingTime(20000L));
 		countdown.restart(30000L);
@@ -49,11 +51,11 @@ public class LimitedCountdownTest extends InstrumentationTestCase {
 	}
 
 	public void testFirstStartEqualsRestart() throws Exception {
-		LimitedCountdown countdown1 = new LimitedCountdown(10000L);
+		LimitedTimer countdown1 = new LimitedTimer(10000L);
 		countdown1.start(30000L);
 		Assert.assertEquals(9000L, countdown1.getRemainingTime(31000L));
 
-		LimitedCountdown countdown2 = new LimitedCountdown(10000L);
+		LimitedTimer countdown2 = new LimitedTimer(10000L);
 		countdown2.restart(30000L);
 		Assert.assertEquals(9000L, countdown2.getRemainingTime(31000L));
 	}

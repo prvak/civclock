@@ -2,12 +2,10 @@ package cz.prvaak.throughtheagesclock.player;
 
 import cz.prvaak.throughtheagesclock.clock.PausableClock;
 import cz.prvaak.throughtheagesclock.clock.StoppableClock;
-import cz.prvaak.throughtheagesclock.clock.countdown.Countdown;
-import cz.prvaak.throughtheagesclock.clock.countdown.CountdownClock;
-import cz.prvaak.throughtheagesclock.clock.countdown.adapter.LimitedCountdown;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
-import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
+import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
+import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
 
 /**
  * Class for keeping track of how much time remains to a player.
@@ -21,12 +19,12 @@ import cz.prvaak.throughtheagesclock.clock.timer.adapter.LimitedTimer;
 public class PlayerCountdown implements PausableClock, StoppableClock {
 
 	/** Counter of elapsed reserve time. */
-	private final CountdownClock reserveTime;
+	private final TimerClock reserveTime;
 	/** Counter of elapsed upkeep time. */
-	private final CountdownClock upkeepTime;
+	private final TimerClock upkeepTime;
 	/** How long did the reserve clock overlapped with upkeep clock. This time does not count
 	 * towards the reserve time. */
-	private LimitedTimer overlapTime;
+	private LimitedCounter overlapTime;
 	private boolean isRunning;
 	/**
 	 * Create new clock.
@@ -35,16 +33,16 @@ public class PlayerCountdown implements PausableClock, StoppableClock {
 	 * @param upkeepTime How many milliseconds each upkeep protection has.
 	 */
 	public PlayerCountdown(long baseTime, long upkeepTime) {
-		this.reserveTime = new Countdown(baseTime);
-		this.upkeepTime = new LimitedCountdown(upkeepTime);
-		this.overlapTime = new LimitedTimer(0L);
+		this.reserveTime = new Timer(baseTime);
+		this.upkeepTime = new LimitedTimer(upkeepTime);
+		this.overlapTime = new LimitedCounter(0L);
 	}
 
 	@Override
 	public void start(long when) {
 		reserveTime.start(when);
 		reserveTime.addTime(overlapTime.getTime(when));
-		overlapTime = new LimitedTimer(upkeepTime.getRemainingTime(when));
+		overlapTime = new LimitedCounter(upkeepTime.getRemainingTime(when));
 		overlapTime.start(when);
 		isRunning = true;
 	}
@@ -90,7 +88,7 @@ public class PlayerCountdown implements PausableClock, StoppableClock {
 		upkeepTime.restart(when);
 		if (isRunning) {
 			reserveTime.addTime(overlapTime.getTime(when));
-			overlapTime = new LimitedTimer(upkeepTime.getRemainingTime(when));
+			overlapTime = new LimitedCounter(upkeepTime.getRemainingTime(when));
 			overlapTime.start(when);
 		}
 	}
