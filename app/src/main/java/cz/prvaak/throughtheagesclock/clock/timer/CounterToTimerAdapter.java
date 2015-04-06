@@ -3,7 +3,7 @@ package cz.prvaak.throughtheagesclock.clock.timer;
 import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
 
 /**
- *
+ * Adapter that changes given counter go timer.
  */
 public class CounterToTimerAdapter implements TimerClock {
 	private final CounterClock counter;

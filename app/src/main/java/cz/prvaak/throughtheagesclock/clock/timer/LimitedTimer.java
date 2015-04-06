@@ -1,8 +1,5 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
-import cz.prvaak.throughtheagesclock.clock.counter.Counter;
-import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
-
 /**
  * Timer that starts at given value and never goes below zero.
  */
