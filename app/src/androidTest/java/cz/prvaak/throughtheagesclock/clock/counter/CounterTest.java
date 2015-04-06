@@ -16,13 +16,13 @@ public class CounterTest extends InstrumentationTestCase {
 
 	public void testGetTimeOfStarted() throws Exception {
 		Counter elapsedTime = new Counter();
-		elapsedTime.restart(1000L);
+		elapsedTime.start(1000L);
 		assertEquals(1000L, elapsedTime.getElapsedTime(2000L));
 	}
 
 	public void testRestart() throws Exception {
 		Counter elapsedTime = new Counter();
-		elapsedTime.restart(1000L);
+		elapsedTime.start(1000L);
 		assertEquals(2000L, elapsedTime.getElapsedTime(3000L));
 		elapsedTime.restart(4000L);
 		assertEquals(1000L, elapsedTime.getElapsedTime(5000L));
@@ -30,7 +30,7 @@ public class CounterTest extends InstrumentationTestCase {
 
 	public void testStop() throws Exception {
 		Counter elapsedTime = new Counter();
-		elapsedTime.restart(1000L);
+		elapsedTime.start(1000L);
 		elapsedTime.stop(3000L);
 		assertEquals(2000L, elapsedTime.getElapsedTime(3000L));
 		assertEquals(2000L, elapsedTime.getElapsedTime(4000L));
@@ -38,7 +38,7 @@ public class CounterTest extends InstrumentationTestCase {
 
 	public void testUnstop() throws Exception {
 		Counter elapsedTime = new Counter();
-		elapsedTime.restart(1000L);
+		elapsedTime.start(1000L);
 		elapsedTime.stop(3000L);
 		elapsedTime.start(4000L);
 		assertEquals(3000L, elapsedTime.getElapsedTime(5000L));
@@ -73,7 +73,7 @@ public class CounterTest extends InstrumentationTestCase {
 		assertEquals(1000L, elapsedTime.getElapsedTime(3000L));
 	}
 
-	public void testUnpause() throws Exception {
+	public void testResume() throws Exception {
 		Counter elapsedTime = new Counter();
 		elapsedTime.restart(1000L);
 		elapsedTime.pause(2000L);
@@ -81,4 +81,43 @@ public class CounterTest extends InstrumentationTestCase {
 		assertEquals(2000L, elapsedTime.getElapsedTime(4000L));
 	}
 
+	public void testPauseWithEarlierTime() throws Exception {
+		Counter elapsedTime = new Counter();
+		elapsedTime.start(2000L);
+		try {
+			elapsedTime.pause(1000L);
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testRestartWithEarlierTime() throws Exception {
+		Counter elapsedTime = new Counter();
+		elapsedTime.start(2000L);
+		try {
+			elapsedTime.restart(1000L);
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testResumeWithEarlierTime() throws Exception {
+		Counter elapsedTime = new Counter();
+		elapsedTime.start(2000L);
+		elapsedTime.pause(3000L);
+		try {
+			elapsedTime.resume(1000L);
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testStartWithNegativeTime() throws Exception {
+		Counter elapsedTime = new Counter();
+		elapsedTime.start(-2000L);
+		assertEquals(2000L, elapsedTime.getElapsedTime(0L));
+	}
 }

@@ -99,7 +99,7 @@ public class Counter implements CounterClock {
 	}
 
 	private void checkForTimeShift(long when) {
-		if (initialTime > when) {
+		if (isInitialized && initialTime > when) {
 			throw new IllegalArgumentException("Cannot travel in time!");
 		}
 	}
