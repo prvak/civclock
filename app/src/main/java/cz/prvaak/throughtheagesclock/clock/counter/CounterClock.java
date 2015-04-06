@@ -1,11 +1,11 @@
 package cz.prvaak.throughtheagesclock.clock.counter;
 
-import cz.prvaak.throughtheagesclock.clock.UniversalClock;
+import cz.prvaak.throughtheagesclock.clock.Clock;
 
 /**
  * Interface for clocks that count elapsed time.
  */
-public interface CounterClock extends UniversalClock {
+public interface CounterClock extends Clock {
 
 	/**
 	 * Get total elapsed time.

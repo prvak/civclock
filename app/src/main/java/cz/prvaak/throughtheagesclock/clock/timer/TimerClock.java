@@ -1,12 +1,11 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
-import cz.prvaak.throughtheagesclock.clock.UniversalClock;
 import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
 
 /**
  * Interface for clocks that count remaining time.
  */
-public interface TimerClock extends UniversalClock, CounterClock {
+public interface TimerClock extends CounterClock {
 
 	/**
 	 * Get remaining time.

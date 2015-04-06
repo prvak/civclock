@@ -1,11 +1,10 @@
 package cz.prvaak.throughtheagesclock.player;
 
-import cz.prvaak.throughtheagesclock.clock.PausableClock;
-import cz.prvaak.throughtheagesclock.clock.StoppableClock;
+import cz.prvaak.throughtheagesclock.clock.Clock;
+import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
+import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
-import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
-import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
 
 /**
  * Class for keeping track of how much time remains to a player.
@@ -16,7 +15,7 @@ import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
  * Clock can by paused by {@link #pause(long)} method and resumed by {@link #start(long)}. Both
  * main and upkeep timers are paused.
  */
-public class PlayerCountdown implements PausableClock, StoppableClock {
+public class PlayerCountdown implements Clock {
 
 	/** Counter of elapsed reserve time. */
 	private final TimerClock reserveTime;
