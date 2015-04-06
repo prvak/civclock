@@ -1,7 +1,7 @@
 package cz.prvaak.throughtheagesclock.clock.counter;
 
 /**
- * Class for measuring elapsed time. Does not support stopping.
+ * Class for measuring elapsed time.
  */
 public class Counter implements CounterClock {
 
@@ -9,9 +9,11 @@ public class Counter implements CounterClock {
 	protected long initialTime;
 	/** How much time elapsed before starting. It is updated when the counter is stopped. */
 	protected long elapsedTime;
-	/** Set to true when {@link #restart(long)} method is called. */
+	/** Set to true when {@link #initialTime} is set. */
 	private boolean isInitialized;
+	/** True when the clock is paused and to false when the clock is resumed. */
 	private boolean isPaused;
+	/** Set to true when the clock is started or restarted and to false when the clock is stopped. */
 	private boolean isStopped = true;
 
 	@Override

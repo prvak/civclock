@@ -1,7 +1,7 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
 /**
- * Adapter that delegates all calls to another countdown.
+ * Adapter that delegates all calls to another timer.
  */
 public class TimerAdapter implements TimerClock {
 

@@ -4,7 +4,7 @@ import cz.prvaak.throughtheagesclock.clock.counter.Counter;
 import cz.prvaak.throughtheagesclock.clock.counter.LimitedCounter;
 
 /**
- * Countdown that starts at given value and never goes below zero.
+ * Timer that starts at given value and never goes below zero.
  */
 public class LimitedTimer extends TimerAdapter {
 
