@@ -17,8 +17,8 @@ public class CounterAdapter implements CounterClock {
 	}
 
 	@Override
-	public long getTime(long when) {
-		return target.getTime(when);
+	public long getElapsedTime(long when) {
+		return target.getElapsedTime(when);
 	}
 
 	@Override

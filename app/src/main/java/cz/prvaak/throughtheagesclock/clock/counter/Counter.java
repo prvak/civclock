@@ -15,7 +15,7 @@ public class Counter implements CounterClock {
 	private boolean isStopped = true;
 
 	@Override
-	public long getTime(long when) {
+	public long getElapsedTime(long when) {
 		if (!isInitialized) {
 			return 0;
 		} else if (isStopped || isPaused) {

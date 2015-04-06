@@ -4,8 +4,6 @@ import android.test.InstrumentationTestCase;
 
 import junit.framework.Assert;
 
-import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
-
 /**
  * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer} class.
  */
@@ -28,17 +26,17 @@ public class LimitedTimerTest extends InstrumentationTestCase {
 
 	public void testGetTime() throws Exception {
 		LimitedTimer countdown = new LimitedTimer(10000L);
-		Assert.assertEquals(0L, countdown.getTime(0L));
-		Assert.assertEquals(0L, countdown.getTime(1000L));
-		Assert.assertEquals(0L, countdown.getTime(100000L));
+		Assert.assertEquals(0L, countdown.getElapsedTime(0L));
+		Assert.assertEquals(0L, countdown.getElapsedTime(1000L));
+		Assert.assertEquals(0L, countdown.getElapsedTime(100000L));
 		countdown.start(0L);
-		Assert.assertEquals(2000L, countdown.getTime(2000L));
-		Assert.assertEquals(5000L, countdown.getTime(5000L));
-		Assert.assertEquals(9999L, countdown.getTime(9999L));
-		Assert.assertEquals(10000L, countdown.getTime(10000L));
-		Assert.assertEquals(10000L, countdown.getTime(10001L));
-		Assert.assertEquals(10000L, countdown.getTime(15000L));
-		Assert.assertEquals(10000L, countdown.getTime(123000L));
+		Assert.assertEquals(2000L, countdown.getElapsedTime(2000L));
+		Assert.assertEquals(5000L, countdown.getElapsedTime(5000L));
+		Assert.assertEquals(9999L, countdown.getElapsedTime(9999L));
+		Assert.assertEquals(10000L, countdown.getElapsedTime(10000L));
+		Assert.assertEquals(10000L, countdown.getElapsedTime(10001L));
+		Assert.assertEquals(10000L, countdown.getElapsedTime(15000L));
+		Assert.assertEquals(10000L, countdown.getElapsedTime(123000L));
 	}
 
 	public void testRestart() throws Exception {

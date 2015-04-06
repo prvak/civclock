@@ -40,7 +40,7 @@ public class PlayerCountdown implements Clock {
 	@Override
 	public void start(long when) {
 		reserveTime.start(when);
-		reserveTime.addTime(overlapTime.getTime(when));
+		reserveTime.addTime(overlapTime.getElapsedTime(when));
 		overlapTime = new LimitedCounter(upkeepTime.getRemainingTime(when));
 		overlapTime.start(when);
 		isRunning = true;
@@ -86,7 +86,7 @@ public class PlayerCountdown implements Clock {
 	public void upkeep(long when) {
 		upkeepTime.restart(when);
 		if (isRunning) {
-			reserveTime.addTime(overlapTime.getTime(when));
+			reserveTime.addTime(overlapTime.getElapsedTime(when));
 			overlapTime = new LimitedCounter(upkeepTime.getRemainingTime(when));
 			overlapTime.start(when);
 		}
@@ -94,7 +94,7 @@ public class PlayerCountdown implements Clock {
 
 	public long getRemainingTime(long when) {
 		long remainingReserve = reserveTime.getRemainingTime(when);
-		long upkeepOverlap = overlapTime.getTime(when);
+		long upkeepOverlap = overlapTime.getElapsedTime(when);
 		return remainingReserve + upkeepOverlap;
 	}
 

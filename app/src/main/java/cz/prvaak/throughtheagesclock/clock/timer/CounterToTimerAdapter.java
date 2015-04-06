@@ -15,13 +15,13 @@ public class CounterToTimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public long getTime(long when) {
-		return timer.getTime(when);
+	public long getElapsedTime(long when) {
+		return timer.getElapsedTime(when);
 	}
 
 	@Override
 	public long getRemainingTime(long when) {
-		return baseTime - timer.getTime(when);
+		return baseTime - timer.getElapsedTime(when);
 	}
 
 	@Override

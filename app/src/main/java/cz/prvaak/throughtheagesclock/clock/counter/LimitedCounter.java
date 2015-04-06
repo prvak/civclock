@@ -20,8 +20,8 @@ public class LimitedCounter extends CounterAdapter {
 	}
 
 	@Override
-	public long getTime(long when) {
-		long realTime = super.getTime(when);
+	public long getElapsedTime(long when) {
+		long realTime = super.getElapsedTime(when);
 		return Math.min(realTime, timeLimit);
 	}
 }

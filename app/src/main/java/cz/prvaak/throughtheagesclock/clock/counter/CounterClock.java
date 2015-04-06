@@ -13,5 +13,5 @@ public interface CounterClock extends Clock {
 	 * @param when Time in milliseconds when the question was asked.
 	 * @return Total elapsed time since the clock was started.
 	 */
-	long getTime(long when);
+	long getElapsedTime(long when);
 }
