@@ -1,8 +1,11 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase;
 
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.UpkeepTransition;
 
 /**
  * Clock switching logic during standard round about phase. Players are switching

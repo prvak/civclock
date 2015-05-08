@@ -1,8 +1,6 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.clock;
 
 import java.util.ArrayList;
-
-import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 
 /**
  * Class for monitoring which method of {@link PlayerClock} has been called.

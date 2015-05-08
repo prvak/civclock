@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase.switcher.transition;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 

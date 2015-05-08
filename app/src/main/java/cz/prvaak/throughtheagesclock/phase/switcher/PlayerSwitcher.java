@@ -1,10 +1,11 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase.switcher;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 import cz.prvaak.throughtheagesclock.utils.RepeatingIterator;
 
 /**

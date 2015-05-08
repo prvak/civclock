@@ -1,9 +1,11 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase.switcher.transition;
 
 import android.test.InstrumentationTestCase;
 
+import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
+
 /**
- * Tests of {@link cz.prvaak.throughtheagesclock.UpkeepTransition} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.phase.switcher.transition.UpkeepTransition} class.
  */
 public class UpkeepTransitionTest extends InstrumentationTestCase {
 

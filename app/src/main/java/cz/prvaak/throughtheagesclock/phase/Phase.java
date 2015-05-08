@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase;
 
 import java.util.List;
 

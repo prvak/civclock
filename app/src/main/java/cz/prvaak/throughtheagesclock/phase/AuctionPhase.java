@@ -1,8 +1,11 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase;
 
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.NormalTransition;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 
 /**
  * Phase when players are auctioning. When a player passes he no longer participates in the auction.

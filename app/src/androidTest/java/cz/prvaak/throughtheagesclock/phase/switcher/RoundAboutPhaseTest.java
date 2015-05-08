@@ -1,13 +1,15 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase.switcher;
 
 import android.test.InstrumentationTestCase;
 
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
 
 /**
- * Tests of {@link cz.prvaak.throughtheagesclock.RoundAboutPhase} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.phase.RoundAboutPhase} class.
  */
 public class RoundAboutPhaseTest extends InstrumentationTestCase {
 

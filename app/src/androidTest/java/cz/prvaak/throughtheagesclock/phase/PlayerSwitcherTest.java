@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.phase;
 
 import android.test.InstrumentationTestCase;
 
@@ -7,10 +7,13 @@ import junit.framework.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 
 /**
- * Tests of {@link PlayerSwitcher} class.
+ * Tests of {@link cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher} class.
  */
 public class PlayerSwitcherTest extends InstrumentationTestCase {
 
