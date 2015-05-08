@@ -5,7 +5,7 @@ import android.test.InstrumentationTestCase;
 /**
  * Tests of {@link GameClock} class.
  */
-public class GameClockTest extends InstrumentationTestCase{
+public class GameClockTest extends InstrumentationTestCase {
 
 	private GameClock createGameClock() {
 		PlayerClock playerClock0 = new PlayerClock(60000L, 30000L);

@@ -1,9 +1,11 @@
-package cz.prvaak.throughtheagesclock;
+package cz.prvaak.throughtheagesclock.gui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import cz.prvaak.throughtheagesclock.R;
 
 
 public class MainActivity extends ActionBarActivity {
