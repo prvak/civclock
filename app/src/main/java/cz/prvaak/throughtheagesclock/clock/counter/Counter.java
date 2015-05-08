@@ -6,9 +6,9 @@ package cz.prvaak.throughtheagesclock.clock.counter;
 public class Counter implements CounterClock {
 
 	/** Time (in milliseconds) when the counter was started. */
-	protected long initialTime;
+	private long initialTime;
 	/** How much time elapsed before starting. It is updated when the counter is stopped. */
-	protected long elapsedTime;
+	private long elapsedTime;
 	/** Set to true when {@link #initialTime} is set. */
 	private boolean isInitialized;
 	/** True when the clock is paused and to false when the clock is resumed. */

@@ -7,7 +7,7 @@ public class CounterAdapter implements CounterClock {
 
 	private final CounterClock target;
 
-	public CounterAdapter(CounterClock target) {
+	CounterAdapter(CounterClock target) {
 		this.target = target;
 	}
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PlayerView">
+        <attr name="remainingTime" format="integer" />
+        <attr name="playerColor" format="enum">
+            <enum name="blue" value="0"/>
+            <enum name="red" value="1"/>
+            <enum name="green" value="2"/>
+            <enum name="yellow" value="3"/>
+        </attr>
+    </declare-styleable>
+</resources>
