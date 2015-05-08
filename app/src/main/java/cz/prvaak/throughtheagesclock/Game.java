@@ -1,19 +1,34 @@
 package cz.prvaak.throughtheagesclock;
 
+import java.util.List;
+
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
+import cz.prvaak.throughtheagesclock.phase.Phase;
+import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
 
 /**
- * Created by michal on 3/1/15.
+ * High level game controls.
  */
 public class Game {
-	private enum State {NORMAL, NEGOTIATION, OFFER}
-	private final PlayerClock[] playerClocks;
-	private State state = State.NORMAL;
-	private boolean isRunning;
+	private final List<PlayerClock> remainingPlayers;
 
-	public Game(PlayerClock[] playerClocks) {
-		this.playerClocks = playerClocks;
+	public Game(List<PlayerClock> allPlayers) {
+		this.remainingPlayers = allPlayers;
 	}
 
+	public RoundAboutPhase startGame(long when) {
+		PlayerClock firstPlayer = remainingPlayers.get(0);
+		firstPlayer.start(when);
+		return new RoundAboutPhase(remainingPlayers, firstPlayer);
+	}
+
+	public RoundAboutPhase startRoundAboutPhase(Phase previousPhase) {
+		return new RoundAboutPhase(remainingPlayers, previousPhase.getCurrentPlayer());
+	}
+
+	public AuctionPhase startAuctionPhase(Phase previousPhase) {
+		return new AuctionPhase(remainingPlayers, previousPhase.getCurrentPlayer());
+	}
 
 }

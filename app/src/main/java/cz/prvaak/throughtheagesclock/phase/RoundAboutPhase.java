@@ -8,7 +8,7 @@ import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.UpkeepTransition;
 
 /**
- * Clock switching logic during standard round about phase. Players are switching
+ * Clock switching logic during standard round about phase. Players are playing
  * one after another.
  */
 public class RoundAboutPhase implements Phase {
@@ -20,6 +20,11 @@ public class RoundAboutPhase implements Phase {
 		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
 	}
 
+	/**
+	 * Terminates turn of current player.
+	 *
+	 * @param when Time in milliseconds when the turn is terminated.
+	 */
 	public void turnDone(long when) {
 		playerSwitcher.switchPlayers(transition, when);
 	}

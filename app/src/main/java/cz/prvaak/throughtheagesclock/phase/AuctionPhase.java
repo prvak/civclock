@@ -19,11 +19,22 @@ public class AuctionPhase implements Phase {
 		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
 	}
 
+	/**
+	 * Terminate turn of current player and keep him between active players.
+	 *
+	 * @param when Time in milliseconds when the bid was done.
+	 */
 	public void bid(long when) {
 		checkThatAuctionIsNotOver();
 		playerSwitcher.switchPlayers(transition, when);
 	}
 
+	/**
+	 * Terminate turn of current player and remove him from active players.
+	 * Current player will no longer participate in current phase.
+	 *
+	 * @param when Time in milliseconds when the pass was done.
+	 */
 	public void pass(long when) {
 		checkThatAuctionIsNotOver();
 		playerSwitcher.removeCurrentPlayer();
