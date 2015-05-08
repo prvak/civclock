@@ -24,34 +24,41 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 	}
 
 	public void testBid() throws Exception {
-		List<PlayerClock> playerClocks = createPlayerClocks(3);
-		AuctionPhase auctionPhase = new AuctionPhase(playerClocks, playerClocks.get(0));
+		List<PlayerClock> allPlayers = createPlayerClocks(3);
+		PlayersOrder playersOrder = new PlayersOrder(allPlayers, allPlayers.get(0));
+		AuctionPhase auctionPhase = new AuctionPhase(playersOrder);
 
-		assertEquals(playerClocks.get(0), auctionPhase.getCurrentPlayer());
+		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
 		auctionPhase.bid(0L);
-		assertEquals(playerClocks.get(1), auctionPhase.getCurrentPlayer());
+		assertEquals(allPlayers.get(1), auctionPhase.getCurrentPlayer());
 		auctionPhase.bid(1000L);
-		assertEquals(playerClocks.get(2), auctionPhase.getCurrentPlayer());
+		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
 		auctionPhase.bid(2000L);
-		assertEquals(playerClocks.get(0), auctionPhase.getCurrentPlayer());
-		assertEquals(3, auctionPhase.getAllPlayers().size());
+		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
+		assertEquals(3, auctionPhase.getRemainingPlayers().size());
 	}
 
 	public void testPass() throws Exception {
-		List<PlayerClock> playerClocks = createPlayerClocks(3);
-		AuctionPhase auctionPhase = new AuctionPhase(playerClocks, playerClocks.get(0));
+		List<PlayerClock> allPlayers = createPlayerClocks(3);
+		PlayersOrder playersOrder = new PlayersOrder(allPlayers, allPlayers.get(0));
+		AuctionPhase auctionPhase = new AuctionPhase(playersOrder);
 
-		assertEquals(playerClocks.get(0), auctionPhase.getCurrentPlayer());
-		auctionPhase.pass(0L);
-		assertEquals(playerClocks.get(1), auctionPhase.getCurrentPlayer());
+		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
+		auctionPhase.bid(1000L);
+		assertEquals(allPlayers.get(1), auctionPhase.getCurrentPlayer());
 		auctionPhase.pass(1000L);
-		assertEquals(playerClocks.get(2), auctionPhase.getCurrentPlayer());
-		assertEquals(1, auctionPhase.getAllPlayers().size());
+		assertEquals(2, auctionPhase.getRemainingPlayers().size());
+		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
+		auctionPhase.bid(2000L);
+		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
+		auctionPhase.bid(3000L);
+		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
 	}
 
 	public void testLastPlayerCannotBid() throws Exception {
-		List<PlayerClock> playerClocks = createPlayerClocks(2);
-		AuctionPhase auctionPhase = new AuctionPhase(playerClocks, playerClocks.get(0));
+		List<PlayerClock> allPlayers = createPlayerClocks(2);
+		PlayersOrder playersOrder = new PlayersOrder(allPlayers, allPlayers.get(0));
+		AuctionPhase auctionPhase = new AuctionPhase(playersOrder);
 
 		auctionPhase.pass(0L);
 		try {
@@ -63,8 +70,9 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 	}
 
 	public void testLastPlayerCannotPass() throws Exception {
-		List<PlayerClock> playerClocks = createPlayerClocks(2);
-		AuctionPhase auctionPhase = new AuctionPhase(playerClocks, playerClocks.get(0));
+		List<PlayerClock> allPlayers = createPlayerClocks(2);
+		PlayersOrder playersOrder = new PlayersOrder(allPlayers, allPlayers.get(0));
+		AuctionPhase auctionPhase = new AuctionPhase(playersOrder);
 
 		auctionPhase.pass(0L);
 		try {

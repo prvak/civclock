@@ -10,7 +10,7 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 public interface Phase {
 
 	/** Get all players who participate in this phase. */
-	List<PlayerClock> getAllPlayers();
+	List<PlayerClock> getRemainingPlayers();
 
 	/** Get currently active player. */
 	PlayerClock getCurrentPlayer();
