@@ -9,35 +9,36 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
  */
 public class AuctionPhase implements Phase {
 
-	private final PlayersOrder playersOrder;
+	private final PlayerSwitcher playerSwitcher;
+	private final PlayerTransition transition = new NormalTransition();
 
-	public AuctionPhase(PlayersOrder playersOrder) {
-		this.playersOrder = playersOrder;
+	public AuctionPhase(List<PlayerClock> allPlayers, PlayerClock currentPlayer) {
+		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
 	}
 
 	public void bid(long when) {
 		checkThatAuctionIsNotOver();
-		playersOrder.switchPlayers(when);
+		playerSwitcher.switchPlayers(transition, when);
 	}
 
 	public void pass(long when) {
 		checkThatAuctionIsNotOver();
-		playersOrder.removeCurrentPlayer();
-		playersOrder.switchPlayers(when);
+		playerSwitcher.removeCurrentPlayer();
+		playerSwitcher.switchPlayers(transition, when);
 	}
 
 	@Override
 	public List<PlayerClock> getRemainingPlayers() {
-		return playersOrder.getRemainingPlayers();
+		return playerSwitcher.getRemainingPlayers();
 	}
 
 	@Override
 	public PlayerClock getCurrentPlayer() {
-		return playersOrder.getCurrentPlayer();
+		return playerSwitcher.getCurrentPlayer();
 	}
 
 	private void checkThatAuctionIsNotOver() {
-		if (playersOrder.getPlayersCount() <= 1) {
+		if (playerSwitcher.getPlayersCount() <= 1) {
 			throw new IllegalArgumentException("Auction is over!");
 		}
 	}

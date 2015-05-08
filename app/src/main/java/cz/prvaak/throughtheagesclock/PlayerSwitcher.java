@@ -8,21 +8,21 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.utils.RepeatingIterator;
 
 /**
- * Class that maintains order of players.
+ * Class that performs transitions between active players.
  */
-public class PlayersOrder {
+public class PlayerSwitcher {
 
-	private final LinkedList<PlayerClock> playerClocks;
+	private final LinkedList<PlayerClock> remainingPlayers;
 	private RepeatingIterator<PlayerClock> iterator;
 	private PlayerClock currentPlayer;
 
-	public PlayersOrder(List<PlayerClock> playerClocks, PlayerClock currentPlayer) {
-		if (!playerClocks.contains(currentPlayer)) {
+	public PlayerSwitcher(List<PlayerClock> allPlayers, PlayerClock currentPlayer) {
+		if (!allPlayers.contains(currentPlayer)) {
 			throw new IllegalArgumentException("PlayerClock not found in the collection!");
 		}
 
-		this.playerClocks = new LinkedList<>(playerClocks);
-		this.iterator = new RepeatingIterator<>(this.playerClocks);
+		this.remainingPlayers = new LinkedList<>(allPlayers);
+		this.iterator = new RepeatingIterator<>(this.remainingPlayers);
 		while (this.currentPlayer != currentPlayer) {
 			this.currentPlayer = this.iterator.next();
 		}
@@ -30,12 +30,12 @@ public class PlayersOrder {
 
 	/** Get number of remaining players. */
 	public int getPlayersCount() {
-		return playerClocks.size();
+		return remainingPlayers.size();
 	}
 
 	/** Get all remaining players. */
 	public List<PlayerClock> getRemainingPlayers() {
-		return Collections.unmodifiableList(playerClocks);
+		return Collections.unmodifiableList(remainingPlayers);
 	}
 
 	/** Get currently active player. */
@@ -49,9 +49,9 @@ public class PlayersOrder {
 	}
 
 	/** Stops current player and starts next player. */
-	public void switchPlayers(long when) {
-		currentPlayer.stop(when);
+	public void switchPlayers(PlayerTransition transition, long when) {
+		transition.beforeSwitch(currentPlayer, when);
 		currentPlayer = iterator.next();
-		currentPlayer.start(when);
+		transition.afterSwitch(currentPlayer, when);
 	}
 }
