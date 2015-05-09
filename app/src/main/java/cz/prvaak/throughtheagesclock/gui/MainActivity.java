@@ -74,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
 			playerClocks.add(new PlayerClock(60000L, 10000L));
 			playerClocks.add(new PlayerClock(60000L, 10000L));
 			playerClocks.add(new PlayerClock(60000L, 10000L));
+			playerClocks.add(new PlayerClock(60000L, 10000L));
 			game = new Game(playerClocks);
 			currentPhase = game.startGame(now);
 
@@ -113,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		inactivePlayersListView = (InactivePlayersListView) findViewById(R.id.inactive_players_list);
+		inactivePlayersListView = (InactivePlayersListView) findViewById(R.id.inactive_players_list_view);
 		updatePlayers();
 	}
 

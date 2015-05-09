@@ -4,8 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/inactive_players_list"
     tools:showIn="@layout/activity_main">
 
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/inactive_player_view"/>
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/inactive_player_view"/>
 </cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView>

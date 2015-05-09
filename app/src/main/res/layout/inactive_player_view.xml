@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cz.prvaak.throughtheagesclock.gui.view.PlayerView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    custom:playerColor="blue"
     android:orientation="vertical"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    tools:showIn="@layout/activity_main">
+    android:layout_centerHorizontal="true">
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,23 +14,35 @@
         android:text="Large Text"
         android:id="@+id/player_name"
         android:layout_gravity="start"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/remaining_reserve_time"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/remaining_upkeep_time"
-        android:layout_gravity="center"
-        />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/remaining_reserve_time"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"/>
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/remaining_upkeep_time"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </cz.prvaak.throughtheagesclock.gui.view.PlayerView>
