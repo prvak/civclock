@@ -42,8 +42,13 @@ public class AuctionPhase implements Phase {
 	}
 
 	@Override
-	public List<PlayerClock> getRemainingPlayers() {
-		return playerSwitcher.getRemainingPlayers();
+	public List<PlayerClock> getAllPlayers() {
+		return playerSwitcher.getAllPlayers();
+	}
+
+	@Override
+	public List<PlayerClock> getNextPlayers() {
+		return playerSwitcher.getNextPlayers();
 	}
 
 	@Override

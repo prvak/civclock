@@ -32,19 +32,18 @@ public class PlayerView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayer(PlayerClock playerClock, PlayerColor playerColor) {
+	public void setPlayer(PlayerClock playerClock, PlayerColor playerColor, long now) {
 		this.playerClock = playerClock;
 		this.playerColor = playerColor;
 		TextView playerName = (TextView) findViewById(R.id.player_name);
-
+		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 		if (playerName != null) {
 			playerName.setText(playerColor.getNameResourceId());
 		}
-		updateTimes();
+		updateTimes(now);
 	}
 
-	private void updateTimes() {
-		long now = System.currentTimeMillis();
+	public void updateTimes(long now) {
 		TextView remainingReserveTime = (TextView) findViewById(R.id.remaining_reserve_time);
 		if (remainingReserveTime != null) {
 			long time = playerClock.getRemainingReserveTime(now);

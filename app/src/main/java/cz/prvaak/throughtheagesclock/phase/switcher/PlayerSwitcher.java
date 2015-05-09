@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock.phase.switcher;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,7 @@ import cz.prvaak.throughtheagesclock.utils.RepeatingIterator;
  */
 public class PlayerSwitcher {
 
-	private final LinkedList<PlayerClock> remainingPlayers;
+	private final LinkedList<PlayerClock> allPlayers;
 	private RepeatingIterator<PlayerClock> iterator;
 	private PlayerClock currentPlayer;
 
@@ -22,8 +23,8 @@ public class PlayerSwitcher {
 			throw new IllegalArgumentException("PlayerClock not found in the collection!");
 		}
 
-		this.remainingPlayers = new LinkedList<>(allPlayers);
-		this.iterator = new RepeatingIterator<>(this.remainingPlayers);
+		this.allPlayers = new LinkedList<>(allPlayers);
+		this.iterator = new RepeatingIterator<>(this.allPlayers);
 		while (this.currentPlayer != currentPlayer) {
 			this.currentPlayer = this.iterator.next();
 		}
@@ -31,12 +32,35 @@ public class PlayerSwitcher {
 
 	/** Get number of remaining players. */
 	public int getPlayersCount() {
-		return remainingPlayers.size();
+		return allPlayers.size();
 	}
 
-	/** Get all remaining players. */
-	public List<PlayerClock> getRemainingPlayers() {
-		return Collections.unmodifiableList(remainingPlayers);
+	/** Get all players. */
+	public List<PlayerClock> getAllPlayers() {
+		return Collections.unmodifiableList(allPlayers);
+	}
+
+	/** Get all players. */
+	public List<PlayerClock> getNextPlayers() {
+		ArrayList<PlayerClock> nextPlayers = new ArrayList<>(allPlayers.size() - 1);
+		RepeatingIterator<PlayerClock> iter = new RepeatingIterator<>(allPlayers);
+
+		while (iter.hasNext()) {
+			// find the starting player
+			PlayerClock nextPlayer = iter.next();
+			if (nextPlayer.equals(currentPlayer)) {
+				break;
+			}
+		}
+		while (iter.hasNext()) {
+			// iterate to the current player again and add all players to the output list
+			PlayerClock nextPlayer = iter.next();
+			if (nextPlayer.equals(currentPlayer)) {
+				break;
+			}
+			nextPlayers.add(nextPlayer);
+		}
+		return nextPlayers;
 	}
 
 	/** Get currently active player. */

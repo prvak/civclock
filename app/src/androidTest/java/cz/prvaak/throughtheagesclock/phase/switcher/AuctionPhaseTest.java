@@ -33,7 +33,7 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
 		auctionPhase.bid(2000L);
 		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
-		assertEquals(3, auctionPhase.getRemainingPlayers().size());
+		assertEquals(3, auctionPhase.getAllPlayers().size());
 	}
 
 	public void testPass() throws Exception {
@@ -44,7 +44,7 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		auctionPhase.bid(1000L);
 		assertEquals(allPlayers.get(1), auctionPhase.getCurrentPlayer());
 		auctionPhase.pass(1000L);
-		assertEquals(2, auctionPhase.getRemainingPlayers().size());
+		assertEquals(2, auctionPhase.getAllPlayers().size());
 		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
 		auctionPhase.bid(2000L);
 		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());

@@ -30,12 +30,17 @@ public class RoundAboutPhase implements Phase {
 	}
 
 	@Override
-	public List<PlayerClock> getRemainingPlayers() {
-		return playerSwitcher.getRemainingPlayers();
+	public PlayerClock getCurrentPlayer() {
+		return playerSwitcher.getCurrentPlayer();
 	}
 
 	@Override
-	public PlayerClock getCurrentPlayer() {
-		return playerSwitcher.getCurrentPlayer();
+	public List<PlayerClock> getNextPlayers() {
+		return playerSwitcher.getNextPlayers();
+	}
+
+	@Override
+	public List<PlayerClock> getAllPlayers() {
+		return playerSwitcher.getAllPlayers();
 	}
 }

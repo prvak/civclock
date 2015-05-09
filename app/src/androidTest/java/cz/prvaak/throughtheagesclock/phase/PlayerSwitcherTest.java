@@ -33,11 +33,19 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		assertEquals(allPlayers.size(), playerSwitcher.getPlayersCount());
 	}
 
-	public void testGetRemainingPlayers() {
+	public void testGetAllPlayers() {
 		ArrayList<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(2);
 		PlayerSwitcher playerSwitcher = new PlayerSwitcher(allPlayers, allPlayers.get(0));
-		List<PlayerClock> remainingPlayers = playerSwitcher.getRemainingPlayers();
-		assertEquals(2, remainingPlayers.size());
+		assertEquals(2, playerSwitcher.getAllPlayers().size());
+	}
+
+	public void testGetNextPlayers() {
+		ArrayList<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(3);
+		PlayerSwitcher playerSwitcher = new PlayerSwitcher(allPlayers, allPlayers.get(1));
+		List<PlayerClock> nextPlayers = playerSwitcher.getNextPlayers();
+		assertEquals(2, nextPlayers.size());
+		assertEquals(allPlayers.get(2), nextPlayers.get(0));
+		assertEquals(allPlayers.get(0), nextPlayers.get(1));
 	}
 
 	public void testRemoveDoesNotChangeInsertedList() {
@@ -45,7 +53,7 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		PlayerSwitcher playerSwitcher = new PlayerSwitcher(allPlayers, allPlayers.get(0));
 		playerSwitcher.removeCurrentPlayer();
 		assertEquals(2, playerSwitcher.getPlayersCount());
-		assertEquals(2, playerSwitcher.getRemainingPlayers().size());
+		assertEquals(2, playerSwitcher.getAllPlayers().size());
 		assertEquals(3, allPlayers.size());
 	}
 
