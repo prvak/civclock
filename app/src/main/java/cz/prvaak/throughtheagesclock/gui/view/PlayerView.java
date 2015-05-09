@@ -10,15 +10,14 @@ import java.util.concurrent.TimeUnit;
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
+import cz.prvaak.throughtheagesclock.gui.PlayerData;
 
 /**
- * View of an active player.
+ * View that displays information about one player.
  */
 public class PlayerView extends LinearLayout {
 
 	private PlayerClock playerClock;
-	private PlayerColor playerColor;
-
 
 	public PlayerView(Context context) {
 		super(context);
@@ -32,15 +31,16 @@ public class PlayerView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayer(PlayerClock playerClock, PlayerColor playerColor, long now) {
-		this.playerClock = playerClock;
-		this.playerColor = playerColor;
+	public void setPlayer(PlayerData player) {
+		this.playerClock = player.getPlayerClock();
+		PlayerColor playerColor = player.getPlayerColor();
+
 		TextView playerName = (TextView) findViewById(R.id.player_name);
-		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 		if (playerName != null) {
 			playerName.setText(playerColor.getNameResourceId());
 		}
-		updateTimes(now);
+
+		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 	}
 
 	public void updateTimes(long now) {
@@ -79,7 +79,7 @@ public class PlayerView extends LinearLayout {
 		} if (minutes > 0) {
 			text.append(String.format("%02d:%02d", minutes, seconds));
 		} else {
-			text.append(String.format("%02d.%02d", seconds, milliseconds/10));
+			text.append(String.format("%02d.%02d", seconds, milliseconds / 10));
 		}
 		return text.toString();
 	}
