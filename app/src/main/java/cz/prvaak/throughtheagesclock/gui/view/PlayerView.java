@@ -58,6 +58,10 @@ public class PlayerView extends LinearLayout {
 	}
 
 	private String timeToString(long time) {
+		boolean isNegative = time < 0;
+		if (isNegative) {
+			time = -time;
+		}
 		long hours = time / TimeUnit.HOURS.toMillis(1);
 		time -= hours * TimeUnit.HOURS.toMillis(1);
 		long minutes = time / TimeUnit.MINUTES.toMillis(1);
@@ -66,14 +70,17 @@ public class PlayerView extends LinearLayout {
 		time -= seconds * TimeUnit.SECONDS.toMillis(1);
 		long milliseconds = time;
 
-		if (hours > 0) {
-			return String.format("%d:%d:%d", hours, minutes, seconds);
-		} if (minutes > 0) {
-			String res = String.format("%d:%d.%01d", minutes, seconds, milliseconds);
-			return res;
-		} else {
-			String res = String.format("%d.%03d", seconds, milliseconds);
-			return res;
+		StringBuilder text = new StringBuilder();
+		if (isNegative) {
+			text.append("-");
 		}
+		if (hours > 0) {
+			text.append(String.format("%d:%02d:%d", hours, minutes, seconds));
+		} if (minutes > 0) {
+			text.append(String.format("%02d:%02d", minutes, seconds));
+		} else {
+			text.append(String.format("%02d.%02d", seconds, milliseconds/10));
+		}
+		return text.toString();
 	}
 }
