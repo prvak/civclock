@@ -163,4 +163,14 @@ public class PlayerClockTest extends InstrumentationTestCase {
 			// success
 		}
 	}
+
+	public void testPauseResumeOfStopped() throws Exception {
+		PlayerClock playerClock = createPlayerClock();
+		playerClock.pause(1000L);
+		playerClock.resume(2000L);
+		playerClock.pause(3000L);
+		playerClock.resume(4000L);
+		assertEquals(60000L, playerClock.getRemainingReserveTime(5000L));
+		assertEquals(0L, playerClock.getRemainingUpkeepTime(5000L));
+	}
 }

@@ -75,10 +75,29 @@ public class CounterTest extends InstrumentationTestCase {
 
 	public void testResume() throws Exception {
 		Counter elapsedTime = new Counter();
-		elapsedTime.restart(1000L);
+		elapsedTime.start(1000L);
 		elapsedTime.pause(2000L);
 		elapsedTime.resume(3000L);
 		assertEquals(2000L, elapsedTime.getElapsedTime(4000L));
+	}
+
+	public void testRepeatedResume() throws Exception {
+		Counter elapsedTime = new Counter();
+		elapsedTime.start(1000L);
+		elapsedTime.pause(2000L);
+		elapsedTime.resume(3000L);
+		elapsedTime.pause(4000L);
+		elapsedTime.resume(5000L);
+		assertEquals(3000L, elapsedTime.getElapsedTime(6000L));
+	}
+
+	public void testRepeatedResumeOfStopped() throws Exception {
+		Counter elapsedTime = new Counter();
+		elapsedTime.pause(1000L);
+		elapsedTime.resume(2000L);
+		elapsedTime.pause(3000L);
+		elapsedTime.resume(4000L);
+		assertEquals(0L, elapsedTime.getElapsedTime(5000L));
 	}
 
 	public void testPauseWithEarlierTime() throws Exception {

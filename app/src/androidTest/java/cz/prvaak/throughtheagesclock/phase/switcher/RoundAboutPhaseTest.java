@@ -31,6 +31,6 @@ public class RoundAboutPhaseTest extends InstrumentationTestCase {
 		assertEquals(allPlayers.get(2), phase.getCurrentPlayer());
 		phase.turnDone(2000L);
 		assertEquals(allPlayers.get(0), phase.getCurrentPlayer());
-		assertEquals(3, phase.getNextPlayers().size());
+		assertEquals(3, phase.getAllPlayers().size());
 	}
 }

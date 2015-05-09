@@ -93,7 +93,7 @@ public class Counter implements CounterClock {
 	}
 
 	private void updateElapsedTime(long when) {
-		if (isInitialized) {
+		if (isInitialized && !isStopped) {
 			elapsedTime += when - initialTime;
 		}
 	}
