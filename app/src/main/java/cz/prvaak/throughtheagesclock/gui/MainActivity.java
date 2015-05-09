@@ -47,10 +47,6 @@ public class MainActivity extends ActionBarActivity {
 
 	private void updatePlayers() {
 		long now = System.currentTimeMillis();
-		if (currentPhase instanceof RoundAboutPhase) {
-			RoundAboutPhase phase = (RoundAboutPhase) currentPhase;
-			phase.turnDone(now);
-		}
 		boolean isStartingOrder = allPlayers.get(0).equals(currentPhase.getCurrentPlayer());
 		PlayerClock currentPlayer = currentPhase.getCurrentPlayer();
 		List<PlayerClock> nextPlayers = currentPhase.getNextPlayers();
@@ -78,9 +74,29 @@ public class MainActivity extends ActionBarActivity {
 		activePlayerView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				if (game.isPaused()) {
+					return;
+				}
+
+				if (currentPhase instanceof RoundAboutPhase) {
+					RoundAboutPhase phase = (RoundAboutPhase) currentPhase;
+					phase.turnDone(System.currentTimeMillis());
+				}
 				updatePlayers();
 			}
 		});
+		activePlayerView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				if (game.isPaused()) {
+					game.resume(System.currentTimeMillis());
+				} else {
+					game.pause(System.currentTimeMillis());
+				}
+				return true;
+			}
+		});
+
 		inactivePlayerView = (PlayerView) findViewById(R.id.inactive_player_view);
 		updatePlayers();
 	}

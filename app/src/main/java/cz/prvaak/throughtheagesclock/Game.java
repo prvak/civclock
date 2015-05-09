@@ -12,6 +12,7 @@ import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
  */
 public class Game {
 	private final List<PlayerClock> remainingPlayers;
+	private boolean isPaused;
 
 	public Game(List<PlayerClock> allPlayers) {
 		this.remainingPlayers = allPlayers;
@@ -21,6 +22,24 @@ public class Game {
 		PlayerClock firstPlayer = remainingPlayers.get(0);
 		firstPlayer.start(when);
 		return new RoundAboutPhase(remainingPlayers, firstPlayer);
+	}
+
+	public void pause(long when) {
+		for (PlayerClock playerClock: remainingPlayers) {
+			playerClock.pause(when);
+		}
+		isPaused = true;
+	}
+
+	public void resume(long when) {
+		for (PlayerClock playerClock: remainingPlayers) {
+			playerClock.resume(when);
+		}
+		isPaused = false;
+	}
+
+	public boolean isPaused() {
+		return isPaused;
 	}
 
 	public RoundAboutPhase startRoundAboutPhase(Phase previousPhase) {
