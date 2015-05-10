@@ -15,7 +15,7 @@ public class AuctionPhase implements Phase {
 	private final PlayerSwitcher playerSwitcher;
 	private final PlayerTransition transition = new NormalTransition();
 
-	public AuctionPhase(List<PlayerClock> allPlayers, PlayerClock currentPlayer) {
+	public AuctionPhase(List<? extends PlayerClock> allPlayers, PlayerClock currentPlayer) {
 		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
 	}
 

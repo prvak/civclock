@@ -14,16 +14,17 @@ import java.util.List;
 import cz.prvaak.throughtheagesclock.Game;
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerView;
 import cz.prvaak.throughtheagesclock.phase.Phase;
 import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
-import cz.prvaak.throughtheagesclock.utils.RepeatingIterator;
 
 
 public class MainActivity extends ActionBarActivity {
 
-	private LinkedHashMap<PlayerClock, PlayerData> players = new LinkedHashMap<>(4);
+	private LinkedHashMap<PlayerId, Player> playersMap =
+			new LinkedHashMap<>(PlayerColor.values().length);
 	private Game game;
 	private Phase currentPhase;
 
@@ -48,21 +49,20 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void updatePlayers() {
-		long now = System.currentTimeMillis();
-		PlayerClock activePlayer = currentPhase.getCurrentPlayer();
-		List<PlayerClock> inactivePlayers = currentPhase.getNextPlayers();
+		PlayerClock activePlayerClock = currentPhase.getCurrentPlayer();
+		List<PlayerClock> inactivePlayersClocks = currentPhase.getNextPlayers();
 
 		// update active player
-		PlayerData activePlayerData = players.get(activePlayer);
-		activePlayerView.setPlayer(activePlayerData);
+		Player activePlayer = playersMap.get(activePlayerClock.getPlayerId());
+		activePlayerView.setPlayer(activePlayer);
 
 		// update inactive players
-		List<PlayerData> inactivePlayersData = new ArrayList<>(inactivePlayers.size());
-		for (PlayerClock inactivePlayer: inactivePlayers) {
-			PlayerData playerData = players.get(inactivePlayer);
-			inactivePlayersData.add(playerData);
+		List<Player> inactivePlayers = new ArrayList<>(inactivePlayersClocks.size());
+		for (PlayerClock inactivePlayerClock: inactivePlayersClocks) {
+			Player player = playersMap.get(inactivePlayerClock.getPlayerId());
+			inactivePlayers.add(player);
 		}
-		inactivePlayersListView.setPlayers(inactivePlayersData);
+		inactivePlayersListView.setPlayers(inactivePlayers);
 	}
 
     @Override
@@ -70,19 +70,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 		long now = System.currentTimeMillis();
 		if (savedInstanceState == null) {
-			ArrayList<PlayerClock> playerClocks = new ArrayList<>(4);
-			playerClocks.add(new PlayerClock(60000L, 10000L));
-			playerClocks.add(new PlayerClock(60000L, 10000L));
-			playerClocks.add(new PlayerClock(60000L, 10000L));
-			playerClocks.add(new PlayerClock(60000L, 10000L));
+			for (int i = 0; i < PlayerColor.values().length; i++) {
+				PlayerColor playerColor = PlayerColor.values()[i];
+				playersMap.put(playerColor, new Player(playerColor, 60000L, 10000L));
+			}
+
+			ArrayList<Player> playerClocks = new ArrayList<>(4);
+			for (Player player: playersMap.values()) {
+				playerClocks.add(player);
+			}
 			game = new Game(playerClocks);
 			currentPhase = game.startGame(now);
-
-			for (int i = 0; i < playerClocks.size(); i++) {
-				PlayerClock playerClock = playerClocks.get(i);
-				PlayerColor playerColor = PlayerColor.values()[i];
-				players.put(playerClock, new PlayerData(playerClock, playerColor));
-			}
 		}
 
 		setContentView(R.layout.activity_main);

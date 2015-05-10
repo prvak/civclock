@@ -16,6 +16,8 @@ import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
  */
 public class PlayerClock implements Clock {
 
+	/** Unique id of a player. */
+	private final PlayerId playerId;
 	/** Counter of elapsed reserve time. */
 	private final TimerClock reserveTime;
 	/** Counter of elapsed upkeep time. */
@@ -31,10 +33,12 @@ public class PlayerClock implements Clock {
 	/**
 	 * Create new clock.
 	 *
+	 * @param playerId Identification of the player.
 	 * @param baseTime How many milliseconds the player initially has.
 	 * @param upkeepTime How many milliseconds each upkeep protection has.
 	 */
-	public PlayerClock(long baseTime, long upkeepTime) {
+	public PlayerClock(PlayerId playerId, long baseTime, long upkeepTime) {
+		this.playerId = playerId;
 		this.reserveTime = new Timer(baseTime);
 		this.upkeepTime = new LimitedTimer(upkeepTime);
 		this.overlapTime = new LimitedTimer(0L);
@@ -115,5 +119,10 @@ public class PlayerClock implements Clock {
 	 */
 	public long getRemainingUpkeepTime(long when) {
 		return upkeepTime.getRemainingTime(when);
+	}
+
+	/** Get id of player whose clock this is. */
+	public PlayerId getPlayerId() {
+		return playerId;
 	}
 }

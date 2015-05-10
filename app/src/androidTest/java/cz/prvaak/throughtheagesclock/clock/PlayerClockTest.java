@@ -12,7 +12,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	/** Create player clock with 60 seconds for turn and 30 seconds for upkeep. */
 	public PlayerClock createPlayerClock() {
-		return new PlayerClock(60000L, 30000L);
+		return new PlayerClock(new PlayerId(), 60000L, 30000L);
 	}
 
 	public void testGetRemainingTime() throws Exception {
@@ -157,7 +157,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testNegativeUpkeepTimeNotAllowed() throws Exception {
 		try {
-			new PlayerClock(60000, -5000);
+			new PlayerClock(new PlayerId(), 60000, -5000);
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success

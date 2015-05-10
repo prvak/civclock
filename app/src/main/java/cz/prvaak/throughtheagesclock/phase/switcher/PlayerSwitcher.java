@@ -18,7 +18,7 @@ public class PlayerSwitcher {
 	private RepeatingIterator<PlayerClock> iterator;
 	private PlayerClock currentPlayer;
 
-	public PlayerSwitcher(List<PlayerClock> allPlayers, PlayerClock currentPlayer) {
+	public PlayerSwitcher(List<? extends PlayerClock> allPlayers, PlayerClock currentPlayer) {
 		if (!allPlayers.contains(currentPlayer)) {
 			throw new IllegalArgumentException("PlayerClock not found in the collection!");
 		}

@@ -16,7 +16,7 @@ public class RoundAboutPhase implements Phase {
 	private final PlayerSwitcher playerSwitcher;
 	private final PlayerTransition transition = new UpkeepTransition();
 
-	public RoundAboutPhase(List<PlayerClock> allPlayers, PlayerClock currentPlayer) {
+	public RoundAboutPhase(List<? extends PlayerClock> allPlayers, PlayerClock currentPlayer) {
 		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
 	}
 

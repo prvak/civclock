@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
 
@@ -31,8 +32,8 @@ public class PlayerView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayer(PlayerData player) {
-		this.playerClock = player.getPlayerClock();
+	public void setPlayer(Player player) {
+		this.playerClock = player;
 		PlayerColor playerColor = player.getPlayerColor();
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);

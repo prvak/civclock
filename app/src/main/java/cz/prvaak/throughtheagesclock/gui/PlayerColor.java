@@ -1,11 +1,12 @@
 package cz.prvaak.throughtheagesclock.gui;
 
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.clock.PlayerId;
 
 /**
  *
  */
-public enum PlayerColor {
+public enum PlayerColor implements PlayerId {
 	RED {
 		@Override
 		public int getNameResourceId() {

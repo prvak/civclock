@@ -11,10 +11,10 @@ import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
  * High level game controls.
  */
 public class Game {
-	private final List<PlayerClock> remainingPlayers;
+	private final List<? extends PlayerClock> remainingPlayers;
 	private boolean isPaused;
 
-	public Game(List<PlayerClock> allPlayers) {
+	public Game(List<? extends PlayerClock> allPlayers) {
 		this.remainingPlayers = allPlayers;
 	}
 

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
 
 /**
@@ -28,14 +29,14 @@ public class InactivePlayersListView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayers(List<PlayerData> players) {
+	public void setPlayers(List<Player> players) {
 		removeAllViews();
 
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		for (PlayerData playerData: players) {
+		for (Player player: players) {
 			PlayerView playerView = (PlayerView) inflater.inflate(R.layout.inactive_player_view, null);
-			playerView.setPlayer(playerData);
+			playerView.setPlayer(player);
 			addView(playerView);
 		}
 	}
