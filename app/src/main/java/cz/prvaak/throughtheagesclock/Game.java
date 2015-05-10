@@ -12,16 +12,17 @@ import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
  */
 public class Game {
 	private final List<? extends PlayerClock> remainingPlayers;
+	private Phase currentPhase;
 	private boolean isPaused;
 
 	public Game(List<? extends PlayerClock> allPlayers) {
 		this.remainingPlayers = allPlayers;
 	}
 
-	public RoundAboutPhase startGame(long when) {
+	public void start(long when) {
 		PlayerClock firstPlayer = remainingPlayers.get(0);
 		firstPlayer.start(when);
-		return new RoundAboutPhase(remainingPlayers, firstPlayer);
+		currentPhase = new RoundAboutPhase(remainingPlayers, firstPlayer);
 	}
 
 	public void pause(long when) {
@@ -42,12 +43,15 @@ public class Game {
 		return isPaused;
 	}
 
-	public RoundAboutPhase startRoundAboutPhase(Phase previousPhase) {
-		return new RoundAboutPhase(remainingPlayers, previousPhase.getCurrentPlayer());
+	public void startRoundAboutPhase(long when) {
+		currentPhase = new RoundAboutPhase(remainingPlayers, currentPhase.getCurrentPlayer());
 	}
 
-	public AuctionPhase startAuctionPhase(Phase previousPhase) {
-		return new AuctionPhase(remainingPlayers, previousPhase.getCurrentPlayer());
+	public void startAuctionPhase(long when) {
+		currentPhase = new AuctionPhase(remainingPlayers, currentPhase.getCurrentPlayer());
 	}
 
+	public Phase getCurrentPhase() {
+		return currentPhase;
+	}
 }

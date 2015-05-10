@@ -26,7 +26,6 @@ public class MainActivity extends ActionBarActivity {
 	private LinkedHashMap<PlayerId, Player> playersMap =
 			new LinkedHashMap<>(PlayerColor.values().length);
 	private Game game;
-	private Phase currentPhase;
 
 	private PlayerView activePlayerView;
 	private InactivePlayersListView inactivePlayersListView;
@@ -49,6 +48,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void updatePlayers() {
+		Phase currentPhase = game.getCurrentPhase();
 		PlayerClock activePlayerClock = currentPhase.getCurrentPlayer();
 		List<PlayerClock> inactivePlayersClocks = currentPhase.getNextPlayers();
 
@@ -80,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
 				playerClocks.add(player);
 			}
 			game = new Game(playerClocks);
-			currentPhase = game.startGame(now);
+			game.start(now);
 		}
 
 		setContentView(R.layout.activity_main);
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 				if (game.isPaused()) {
 					return;
 				}
-
+				Phase currentPhase = game.getCurrentPhase();
 				if (currentPhase instanceof RoundAboutPhase) {
 					RoundAboutPhase phase = (RoundAboutPhase) currentPhase;
 					phase.turnDone(System.currentTimeMillis());
