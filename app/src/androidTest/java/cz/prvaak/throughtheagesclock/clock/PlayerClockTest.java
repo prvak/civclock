@@ -12,7 +12,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	/** Create player clock with 60 seconds for turn and 30 seconds for upkeep. */
 	public PlayerClock createPlayerClock() {
-		return new PlayerClock(new PlayerId(), 60000L, 30000L);
+		return new PlayerClock(new FakePlayerId(), 60000L, 30000L, 30000L);
 	}
 
 	public void testGetRemainingTime() throws Exception {
@@ -46,10 +46,16 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		assertEquals(59000L, playerClock.getRemainingReserveTime(100000L)); // time is not decreasing
 	}
 
-	public void testAdd() throws Exception {
+	public void testAddReserveTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.addReserveTime(1000L);
 		assertEquals(61000L, playerClock.getRemainingReserveTime(1000L));
+	}
+
+	public void testAddTurnBonusTime() throws Exception {
+		PlayerClock playerClock = createPlayerClock();
+		playerClock.addTurnBonusTime();
+		assertEquals(90000L, playerClock.getRemainingReserveTime(1000L));
 	}
 
 	public void testUpkeepStartShort() throws Exception {
@@ -157,7 +163,16 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testNegativeUpkeepTimeNotAllowed() throws Exception {
 		try {
-			new PlayerClock(new PlayerId(), 60000, -5000);
+			new PlayerClock(new FakePlayerId(), 60000, -5000, 20000);
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testNegativeTurnBonusTimeNotAllowed() throws Exception {
+		try {
+			new PlayerClock(new FakePlayerId(), 60000, 5000, -20000);
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success

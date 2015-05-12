@@ -72,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
 		if (savedInstanceState == null) {
 			for (int i = 0; i < PlayerColor.values().length; i++) {
 				PlayerColor playerColor = PlayerColor.values()[i];
-				playersMap.put(playerColor, new Player(playerColor, 60000L, 10000L));
+				playersMap.put(playerColor, new Player(playerColor, 60000L, 10000L, 30000L));
 			}
 
 			ArrayList<Player> playerClocks = new ArrayList<>(4);

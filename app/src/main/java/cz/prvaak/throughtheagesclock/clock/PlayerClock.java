@@ -27,6 +27,8 @@ public class PlayerClock implements Clock {
 	 * towards the reserve time.
 	 */
 	private final TimerClock overlapTime;
+	/** Amount of time that should be added after regular turn. */
+	private final long turnBonusTime;
 	/** Whether the clock has been started and not stopped yet. */
 	private boolean isStarted;
 
@@ -36,12 +38,18 @@ public class PlayerClock implements Clock {
 	 * @param playerId Identification of the player.
 	 * @param baseTime How many milliseconds the player initially has.
 	 * @param upkeepTime How many milliseconds each upkeep protection has.
+	 * @param turnBonusTime How many milliseconds to add after each turn.
 	 */
-	public PlayerClock(PlayerId playerId, long baseTime, long upkeepTime) {
+	public PlayerClock(PlayerId playerId, long baseTime, long upkeepTime, long turnBonusTime) {
+		if (turnBonusTime < 0) {
+			throw new IllegalArgumentException("Negative turn bonus time is not allowed!");
+		}
+
 		this.playerId = playerId;
 		this.reserveTime = new Timer(baseTime);
 		this.upkeepTime = new LimitedTimer(upkeepTime);
 		this.overlapTime = new LimitedTimer(0L);
+		this.turnBonusTime = turnBonusTime;
 	}
 
 	@Override
@@ -97,6 +105,14 @@ public class PlayerClock implements Clock {
 			reserveTime.addTime(overlapTime.getElapsedTime(when));
 			overlapTime.restart(when, upkeepTime.getRemainingTime(when));
 		}
+	}
+
+	/**
+	 * Add predefined amount of time to the remaining time.
+	 * The amount is defined in constructor.
+	 */
+	public void addTurnBonusTime() {
+		addReserveTime(turnBonusTime);
 	}
 
 	/**

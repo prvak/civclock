@@ -11,8 +11,7 @@ public class UpkeepTransition implements PlayerTransition {
 	public void beforeSwitch(PlayerClock activePlayer, long when) {
 		activePlayer.stop(when);
 		activePlayer.upkeep(when);
-		// FIXME: Upkeep amount should be configurable.
-		activePlayer.addReserveTime(1000L);
+		activePlayer.addTurnBonusTime();
 	}
 
 	@Override

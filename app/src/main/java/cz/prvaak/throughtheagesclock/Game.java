@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
@@ -10,7 +11,7 @@ import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
 /**
  * High level game controls.
  */
-public class Game {
+public class Game implements Serializable {
 	private final List<? extends PlayerClock> remainingPlayers;
 	private Phase currentPhase;
 	private boolean isPaused;

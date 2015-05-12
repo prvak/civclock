@@ -8,8 +8,8 @@ import cz.prvaak.throughtheagesclock.clock.PlayerId;
  */
 public class Player extends PlayerClock {
 
-	public Player(PlayerColor playerColor, long baseTime, long upkeepTime) {
-		super(playerColor, baseTime, upkeepTime);
+	public Player(PlayerColor playerColor, long baseTime, long upkeepTime, long turnBonusTime) {
+		super(playerColor, baseTime, upkeepTime, turnBonusTime);
 	}
 
 	public PlayerColor getPlayerColor() {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
+import cz.prvaak.throughtheagesclock.clock.FakePlayerId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
@@ -21,7 +22,7 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 	public void testPlayerMustExist() {
 		ArrayList<PlayerClock> playerClocks = FakePlayerClock.createPlayerClocks(3);
 		try {
-			new PlayerSwitcher(playerClocks, new PlayerClock(new PlayerId(), 10000, 1000));
+			new PlayerSwitcher(playerClocks, new PlayerClock(new FakePlayerId(), 10000L, 1000L, 10000L));
 			Assert.fail("Should have thrown IllegalArgumentException!");
 		} catch (IllegalArgumentException e) {
 			// success
