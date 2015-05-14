@@ -2,7 +2,7 @@ package cz.prvaak.throughtheagesclock.gui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
@@ -11,12 +11,11 @@ import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
-import cz.prvaak.throughtheagesclock.gui.PlayerData;
 
 /**
  * View that displays information about one player.
  */
-public class PlayerView extends LinearLayout {
+public class PlayerView extends RelativeLayout {
 
 	private PlayerClock playerClock;
 
@@ -44,7 +43,7 @@ public class PlayerView extends LinearLayout {
 		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 	}
 
-	public void updateTimes(long now) {
+	public void updateRemainingTimes(long now) {
 		TextView remainingReserveTime = (TextView) findViewById(R.id.remaining_reserve_time);
 		if (remainingReserveTime != null) {
 			long time = playerClock.getRemainingReserveTime(now);

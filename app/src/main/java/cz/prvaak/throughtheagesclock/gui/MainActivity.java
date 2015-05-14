@@ -33,19 +33,21 @@ public class MainActivity extends ActionBarActivity {
 	private static final long UPDATE_DELAY_MS = 40L;
 
 	private final Handler updateHandler = new Handler();
+
+	/** Task that updates the screen periodically. */
 	private final Runnable updateTask = new Runnable() {
 		@Override
 		public void run() {
-			updateTimes();
+			updateRemainingTimes();
 			// post this event again
 			updateHandler.postDelayed(this, UPDATE_DELAY_MS);
 		}
 	};
 
-	private void updateTimes() {
+	private void updateRemainingTimes() {
 		long now = System.currentTimeMillis();
-		activePlayerView.updateTimes(now);
-		inactivePlayersListView.updateTimes(now);
+		activePlayerView.updateRemainingTimes(now);
+		inactivePlayersListView.updateRemainingTimes(now);
 	}
 
 	private void updatePlayers() {
