@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -28,15 +29,23 @@ public class InactivePlayersListView extends LinearLayout implements TimeView, P
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayers(List<Player> players) {
+	public void setPlayers(List<Player> players, final PlayerButtonListener playerButtonListener) {
 		removeAllViews();
 
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		for (Player player: players) {
+		for (final Player player: players) {
 			PlayerView playerView = (PlayerView) inflater.inflate(R.layout.inactive_player_view, null);
 			playerView.setPlayer(player);
 			addView(playerView);
+
+			Button dealButton = (Button) playerView.findViewById(R.id.deal_button);
+			dealButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					playerButtonListener.onPlayerButtonClicked(player.getPlayerId());
+				}
+			});
 		}
 	}
 

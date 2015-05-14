@@ -19,10 +19,12 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
 import cz.prvaak.throughtheagesclock.gui.view.PhaseView;
+import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerView;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 import cz.prvaak.throughtheagesclock.phase.GamePhase;
-import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
+import cz.prvaak.throughtheagesclock.phase.NormalPhase;
+import cz.prvaak.throughtheagesclock.phase.OneOnOnePhase;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -44,6 +46,22 @@ public class MainActivity extends ActionBarActivity {
 			updateRemainingTimes();
 			// post this event again
 			updateHandler.postDelayed(this, UPDATE_DELAY_MS);
+		}
+	};
+
+	private final PlayerButtonListener dealButtonListener = new PlayerButtonListener() {
+		@Override
+		public void onPlayerButtonClicked(PlayerId playerId) {
+			System.out.println("Deal button clicked.");
+			if (game.isPaused()) {
+				return;
+			}
+
+			long now = System.currentTimeMillis();
+			game.startOneOnOnePhase(now, playersMap.get(playerId));
+
+			updatePlayers();
+			updatePhase();
 		}
 	};
 
@@ -74,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 			Player player = playersMap.get(inactivePlayerClock.getPlayerId());
 			inactivePlayers.add(player);
 		}
-		inactivePlayersListView.setPlayers(inactivePlayers);
+		inactivePlayersListView.setPlayers(inactivePlayers, dealButtonListener);
 	}
 
     @Override
@@ -109,12 +127,19 @@ public class MainActivity extends ActionBarActivity {
 				if (game.isPaused()) {
 					return;
 				}
+
+				long now = System.currentTimeMillis();
 				GamePhase currentPhase = game.getCurrentPhase();
-				if (currentPhase instanceof RoundAboutPhase) {
-					RoundAboutPhase phase = (RoundAboutPhase) currentPhase;
-					phase.turnDone(System.currentTimeMillis());
+				if (currentPhase instanceof NormalPhase) {
+					NormalPhase phase = (NormalPhase) currentPhase;
+					phase.turnDone(now);
+				} else if (currentPhase instanceof OneOnOnePhase) {
+					OneOnOnePhase phase = (OneOnOnePhase) currentPhase;
+					phase.turnDone(now);
+					game.startRoundAboutPhase(now);
 				}
 				updatePlayers();
+				updatePhase();
 			}
 		});
 		activePlayerView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -236,7 +261,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private PhaseView.Phase getCurrentPhase() {
 		GamePhase phase = game.getCurrentPhase();
-		if (phase instanceof RoundAboutPhase) {
+		if (phase instanceof NormalPhase) {
 			return PhaseView.Phase.NORMAL;
 		} else if (phase instanceof AuctionPhase) {
 			return PhaseView.Phase.AUCTION;

@@ -6,7 +6,8 @@ import java.util.List;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 import cz.prvaak.throughtheagesclock.phase.GamePhase;
-import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
+import cz.prvaak.throughtheagesclock.phase.NormalPhase;
+import cz.prvaak.throughtheagesclock.phase.OneOnOnePhase;
 
 /**
  * High level game controls.
@@ -23,7 +24,7 @@ public class Game implements Serializable {
 	public void start(long when) {
 		PlayerClock firstPlayer = remainingPlayers.get(0);
 		firstPlayer.start(when);
-		currentPhase = new RoundAboutPhase(remainingPlayers, firstPlayer);
+		currentPhase = new NormalPhase(remainingPlayers, firstPlayer);
 	}
 
 	public void pause(long when) {
@@ -45,11 +46,15 @@ public class Game implements Serializable {
 	}
 
 	public void startRoundAboutPhase(long when) {
-		currentPhase = new RoundAboutPhase(remainingPlayers, currentPhase.getCurrentPlayer());
+		currentPhase = new NormalPhase(remainingPlayers, currentPhase.getCurrentPlayer());
 	}
 
 	public void startAuctionPhase(long when) {
 		currentPhase = new AuctionPhase(remainingPlayers, currentPhase.getCurrentPlayer());
+	}
+
+	public void startOneOnOnePhase(long when, PlayerClock targetPlayer) {
+		currentPhase = new OneOnOnePhase(when, targetPlayer, currentPhase.getCurrentPlayer());
 	}
 
 	public GamePhase getCurrentPhase() {
