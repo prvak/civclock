@@ -5,7 +5,7 @@ import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
-import cz.prvaak.throughtheagesclock.phase.Phase;
+import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
 
 /**
@@ -13,7 +13,7 @@ import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
  */
 public class Game implements Serializable {
 	private final List<? extends PlayerClock> remainingPlayers;
-	private Phase currentPhase;
+	private GamePhase currentPhase;
 	private boolean isPaused;
 
 	public Game(List<? extends PlayerClock> allPlayers) {
@@ -52,7 +52,7 @@ public class Game implements Serializable {
 		currentPhase = new AuctionPhase(remainingPlayers, currentPhase.getCurrentPlayer());
 	}
 
-	public Phase getCurrentPhase() {
+	public GamePhase getCurrentPhase() {
 		return currentPhase;
 	}
 }

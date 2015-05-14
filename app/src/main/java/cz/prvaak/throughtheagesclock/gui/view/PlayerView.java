@@ -15,7 +15,7 @@ import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 /**
  * View that displays information about one player.
  */
-public class PlayerView extends RelativeLayout {
+public abstract class PlayerView extends RelativeLayout implements TimeView, PhaseView {
 
 	private PlayerClock playerClock;
 
@@ -43,7 +43,8 @@ public class PlayerView extends RelativeLayout {
 		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 	}
 
-	public void updateRemainingTimes(long now) {
+	@Override
+	public void updateTime(long now) {
 		TextView remainingReserveTime = (TextView) findViewById(R.id.remaining_reserve_time);
 		if (remainingReserveTime != null) {
 			long time = playerClock.getRemainingReserveTime(now);

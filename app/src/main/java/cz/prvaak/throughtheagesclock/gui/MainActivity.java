@@ -2,6 +2,7 @@ package cz.prvaak.throughtheagesclock.gui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +18,10 @@ import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
+import cz.prvaak.throughtheagesclock.gui.view.PhaseView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerView;
-import cz.prvaak.throughtheagesclock.phase.Phase;
+import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
+import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.RoundAboutPhase;
 
 
@@ -46,12 +49,18 @@ public class MainActivity extends ActionBarActivity {
 
 	private void updateRemainingTimes() {
 		long now = System.currentTimeMillis();
-		activePlayerView.updateRemainingTimes(now);
-		inactivePlayersListView.updateRemainingTimes(now);
+		activePlayerView.updateTime(now);
+		inactivePlayersListView.updateTime(now);
+	}
+
+	private void updatePhase() {
+		PhaseView.Phase phase = getCurrentPhase();
+		activePlayerView.setPhase(phase);
+		inactivePlayersListView.setPhase(phase);
 	}
 
 	private void updatePlayers() {
-		Phase currentPhase = game.getCurrentPhase();
+		GamePhase currentPhase = game.getCurrentPhase();
 		PlayerClock activePlayerClock = currentPhase.getCurrentPlayer();
 		List<PlayerClock> inactivePlayersClocks = currentPhase.getNextPlayers();
 
@@ -83,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 				playersMap.put(playerColor, new Player(playerColor, 60000L, 10000L, 30000L));
 			}
 
-			ArrayList<Player> playerClocks = new ArrayList<>(4);
+			ArrayList<Player> playerClocks = new ArrayList<>(PlayerColor.values().length);
 			for (Player player: playersMap.values()) {
 				playerClocks.add(player);
 			}
@@ -100,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
 				if (game.isPaused()) {
 					return;
 				}
-				Phase currentPhase = game.getCurrentPhase();
+				GamePhase currentPhase = game.getCurrentPhase();
 				if (currentPhase instanceof RoundAboutPhase) {
 					RoundAboutPhase phase = (RoundAboutPhase) currentPhase;
 					phase.turnDone(System.currentTimeMillis());
@@ -122,6 +131,7 @@ public class MainActivity extends ActionBarActivity {
 
 		inactivePlayersListView = (InactivePlayersListView) findViewById(R.id.inactive_players_list_view);
 		updatePlayers();
+		updatePhase();
 	}
 
 	@Override
@@ -142,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		// called after onStart, but only if some previous instance was saved
 		// TODO: restore player clocks
@@ -184,4 +194,54 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+	public void onAuctionButton(View view) {
+		System.out.println("Auction button clicked.");
+		if (game.isPaused()) {
+			return;
+		}
+
+		game.startAuctionPhase(System.currentTimeMillis());
+		updatePlayers();
+		updatePhase();
+	}
+
+	public void onBidButton(View view) {
+		System.out.println("Bid button clicked.");
+		if (game.isPaused()) {
+			return;
+		}
+
+		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
+		phase.bid(System.currentTimeMillis());
+		updatePlayers();
+		updatePhase();
+	}
+
+	public void onPassButton(View view) {
+		System.out.println("Pass button clicked.");
+		if (game.isPaused()) {
+			return;
+		}
+
+		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
+		long now = System.currentTimeMillis();
+		phase.pass(now);
+		if (phase.getAllPlayers().size() <= 1) {
+			game.startRoundAboutPhase(now);
+		}
+		updatePlayers();
+		updatePhase();
+	}
+
+	private PhaseView.Phase getCurrentPhase() {
+		GamePhase phase = game.getCurrentPhase();
+		if (phase instanceof RoundAboutPhase) {
+			return PhaseView.Phase.NORMAL;
+		} else if (phase instanceof AuctionPhase) {
+			return PhaseView.Phase.AUCTION;
+		} else {
+			return PhaseView.Phase.ONE_ON_ONE;
+		}
+	}
 }

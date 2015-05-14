@@ -3,6 +3,7 @@ package cz.prvaak.throughtheagesclock.gui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import cz.prvaak.throughtheagesclock.gui.Player;
 /**
  * View of inactive players.
  */
-public class InactivePlayersListView extends LinearLayout {
+public class InactivePlayersListView extends LinearLayout implements TimeView, PhaseView {
 
 	public InactivePlayersListView(Context context) {
 		super(context);
@@ -39,11 +40,27 @@ public class InactivePlayersListView extends LinearLayout {
 		}
 	}
 
-	public void updateRemainingTimes(long now) {
+	@Override
+	public void updateTime(long now) {
 		int count = getChildCount();
 		for (int i = 0; i < count; i++) {
-			PlayerView playerView = (PlayerView) getChildAt(i);
-			playerView.updateRemainingTimes(now);
+			View child = getChildAt(i);
+			if (child instanceof TimeView) {
+				TimeView view = (TimeView) child;
+				view.updateTime(now);
+			}
+		}
+	}
+
+	@Override
+	public void setPhase(Phase phase) {
+		int count = getChildCount();
+		for (int i = 0; i < count; i++) {
+			View child = getChildAt(i);
+			if (child instanceof PhaseView) {
+				PhaseView view = (PhaseView) child;
+				view.setPhase(phase);
+			}
 		}
 	}
 }

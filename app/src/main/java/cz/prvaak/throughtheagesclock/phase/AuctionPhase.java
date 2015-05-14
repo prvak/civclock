@@ -10,7 +10,7 @@ import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 /**
  * Phase when players are auctioning. When a player passes he no longer participates in the auction.
  */
-public class AuctionPhase implements Phase {
+public class AuctionPhase implements GamePhase {
 
 	private final PlayerSwitcher playerSwitcher;
 	private final PlayerTransition transition = new NormalTransition();
