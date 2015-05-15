@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.gui;
+package cz.prvaak.throughtheagesclock.gui.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +17,8 @@ import cz.prvaak.throughtheagesclock.Game;
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
+import cz.prvaak.throughtheagesclock.gui.Player;
+import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
 import cz.prvaak.throughtheagesclock.gui.view.PhaseView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
@@ -27,7 +29,7 @@ import cz.prvaak.throughtheagesclock.phase.NormalPhase;
 import cz.prvaak.throughtheagesclock.phase.OneOnOnePhase;
 
 
-public class MainActivity extends ActionBarActivity {
+public class TimeActivity extends ActionBarActivity {
 
 	private LinkedHashMap<PlayerId, Player> playersMap =
 			new LinkedHashMap<>(PlayerColor.values().length);
