@@ -29,7 +29,7 @@ import cz.prvaak.throughtheagesclock.phase.NormalPhase;
 import cz.prvaak.throughtheagesclock.phase.OneOnOnePhase;
 
 
-public class TimeActivity extends ActionBarActivity {
+public class TimerActivity extends ActionBarActivity {
 
 	private LinkedHashMap<PlayerId, Player> playersMap =
 			new LinkedHashMap<>(PlayerColor.values().length);
@@ -120,7 +120,7 @@ public class TimeActivity extends ActionBarActivity {
 			game.start(now);
 		}
 
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_timer);
 
 		activePlayerView = (PlayerView) findViewById(R.id.active_player_view);
 		activePlayerView.setOnClickListener(new View.OnClickListener() {
@@ -197,13 +197,10 @@ public class TimeActivity extends ActionBarActivity {
 		updateHandler.postDelayed(updateTask, UPDATE_DELAY_MS);
 	}
 
-
-
-
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_timer, menu);
         return true;
     }
 

@@ -1,0 +1,127 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="cz.prvaak.throughtheagesclock.gui.activity.NewGameActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/new_game"
+        android:id="@+id/new_game_text"
+        android:layout_gravity="left|top"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_below="@+id/new_game_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/player_settings">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/color_blue"
+                android:id="@+id/player_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="10:00 + 1:30 (0:30)"
+                android:id="@+id/time_settings_text"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove"
+                android:id="@+id/remove_player_button"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Base time"
+                    android:id="@+id/textView"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <cz.prvaak.throughtheagesclock.gui.widget.TimePartPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/base_time_number_picker_hours"
+                    android:layout_column="1"
+                    android:baselineAligned="false"
+                    android:orientation="vertical"
+                    android:clickable="false"
+                    separator=" h"
+                    min="0"
+                    max="10"/>
+
+                <cz.prvaak.throughtheagesclock.gui.widget.TimePartPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/base_time_number_picker_minutes"
+                    android:layout_column="1"
+                    android:baselineAligned="false"
+                    android:orientation="vertical"
+                    android:clickable="false"
+                    separator=" m"
+                    min="0"
+                    max="60"/>
+
+                <cz.prvaak.throughtheagesclock.gui.widget.TimePartPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/base_time_number_picker_seconds"
+                    android:layout_column="1"
+                    android:baselineAligned="false"
+                    android:orientation="vertical"
+                    android:clickable="false"
+                    separator=" s"
+                    min="0"
+                    max="60"/>
+
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

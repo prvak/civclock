@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">Through The Ages Clock</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="color_red">Red</string>
     <string name="color_green">Green</string>
     <string name="color_blue">Blue</string>
     <string name="color_yellow">Yellow</string>
+    <string name="new_game">New Game</string>
 
 </resources>
