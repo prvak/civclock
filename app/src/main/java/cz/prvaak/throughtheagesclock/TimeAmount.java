@@ -1,11 +1,12 @@
 package cz.prvaak.throughtheagesclock;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Representation of a time between to instants.
  */
-public class TimeAmount {
+public class TimeAmount implements Serializable {
 
 	public final static TimeAmount EMPTY = new TimeAmount(0L);
 

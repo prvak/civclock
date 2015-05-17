@@ -11,7 +11,7 @@ import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeInstant;
-import cz.prvaak.throughtheagesclock.gui.Player;
+import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 
 /**
  * View of inactive players.
@@ -30,21 +30,21 @@ public class InactivePlayersListView extends LinearLayout implements TimeView, P
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayers(List<Player> players, final PlayerButtonListener playerButtonListener) {
+	public void setPlayerClocks(List<PlayerClock> playerClocks, final PlayerButtonListener playerButtonListener) {
 		removeAllViews();
 
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		for (final Player player: players) {
+		for (final PlayerClock playerClock: playerClocks) {
 			PlayerView playerView = (PlayerView) inflater.inflate(R.layout.inactive_player_view, null);
-			playerView.setPlayer(player);
+			playerView.setPlayerClock(playerClock);
 			addView(playerView);
 
 			Button dealButton = (Button) playerView.findViewById(R.id.deal_button);
 			dealButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					playerButtonListener.onPlayerButtonClicked(player.getPlayerId());
+					playerButtonListener.onPlayerButtonClicked(playerClock.getPlayerId());
 				}
 			});
 		}

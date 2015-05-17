@@ -1,11 +1,13 @@
 package cz.prvaak.throughtheagesclock.clock;
 
+import java.io.Serializable;
+
 import cz.prvaak.throughtheagesclock.TimeInstant;
 
 /**
  * Interface of basic clock.
  */
-public interface Clock {
+public interface Clock extends Serializable {
 
 	/**
 	 * Stop the clock.

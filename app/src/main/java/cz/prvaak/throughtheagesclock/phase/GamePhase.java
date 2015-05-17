@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock.phase;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
@@ -7,7 +8,7 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 /**
  * Phase of the game. Phase determines what type of clock is displayed.
  */
-public interface GamePhase {
+public interface GamePhase extends Serializable {
 
 	/** Get currently active player. */
 	PlayerClock getCurrentPlayer();

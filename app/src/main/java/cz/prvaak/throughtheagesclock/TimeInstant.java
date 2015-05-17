@@ -1,11 +1,13 @@
 package cz.prvaak.throughtheagesclock;
 
+import java.io.Serializable;
+
 /**
  * Abstraction around current time getter.
  *
  * Useful for testing classes dependent on current time.
  */
-public class TimeInstant {
+public class TimeInstant implements Serializable {
 
 	private final long time;
 

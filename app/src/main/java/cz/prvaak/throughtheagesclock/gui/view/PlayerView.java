@@ -9,7 +9,6 @@ import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
-import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 
 /**
@@ -31,9 +30,9 @@ public abstract class PlayerView extends RelativeLayout implements TimeView, Pha
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayer(Player player) {
-		this.playerClock = player;
-		PlayerColor playerColor = player.getPlayerColor();
+	public void setPlayerClock(PlayerClock playerClock) {
+		this.playerClock = playerClock;
+		PlayerColor playerColor = (PlayerColor) playerClock.getPlayerId();
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);
 		if (playerName != null) {

@@ -9,19 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import cz.prvaak.throughtheagesclock.Game;
 import cz.prvaak.throughtheagesclock.R;
-import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.TimeInstant;
-import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
-import cz.prvaak.throughtheagesclock.gui.Player;
-import cz.prvaak.throughtheagesclock.gui.PlayerColor;
-import cz.prvaak.throughtheagesclock.gui.PlayerData;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
 import cz.prvaak.throughtheagesclock.gui.view.PhaseView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
@@ -34,8 +25,7 @@ import cz.prvaak.throughtheagesclock.phase.OneOnOnePhase;
 
 public class TimerActivity extends ActionBarActivity {
 
-	private LinkedHashMap<PlayerId, Player> playersMap =
-			new LinkedHashMap<>(PlayerColor.values().length);
+	/** Object that contains all information about current state of the game. */
 	private Game game;
 
 	private PlayerView activePlayerView;
@@ -62,7 +52,7 @@ public class TimerActivity extends ActionBarActivity {
 				return;
 			}
 
-			game.startOneOnOnePhase(new TimeInstant(), playersMap.get(playerId));
+			game.startOneOnOnePhase(new TimeInstant(), game.getPlayer(playerId));
 
 			updatePlayers();
 			updatePhase();
@@ -83,20 +73,12 @@ public class TimerActivity extends ActionBarActivity {
 
 	private void updatePlayers() {
 		GamePhase currentPhase = game.getCurrentPhase();
-		PlayerClock activePlayerClock = currentPhase.getCurrentPlayer();
-		List<PlayerClock> inactivePlayersClocks = currentPhase.getNextPlayers();
 
 		// update active player
-		Player activePlayer = playersMap.get(activePlayerClock.getPlayerId());
-		activePlayerView.setPlayer(activePlayer);
+		activePlayerView.setPlayerClock(currentPhase.getCurrentPlayer());
 
 		// update inactive players
-		List<Player> inactivePlayers = new ArrayList<>(inactivePlayersClocks.size());
-		for (PlayerClock inactivePlayerClock: inactivePlayersClocks) {
-			Player player = playersMap.get(inactivePlayerClock.getPlayerId());
-			inactivePlayers.add(player);
-		}
-		inactivePlayersListView.setPlayers(inactivePlayers, dealButtonListener);
+		inactivePlayersListView.setPlayerClocks(currentPhase.getNextPlayers(), dealButtonListener);
 	}
 
     @Override
@@ -108,21 +90,8 @@ public class TimerActivity extends ActionBarActivity {
 
 
 		if (savedInstanceState == null) {
-			TimeInstant now = new TimeInstant();
-
-			for (int i = 0; i < PlayerColor.values().length; i++) {
-				PlayerColor playerColor = PlayerColor.values()[i];
-				PlayerData playerData = new PlayerData(playerColor, new TimeAmount(60000L),
-						new TimeAmount(10000L), new TimeAmount(30000L));
-				playersMap.put(playerColor, new Player(playerData));
-			}
-
-			ArrayList<Player> playerClocks = new ArrayList<>(PlayerColor.values().length);
-			for (Player player: playersMap.values()) {
-				playerClocks.add(player);
-			}
-			game = new Game(playerClocks);
-			game.start(now);
+			game = (Game) getIntent().getExtras().getSerializable("game");
+			game.start(new TimeInstant());
 		}
 
 		setContentView(R.layout.activity_timer);

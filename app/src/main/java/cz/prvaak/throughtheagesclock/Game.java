@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.NormalPhase;
@@ -59,5 +60,14 @@ public class Game implements Serializable {
 
 	public GamePhase getCurrentPhase() {
 		return currentPhase;
+	}
+
+	public PlayerClock getPlayer(PlayerId playerId) {
+		for (PlayerClock playerClock: remainingPlayers) {
+			if (playerClock.getPlayerId().equals(playerId)) {
+				return playerClock;
+			}
+		}
+		throw new IllegalArgumentException(String.format("Unknown player id '%s'", playerId));
 	}
 }
