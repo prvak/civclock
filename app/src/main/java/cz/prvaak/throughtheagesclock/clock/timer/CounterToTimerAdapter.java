@@ -1,5 +1,7 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
 
 /**
@@ -7,67 +9,63 @@ import cz.prvaak.throughtheagesclock.clock.counter.CounterClock;
  */
 public class CounterToTimerAdapter implements TimerClock {
 	private final CounterClock counter;
-	private long baseTime;
+	private TimeAmount baseTime;
 
-	public CounterToTimerAdapter(CounterClock counter, long baseTime) {
+	public CounterToTimerAdapter(CounterClock counter, TimeAmount baseTime) {
 		this.counter = counter;
-		if (baseTime < 0) {
+		if (baseTime.isNegative()) {
 			throw new IllegalArgumentException("Base time cannot be negative!");
 		}
 		this.baseTime = baseTime;
 	}
 
 	@Override
-	public long getElapsedTime(long when) {
+	public TimeAmount getElapsedTime(TimeInstant when) {
 		return counter.getElapsedTime(when);
 	}
 
 	@Override
-	public long getRemainingTime(long when) {
-		return baseTime - counter.getElapsedTime(when);
+	public TimeAmount getRemainingTime(TimeInstant when) {
+		return baseTime.subtract(counter.getElapsedTime(when));
 	}
 
 	@Override
-	public void addTime(long amount) {
-		baseTime += amount;
+	public void addTime(TimeAmount amount) {
+		baseTime = baseTime.add(amount);
 	}
 
 	@Override
-	public void restart(long when) {
+	public void restart(TimeInstant when) {
 		counter.restart(when);
 	}
 
 	@Override
-	public void restart(long when, long newBaseTime) {
-		counter.restart(when);
-		if (newBaseTime < 0) {
+	public void restart(TimeInstant when, TimeAmount newBaseTime) {
+		if (newBaseTime.isNegative()) {
 			throw new IllegalArgumentException("Base time cannot be negative!");
 		}
+
+		counter.restart(when);
 		baseTime = newBaseTime;
 	}
 
 	@Override
-	public void stop(long when) {
+	public void stop(TimeInstant when) {
 		counter.stop(when);
 	}
 
 	@Override
-	public void start(long when) {
+	public void start(TimeInstant when) {
 		counter.start(when);
 	}
 
 	@Override
-	public void pause(long when) {
+	public void pause(TimeInstant when) {
 		counter.pause(when);
 	}
 
 	@Override
-	public void resume(long when) {
+	public void resume(TimeInstant when) {
 		counter.resume(when);
-	}
-
-	@Override
-	public String toString() {
-		return String.format("%s Base: %d", counter.toString(), baseTime);
 	}
 }

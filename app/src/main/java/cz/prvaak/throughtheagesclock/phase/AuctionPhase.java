@@ -2,6 +2,7 @@ package cz.prvaak.throughtheagesclock.phase;
 
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.NormalTransition;
@@ -24,7 +25,7 @@ public class AuctionPhase implements GamePhase {
 	 *
 	 * @param when Time in milliseconds when the bid was done.
 	 */
-	public void bid(long when) {
+	public void bid(TimeInstant when) {
 		checkThatAuctionIsNotOver();
 		playerSwitcher.switchPlayers(transition, when);
 	}
@@ -35,7 +36,7 @@ public class AuctionPhase implements GamePhase {
 	 *
 	 * @param when Time in milliseconds when the pass was done.
 	 */
-	public void pass(long when) {
+	public void pass(TimeInstant when) {
 		checkThatAuctionIsNotOver();
 		playerSwitcher.removeCurrentPlayer();
 		playerSwitcher.switchPlayers(transition, when);

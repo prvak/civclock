@@ -3,6 +3,7 @@ package cz.prvaak.throughtheagesclock.phase;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.NormalTransition;
@@ -16,7 +17,7 @@ public class OneOnOnePhase implements GamePhase {
 	private final PlayerSwitcher playerSwitcher;
 	private final PlayerTransition transition = new NormalTransition();
 
-	public OneOnOnePhase(long when, PlayerClock targetPlayer, PlayerClock currentPlayer) {
+	public OneOnOnePhase(TimeInstant when, PlayerClock targetPlayer, PlayerClock currentPlayer) {
 		ArrayList<PlayerClock> allPlayers = new ArrayList<>(2);
 		allPlayers.add(currentPlayer);
 		allPlayers.add(targetPlayer);
@@ -29,7 +30,7 @@ public class OneOnOnePhase implements GamePhase {
 	 *
 	 * @param when Time in milliseconds when the turn is terminated.
 	 */
-	public void turnDone(long when) {
+	public void turnDone(TimeInstant when) {
 		playerSwitcher.switchPlayers(transition, when);
 	}
 

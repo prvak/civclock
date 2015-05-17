@@ -1,5 +1,7 @@
 package cz.prvaak.throughtheagesclock.clock;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
+
 /**
  * Interface of basic clock.
  */
@@ -10,26 +12,26 @@ public interface Clock {
 	 *
 	 * @param when Time in milliseconds when the clock was stopped.
 	 */
-	void stop(long when);
+	void stop(TimeInstant when);
 
 	/**
 	 * Resume the stopped clock.
 	 *
 	 * @param when Time in milliseconds when the clock was resumed.
 	 */
-	void start(long when);
+	void start(TimeInstant when);
 
 	/**
 	 * Pause the clock.
 	 *
 	 * @param when Time in milliseconds when the clock was paused.
 	 */
-	void pause(long when);
+	void pause(TimeInstant when);
 
 	/**
 	 * Resume paused clock.
 	 *
 	 * @param when Time in milliseconds when the clock was resumed.
 	 */
-	void resume(long when);
+	void resume(TimeInstant when);
 }

@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.clock.counter.Counter;
 
 /**
@@ -8,7 +9,7 @@ import cz.prvaak.throughtheagesclock.clock.counter.Counter;
  */
 public class Timer extends CounterToTimerAdapter implements TimerClock {
 
-	public Timer(long baseTime) {
+	public Timer(TimeAmount baseTime) {
 		super(new Counter(), baseTime);
 	}
 }

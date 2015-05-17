@@ -1,4 +1,4 @@
-package cz.prvaak.throughtheagesclock.phase.switcher;
+package cz.prvaak.throughtheagesclock.phase;
 
 import android.test.InstrumentationTestCase;
 
@@ -6,9 +6,9 @@ import junit.framework.Assert;
 
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
-import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 
 /**
  * Tests of {@link cz.prvaak.throughtheagesclock.phase.AuctionPhase} class.
@@ -27,11 +27,11 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		AuctionPhase auctionPhase = new AuctionPhase(allPlayers, allPlayers.get(0));
 
 		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
-		auctionPhase.bid(0L);
+		auctionPhase.bid(new TimeInstant(0L));
 		assertEquals(allPlayers.get(1), auctionPhase.getCurrentPlayer());
-		auctionPhase.bid(1000L);
+		auctionPhase.bid(new TimeInstant(1000L));
 		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
-		auctionPhase.bid(2000L);
+		auctionPhase.bid(new TimeInstant(2000L));
 		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
 		assertEquals(3, auctionPhase.getAllPlayers().size());
 	}
@@ -41,14 +41,14 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		AuctionPhase auctionPhase = new AuctionPhase(allPlayers, allPlayers.get(0));
 
 		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
-		auctionPhase.bid(1000L);
+		auctionPhase.bid(new TimeInstant(1000L));
 		assertEquals(allPlayers.get(1), auctionPhase.getCurrentPlayer());
-		auctionPhase.pass(1000L);
+		auctionPhase.pass(new TimeInstant(1000L));
 		assertEquals(2, auctionPhase.getAllPlayers().size());
 		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
-		auctionPhase.bid(2000L);
+		auctionPhase.bid(new TimeInstant(2000L));
 		assertEquals(allPlayers.get(0), auctionPhase.getCurrentPlayer());
-		auctionPhase.bid(3000L);
+		auctionPhase.bid(new TimeInstant(3000L));
 		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
 	}
 
@@ -56,9 +56,9 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		List<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(2);
 		AuctionPhase auctionPhase = new AuctionPhase(allPlayers, allPlayers.get(0));
 
-		auctionPhase.pass(0L);
+		auctionPhase.pass(new TimeInstant(0L));
 		try {
-			auctionPhase.bid(1000L);
+			auctionPhase.bid(new TimeInstant(1000L));
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success
@@ -69,9 +69,9 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		List<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(2);
 		AuctionPhase auctionPhase = new AuctionPhase(allPlayers, allPlayers.get(0));
 
-		auctionPhase.pass(0L);
+		auctionPhase.pass(new TimeInstant(0L));
 		try {
-			auctionPhase.pass(1000L);
+			auctionPhase.pass(new TimeInstant(1000L));
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success

@@ -12,5 +12,6 @@ public interface PhaseView {
 		NORMAL, AUCTION, ONE_ON_ONE
 	}
 
+	/** Update view based on given phase. */
 	void setPhase(Phase phase);
 }

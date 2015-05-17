@@ -1,5 +1,8 @@
 package cz.prvaak.throughtheagesclock.clock.timer;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
+
 /**
  * Adapter that delegates all calls to another timer.
  */
@@ -12,47 +15,47 @@ public class TimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public long getElapsedTime(long when) {
+	public TimeAmount getElapsedTime(TimeInstant when) {
 		return target.getElapsedTime(when);
 	}
 
 	@Override
-	public long getRemainingTime(long when) {
+	public TimeAmount getRemainingTime(TimeInstant when) {
 		return target.getRemainingTime(when);
 	}
 
 	@Override
-	public void addTime(long amount) {
+	public void addTime(TimeAmount amount) {
 		target.addTime(amount);
 	}
 
 	@Override
-	public void stop(long when) {
+	public void stop(TimeInstant when) {
 		target.stop(when);
 	}
 
 	@Override
-	public void start(long when) {
+	public void start(TimeInstant when) {
 		target.start(when);
 	}
 
 	@Override
-	public void restart(long when) {
+	public void restart(TimeInstant when) {
 		target.restart(when);
 	}
 
 	@Override
-	public void restart(long when, long newBaseTime) {
+	public void restart(TimeInstant when, TimeAmount newBaseTime) {
 		target.restart(when, newBaseTime);
 	}
 
 	@Override
-	public void pause(long when) {
+	public void pause(TimeInstant when) {
 		target.pause(when);
 	}
 
 	@Override
-	public void resume(long when) {
+	public void resume(TimeInstant when) {
 		target.resume(when);
 	}
 

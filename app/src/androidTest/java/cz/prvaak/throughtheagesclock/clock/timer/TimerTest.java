@@ -2,35 +2,42 @@ package cz.prvaak.throughtheagesclock.clock.timer;
 
 import android.test.InstrumentationTestCase;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
+
 /**
  * Tests of {@link Timer} class.
  */
 public class TimerTest extends InstrumentationTestCase {
 
+	private static Timer createTimer() {
+		return new Timer(new TimeAmount(10000L));
+	}
+
 	public void testGetRemainingTime() throws Exception {
-		Timer remainingTime = new Timer(10000L);
-		remainingTime.restart(0L);
-		assertEquals(9000L, remainingTime.getRemainingTime(1000L));
-		assertEquals(0L, remainingTime.getRemainingTime(10000L));
-		assertEquals(-1000L, remainingTime.getRemainingTime(11000L));
+		Timer timer = createTimer();
+		timer.restart(new TimeInstant(0L));
+		assertEquals(new TimeAmount(9000L), timer.getRemainingTime(new TimeInstant(1000L)));
+		assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(10000L)));
+		assertEquals(new TimeAmount(-1000L), timer.getRemainingTime(new TimeInstant(11000L)));
 	}
 
 	public void testRestart() throws Exception {
-		Timer timer = new Timer(10000L);
-		timer.start(0L);
-		timer.restart(1000L);
-		assertEquals(9000L, timer.getRemainingTime(2000L));
-		assertEquals(0L, timer.getRemainingTime(11000L));
-		assertEquals(-1000L, timer.getRemainingTime(12000L));
+		Timer timer = new Timer(new TimeAmount(10000L));
+		timer.start(new TimeInstant(0L));
+		timer.restart(new TimeInstant(1000L));
+		assertEquals(new TimeAmount(9000L), timer.getRemainingTime(new TimeInstant(2000L)));
+		assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(11000L)));
+		assertEquals(new TimeAmount(-1000L), timer.getRemainingTime(new TimeInstant(12000L)));
 	}
 
 	public void testRestartWithNewLimit() throws Exception {
-		Timer timer = new Timer(10000L);
-		timer.start(0L);
-		timer.restart(1000L, 20000L);
-		assertEquals(19000L, timer.getRemainingTime(2000L));
-		assertEquals(10000L, timer.getRemainingTime(11000L));
-		assertEquals(9000L, timer.getRemainingTime(12000L));
-		assertEquals(-1000L, timer.getRemainingTime(22000L));
+		Timer timer = new Timer(new TimeAmount(10000L));
+		timer.start(new TimeInstant(0L));
+		timer.restart(new TimeInstant(1000L), new TimeAmount(20000L));
+		assertEquals(new TimeAmount(19000L), timer.getRemainingTime(new TimeInstant(2000L)));
+		assertEquals(new TimeAmount(10000L), timer.getRemainingTime(new TimeInstant(11000L)));
+		assertEquals(new TimeAmount(9000L), timer.getRemainingTime(new TimeInstant(12000L)));
+		assertEquals(new TimeAmount(-1000L), timer.getRemainingTime(new TimeInstant(22000L)));
 	}
 }

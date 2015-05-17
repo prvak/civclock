@@ -21,20 +21,20 @@ public class Game implements Serializable {
 		this.remainingPlayers = allPlayers;
 	}
 
-	public void start(long when) {
+	public void start(TimeInstant when) {
 		PlayerClock firstPlayer = remainingPlayers.get(0);
 		firstPlayer.start(when);
 		currentPhase = new NormalPhase(remainingPlayers, firstPlayer);
 	}
 
-	public void pause(long when) {
+	public void pause(TimeInstant when) {
 		for (PlayerClock playerClock: remainingPlayers) {
 			playerClock.pause(when);
 		}
 		isPaused = true;
 	}
 
-	public void resume(long when) {
+	public void resume(TimeInstant when) {
 		for (PlayerClock playerClock: remainingPlayers) {
 			playerClock.resume(when);
 		}
@@ -45,15 +45,15 @@ public class Game implements Serializable {
 		return isPaused;
 	}
 
-	public void startRoundAboutPhase(long when) {
+	public void startRoundAboutPhase() {
 		currentPhase = new NormalPhase(remainingPlayers, currentPhase.getCurrentPlayer());
 	}
 
-	public void startAuctionPhase(long when) {
+	public void startAuctionPhase() {
 		currentPhase = new AuctionPhase(remainingPlayers, currentPhase.getCurrentPlayer());
 	}
 
-	public void startOneOnOnePhase(long when, PlayerClock targetPlayer) {
+	public void startOneOnOnePhase(TimeInstant when, PlayerClock targetPlayer) {
 		currentPhase = new OneOnOnePhase(when, targetPlayer, currentPhase.getCurrentPlayer());
 	}
 

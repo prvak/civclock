@@ -2,6 +2,9 @@ package cz.prvaak.throughtheagesclock.clock;
 
 import java.util.ArrayList;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
+
 /**
  * Class for monitoring which method of {@link PlayerClock} has been called.
  */
@@ -17,51 +20,51 @@ public class FakePlayerClock extends PlayerClock {
 		for (int i = 0; i < howMany; i++) {
 			playerClocks.add(new FakePlayerClock());
 		}
-		playerClocks.get(0).start(0L);
+		playerClocks.get(0).start(new TimeInstant(0L));
 		return playerClocks;
 	}
 
 	public FakePlayerClock() {
-		super(new FakePlayerId(), 10000L, 1000L, 10000L);
+		super(new FakePlayerId(), new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L));
 	}
 
 	@Override
-	public void start(long when) {
+	public void start(TimeInstant when) {
 		isStarted = true;
 	}
 
 	@Override
-	public void stop(long when) {
+	public void stop(TimeInstant when) {
 		isStarted = false;
 	}
 
 	@Override
-	public void pause(long when) {
+	public void pause(TimeInstant when) {
 		isPaused = true;
 	}
 
 	@Override
-	public void resume(long when) {
+	public void resume(TimeInstant when) {
 		isPaused = false;
 	}
 
 	@Override
-	public void addReserveTime(long amount) {
+	public void addReserveTime(TimeAmount amount) {
 		isReserveAdded = true;
 	}
 
 	@Override
-	public void upkeep(long when) {
+	public void upkeep(TimeInstant when) {
 		isUpkeepStarted = true;
 	}
 
 	@Override
-	public long getRemainingReserveTime(long when) {
-		return 0;
+	public TimeAmount getRemainingReserveTime(TimeInstant when) {
+		return TimeAmount.EMPTY;
 	}
 
 	@Override
-	public long getRemainingUpkeepTime(long when) {
-		return 0;
+	public TimeAmount getRemainingUpkeepTime(TimeInstant when) {
+		return TimeAmount.EMPTY;
 	}
 }

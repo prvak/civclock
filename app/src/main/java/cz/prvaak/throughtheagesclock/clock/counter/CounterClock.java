@@ -1,5 +1,7 @@
 package cz.prvaak.throughtheagesclock.clock.counter;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.Clock;
 
 /**
@@ -13,12 +15,12 @@ public interface CounterClock extends Clock {
 	 * @param when Time in milliseconds when the question was asked.
 	 * @return Total elapsed time since the clock was started.
 	 */
-	long getElapsedTime(long when);
+	TimeAmount getElapsedTime(TimeInstant when);
 
 	/**
 	 * Restart the counter.
 	 *
 	 * @param when Time in milliseconds when the clock was restarted.
 	 */
-	void restart(long when);
+	void restart(TimeInstant when);
 }

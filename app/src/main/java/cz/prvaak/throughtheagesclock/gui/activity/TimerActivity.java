@@ -15,10 +15,13 @@ import java.util.List;
 
 import cz.prvaak.throughtheagesclock.Game;
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
+import cz.prvaak.throughtheagesclock.gui.PlayerData;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
 import cz.prvaak.throughtheagesclock.gui.view.PhaseView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
@@ -59,8 +62,7 @@ public class TimerActivity extends ActionBarActivity {
 				return;
 			}
 
-			long now = System.currentTimeMillis();
-			game.startOneOnOnePhase(now, playersMap.get(playerId));
+			game.startOneOnOnePhase(new TimeInstant(), playersMap.get(playerId));
 
 			updatePlayers();
 			updatePhase();
@@ -68,7 +70,7 @@ public class TimerActivity extends ActionBarActivity {
 	};
 
 	private void updateRemainingTimes() {
-		long now = System.currentTimeMillis();
+		TimeInstant now = new TimeInstant();
 		activePlayerView.updateTime(now);
 		inactivePlayersListView.updateTime(now);
 	}
@@ -105,11 +107,14 @@ public class TimerActivity extends ActionBarActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
-		long now = System.currentTimeMillis();
 		if (savedInstanceState == null) {
+			TimeInstant now = new TimeInstant();
+
 			for (int i = 0; i < PlayerColor.values().length; i++) {
 				PlayerColor playerColor = PlayerColor.values()[i];
-				playersMap.put(playerColor, new Player(playerColor, 60000L, 10000L, 30000L));
+				PlayerData playerData = new PlayerData(playerColor, new TimeAmount(60000L),
+						new TimeAmount(10000L), new TimeAmount(30000L));
+				playersMap.put(playerColor, new Player(playerData));
 			}
 
 			ArrayList<Player> playerClocks = new ArrayList<>(PlayerColor.values().length);
@@ -130,7 +135,7 @@ public class TimerActivity extends ActionBarActivity {
 					return;
 				}
 
-				long now = System.currentTimeMillis();
+				TimeInstant now = new TimeInstant();
 				GamePhase currentPhase = game.getCurrentPhase();
 				if (currentPhase instanceof NormalPhase) {
 					NormalPhase phase = (NormalPhase) currentPhase;
@@ -138,7 +143,7 @@ public class TimerActivity extends ActionBarActivity {
 				} else if (currentPhase instanceof OneOnOnePhase) {
 					OneOnOnePhase phase = (OneOnOnePhase) currentPhase;
 					phase.turnDone(now);
-					game.startRoundAboutPhase(now);
+					game.startRoundAboutPhase();
 				}
 				updatePlayers();
 				updatePhase();
@@ -147,10 +152,11 @@ public class TimerActivity extends ActionBarActivity {
 		activePlayerView.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View view) {
+				TimeInstant now = new TimeInstant();
 				if (game.isPaused()) {
-					game.resume(System.currentTimeMillis());
+					game.resume(now);
 				} else {
-					game.pause(System.currentTimeMillis());
+					game.pause(now);
 				}
 				return true;
 			}
@@ -225,7 +231,7 @@ public class TimerActivity extends ActionBarActivity {
 			return;
 		}
 
-		game.startAuctionPhase(System.currentTimeMillis());
+		game.startAuctionPhase();
 		updatePlayers();
 		updatePhase();
 	}
@@ -237,7 +243,7 @@ public class TimerActivity extends ActionBarActivity {
 		}
 
 		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
-		phase.bid(System.currentTimeMillis());
+		phase.bid(new TimeInstant());
 		updatePlayers();
 		updatePhase();
 	}
@@ -249,10 +255,9 @@ public class TimerActivity extends ActionBarActivity {
 		}
 
 		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
-		long now = System.currentTimeMillis();
-		phase.pass(now);
+		phase.pass(new TimeInstant());
 		if (phase.getAllPlayers().size() <= 1) {
-			game.startRoundAboutPhase(now);
+			game.startRoundAboutPhase();
 		}
 		updatePlayers();
 		updatePhase();

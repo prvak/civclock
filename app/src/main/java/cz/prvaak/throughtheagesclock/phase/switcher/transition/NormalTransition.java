@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock.phase.switcher.transition;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 
 /**
@@ -8,12 +9,12 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 public class NormalTransition implements PlayerTransition {
 
 	@Override
-	public void beforeSwitch(PlayerClock activePlayer, long when) {
+	public void beforeSwitch(PlayerClock activePlayer, TimeInstant when) {
 		activePlayer.stop(when);
 	}
 
 	@Override
-	public void afterSwitch(PlayerClock activePlayer, long when) {
+	public void afterSwitch(PlayerClock activePlayer, TimeInstant when) {
 		activePlayer.start(when);
 	}
 }

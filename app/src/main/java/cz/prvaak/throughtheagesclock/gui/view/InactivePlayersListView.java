@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.gui.Player;
 
 /**
@@ -50,7 +51,7 @@ public class InactivePlayersListView extends LinearLayout implements TimeView, P
 	}
 
 	@Override
-	public void updateTime(long now) {
+	public void updateTime(TimeInstant now) {
 		int count = getChildCount();
 		for (int i = 0; i < count; i++) {
 			View child = getChildAt(i);

@@ -1,12 +1,12 @@
-package cz.prvaak.throughtheagesclock.phase.switcher;
+package cz.prvaak.throughtheagesclock.phase;
 
 import android.test.InstrumentationTestCase;
 
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
-import cz.prvaak.throughtheagesclock.phase.NormalPhase;
 
 /**
  * Tests of {@link cz.prvaak.throughtheagesclock.phase.NormalPhase} class.
@@ -25,11 +25,11 @@ public class NormalPhaseTest extends InstrumentationTestCase {
 		NormalPhase phase = new NormalPhase(allPlayers, allPlayers.get(0));
 
 		assertEquals(allPlayers.get(0), phase.getCurrentPlayer());
-		phase.turnDone(0L);
+		phase.turnDone(new TimeInstant(0L));
 		assertEquals(allPlayers.get(1), phase.getCurrentPlayer());
-		phase.turnDone(1000L);
+		phase.turnDone(new TimeInstant(1000L));
 		assertEquals(allPlayers.get(2), phase.getCurrentPlayer());
-		phase.turnDone(2000L);
+		phase.turnDone(new TimeInstant(2000L));
 		assertEquals(allPlayers.get(0), phase.getCurrentPlayer());
 		assertEquals(3, phase.getAllPlayers().size());
 	}

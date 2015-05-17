@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 import cz.prvaak.throughtheagesclock.utils.RepeatingIterator;
@@ -74,7 +75,7 @@ public class PlayerSwitcher {
 	}
 
 	/** Stops current player and starts next player. */
-	public void switchPlayers(PlayerTransition transition, long when) {
+	public void switchPlayers(PlayerTransition transition, TimeInstant when) {
 		transition.beforeSwitch(currentPlayer, when);
 		currentPlayer = iterator.next();
 		transition.afterSwitch(currentPlayer, when);

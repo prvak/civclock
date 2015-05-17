@@ -5,9 +5,9 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.concurrent.TimeUnit;
-
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
@@ -44,43 +44,35 @@ public abstract class PlayerView extends RelativeLayout implements TimeView, Pha
 	}
 
 	@Override
-	public void updateTime(long now) {
+	public void updateTime(TimeInstant now) {
 		TextView remainingReserveTime = (TextView) findViewById(R.id.remaining_reserve_time);
 		if (remainingReserveTime != null) {
-			long time = playerClock.getRemainingReserveTime(now);
+			TimeAmount time = playerClock.getRemainingReserveTime(now);
 			remainingReserveTime.setText(timeToString(time));
 		}
 
 		TextView remainingUpkeepTime = (TextView) findViewById(R.id.remaining_upkeep_time);
 		if (remainingReserveTime != null) {
-			long time = playerClock.getRemainingUpkeepTime(now);
-			remainingUpkeepTime.setText(timeToString(time));
+			TimeAmount time = playerClock.getRemainingUpkeepTime(now);
+			String text = String.format("(%s)", timeToString(time));
+			remainingUpkeepTime.setText(text);
 		}
 	}
 
-	private String timeToString(long time) {
-		boolean isNegative = time < 0;
-		if (isNegative) {
-			time = -time;
-		}
-		long hours = time / TimeUnit.HOURS.toMillis(1);
-		time -= hours * TimeUnit.HOURS.toMillis(1);
-		long minutes = time / TimeUnit.MINUTES.toMillis(1);
-		time -= minutes * TimeUnit.MINUTES.toMillis(1);
-		long seconds = time / TimeUnit.SECONDS.toMillis(1);
-		time -= seconds * TimeUnit.SECONDS.toMillis(1);
-		long milliseconds = time;
-
+	private String timeToString(TimeAmount time) {
 		StringBuilder text = new StringBuilder();
-		if (isNegative) {
+		if (time.isNegative()) {
 			text.append("-");
 		}
-		if (hours > 0) {
-			text.append(String.format("%d:%02d:%d", hours, minutes, seconds));
-		} if (minutes > 0) {
-			text.append(String.format("%02d:%02d", minutes, seconds));
+		if (time.getHours() > 0) {
+			// eg. 2:07:31
+			text.append(String.format("%d:%02d:%02d", time.getHours(), time.getMinutes(), time.getSeconds()));
+		} if (time.getMinutes() > 0) {
+			// eg. 07:31
+			text.append(String.format("%02d:%02d", time.getMinutes(), time.getSeconds()));
 		} else {
-			text.append(String.format("%02d.%02d", seconds, milliseconds / 10));
+			// eg. 0:31.6
+			text.append(String.format("0:%02d.%01d", time.getSeconds(), time.getMilliseconds() / 10));
 		}
 		return text.toString();
 	}

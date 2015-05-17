@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock.gui;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 
 /**
@@ -11,7 +12,8 @@ public class Player extends PlayerClock {
 		this(data.playerColor, data.baseTime, data.upkeepTime, data.turnBonusTime);
 	}
 
-	public Player(PlayerColor playerColor, long baseTime, long upkeepTime, long turnBonusTime) {
+	public Player(PlayerColor playerColor, TimeAmount baseTime, TimeAmount upkeepTime,
+				  TimeAmount turnBonusTime) {
 		super(playerColor, baseTime, upkeepTime, turnBonusTime);
 	}
 

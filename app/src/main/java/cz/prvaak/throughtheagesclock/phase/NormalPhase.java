@@ -2,6 +2,7 @@ package cz.prvaak.throughtheagesclock.phase;
 
 import java.util.List;
 
+import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
@@ -25,7 +26,7 @@ public class NormalPhase implements GamePhase {
 	 *
 	 * @param when Time in milliseconds when the turn is terminated.
 	 */
-	public void turnDone(long when) {
+	public void turnDone(TimeInstant when) {
 		playerSwitcher.switchPlayers(transition, when);
 	}
 

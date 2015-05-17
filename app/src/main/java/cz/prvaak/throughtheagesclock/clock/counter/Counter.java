@@ -1,14 +1,17 @@
 package cz.prvaak.throughtheagesclock.clock.counter;
 
+import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.TimeInstant;
+
 /**
  * Class for measuring elapsed time.
  */
 public class Counter implements CounterClock {
 
 	/** Time (in milliseconds) when the counter was started. */
-	private long initialTime;
+	private TimeInstant initialTime;
 	/** How much time elapsed before starting. It is updated when the counter is stopped. */
-	private long elapsedTime;
+	private TimeAmount elapsedTime = TimeAmount.EMPTY;
 	/** Set to true when {@link #initialTime} is set. */
 	private boolean isInitialized;
 	/** True when the clock is paused and to false when the clock is resumed. */
@@ -17,18 +20,18 @@ public class Counter implements CounterClock {
 	private boolean isStopped = true;
 
 	@Override
-	public long getElapsedTime(long when) {
+	public TimeAmount getElapsedTime(TimeInstant when) {
 		if (!isInitialized) {
-			return 0;
+			return TimeAmount.EMPTY;
 		} else if (isStopped || isPaused) {
 			return elapsedTime;
 		} else {
-			return when - initialTime + elapsedTime;
+			return initialTime.getDistance(when).add(elapsedTime);
 		}
 	}
 
 	@Override
-	public void start(long when) {
+	public void start(TimeInstant when) {
 		checkForTimeShift(when);
 		if (isPaused) {
 			throw new IllegalStateException("Cannot start counter that is paused!");
@@ -42,7 +45,7 @@ public class Counter implements CounterClock {
 	}
 
 	@Override
-	public void stop(long when) {
+	public void stop(TimeInstant when) {
 		checkForTimeShift(when);
 		if (isPaused) {
 			throw new IllegalStateException("Cannot stop counter that is paused!");
@@ -57,7 +60,7 @@ public class Counter implements CounterClock {
 	}
 
 	@Override
-	public void pause(long when) {
+	public void pause(TimeInstant when) {
 		checkForTimeShift(when);
 		if (isPaused) {
 			throw new IllegalStateException("Cannot pause counter that is already paused!");
@@ -69,7 +72,7 @@ public class Counter implements CounterClock {
 	}
 
 	@Override
-	public void resume(long when) {
+	public void resume(TimeInstant when) {
 		checkForTimeShift(when);
 		if (!isPaused) {
 			throw new IllegalStateException("Cannot resume counter that is not paused!");
@@ -80,31 +83,26 @@ public class Counter implements CounterClock {
 	}
 
 	@Override
-	public void restart(long when) {
+	public void restart(TimeInstant when) {
 		isStopped = false;
 		stop(when);
-		elapsedTime = 0;
+		elapsedTime = TimeAmount.EMPTY;
 		start(when);
 	}
 
-	@Override
-	public String toString() {
-		return String.format("Initial: %d", initialTime);
-	}
-
-	private void updateElapsedTime(long when) {
+	private void updateElapsedTime(TimeInstant when) {
 		if (isInitialized && !isStopped) {
-			elapsedTime += when - initialTime;
+			elapsedTime = elapsedTime.add(initialTime.getDistance(when));
 		}
 	}
 
-	private void setInitialTime(long when) {
+	private void setInitialTime(TimeInstant when) {
 		initialTime = when;
 		isInitialized = true;
 	}
 
-	private void checkForTimeShift(long when) {
-		if (isInitialized && initialTime > when) {
+	private void checkForTimeShift(TimeInstant when) {
+		if (isInitialized && initialTime.isInFutureFrom(when)) {
 			throw new IllegalArgumentException("Cannot travel in time!");
 		}
 	}
