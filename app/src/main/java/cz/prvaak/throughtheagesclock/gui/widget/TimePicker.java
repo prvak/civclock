@@ -2,12 +2,12 @@ package cz.prvaak.throughtheagesclock.gui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.RelativeLayout;
 
 /**
  * Widget for selecting time.
  */
-public class TimePicker extends View {
+public class TimePicker extends RelativeLayout {
 
 	public TimePicker(Context context) {
 		super(context);
@@ -23,5 +23,8 @@ public class TimePicker extends View {
 
 	public long getTime() {
 		return 90L;
+	}
+
+	public void setTime(long time) {
 	}
 }
