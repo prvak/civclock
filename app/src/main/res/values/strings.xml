@@ -12,5 +12,6 @@
     <string name="base_time">Base time</string>
     <string name="turn_bonus">Turn bonus</string>
     <string name="upkeep_time">Upkeep time</string>
+    <string name="start_game">Start game</string>
 
 </resources>
