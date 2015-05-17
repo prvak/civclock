@@ -52,6 +52,15 @@ public class TimeAmountTest extends InstrumentationTestCase {
 		assertFalse(amount.isNegative());
 	}
 
+	public void testConstructorFromFields() throws Exception {
+		TimeAmount amount = new TimeAmount(2L, 44L, 32L, 500L);
+		assertEquals(2L, amount.getHours());
+		assertEquals(44L, amount.getMinutes());
+		assertEquals(32L, amount.getSeconds());
+		assertEquals(500L, amount.getMilliseconds());
+		assertFalse(amount.isNegative());
+	}
+
 	public void testNegativeInterval() throws Exception {
 		TimeAmount amount = new TimeAmount(
 				-(1 * 60 * 60 * 1000L

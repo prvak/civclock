@@ -72,7 +72,7 @@ public abstract class PlayerView extends RelativeLayout implements TimeView, Pha
 			text.append(String.format("%02d:%02d", time.getMinutes(), time.getSeconds()));
 		} else {
 			// eg. 0:31.6
-			text.append(String.format("0:%02d.%01d", time.getSeconds(), time.getMilliseconds() / 10));
+			text.append(String.format("0:%02d.%01d", time.getSeconds(), time.getMilliseconds() / 100));
 		}
 		return text.toString();
 	}

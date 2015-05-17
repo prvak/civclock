@@ -34,13 +34,13 @@
                 android:layout_below="@+id/new_game_text"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/linearLayout">
+                android:id="@+id/players_list_view">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:id="@+id/player_settings">
+                    android:id="@+id/player_info">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -77,7 +77,8 @@
 
                 <TableLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player_details_view">
 
                     <TableRow
                         android:layout_width="fill_parent"
@@ -152,6 +153,16 @@
                 </TableLayout>
 
             </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start game"
+                android:id="@+id/start_game_button"
+                android:layout_below="@id/players_list_view"
+                android:layout_centerHorizontal="true"
+                android:onClick="onStartGameButton"/>
+
         </RelativeLayout>
     </ScrollView>
 

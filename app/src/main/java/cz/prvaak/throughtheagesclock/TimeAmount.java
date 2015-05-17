@@ -31,6 +31,13 @@ public class TimeAmount {
 		this.milliseconds = remainingMs;
 	}
 
+	public TimeAmount(long hours, long minutes, long seconds, long milliseconds) {
+		this(TimeUnit.HOURS.toMillis(hours)
+				+ TimeUnit.MINUTES.toMillis(minutes)
+				+ TimeUnit.SECONDS.toMillis(seconds)
+				+ milliseconds);
+	}
+
 	public long getHours() {
 		return this.hours;
 	}

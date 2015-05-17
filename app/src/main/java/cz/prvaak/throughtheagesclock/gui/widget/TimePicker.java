@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.TimeAmount;
+
 /**
  * Widget for selecting time.
  */
@@ -21,10 +24,20 @@ public class TimePicker extends RelativeLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public long getTime() {
-		return 90L;
+	public TimeAmount getTime() {
+		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
+		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
+		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
+		return new TimeAmount(hoursPicker.getValue(), minutesPicker.getValue(),
+				secondsPicker.getValue(), 0L);
 	}
 
-	public void setTime(long time) {
+	public void setTime(TimeAmount amount) {
+		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
+		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
+		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
+		hoursPicker.setValue((int)amount.getHours());
+		minutesPicker.setValue((int)amount.getMinutes());
+		secondsPicker.setValue((int)amount.getSeconds());
 	}
 }

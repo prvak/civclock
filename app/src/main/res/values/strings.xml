@@ -8,6 +8,7 @@
     <string name="color_blue">Blue</string>
     <string name="color_yellow">Yellow</string>
     <string name="new_game">New Game</string>
+    <string name="active_game">Active Game</string>
     <string name="base_time">Base time</string>
     <string name="turn_bonus">Turn bonus</string>
     <string name="upkeep_time">Upkeep time</string>
