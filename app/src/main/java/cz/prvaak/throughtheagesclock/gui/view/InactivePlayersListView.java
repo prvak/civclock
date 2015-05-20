@@ -12,11 +12,13 @@ import java.util.List;
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
+import cz.prvaak.throughtheagesclock.gui.view.display.PhaseDisplay;
+import cz.prvaak.throughtheagesclock.gui.view.display.TimeDisplay;
 
 /**
  * View of inactive players.
  */
-public class InactivePlayersListView extends LinearLayout implements TimeView, PhaseView {
+public class InactivePlayersListView extends LinearLayout implements TimeDisplay, PhaseDisplay {
 
 	public InactivePlayersListView(Context context) {
 		super(context);
@@ -55,21 +57,21 @@ public class InactivePlayersListView extends LinearLayout implements TimeView, P
 		int count = getChildCount();
 		for (int i = 0; i < count; i++) {
 			View child = getChildAt(i);
-			if (child instanceof TimeView) {
-				TimeView view = (TimeView) child;
+			if (child instanceof TimeDisplay) {
+				TimeDisplay view = (TimeDisplay) child;
 				view.updateTime(now);
 			}
 		}
 	}
 
 	@Override
-	public void setPhase(Phase phase) {
+	public void updatePhase(Phase phase) {
 		int count = getChildCount();
 		for (int i = 0; i < count; i++) {
 			View child = getChildAt(i);
-			if (child instanceof PhaseView) {
-				PhaseView view = (PhaseView) child;
-				view.setPhase(phase);
+			if (child instanceof PhaseDisplay) {
+				PhaseDisplay view = (PhaseDisplay) child;
+				view.updatePhase(phase);
 			}
 		}
 	}

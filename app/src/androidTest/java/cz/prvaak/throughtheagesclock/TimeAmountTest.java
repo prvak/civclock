@@ -91,4 +91,25 @@ public class TimeAmountTest extends InstrumentationTestCase {
 		assertEquals(amountSmall, TimeAmount.max(amountSmall, amountBig));
 		assertEquals(amountSmall, TimeAmount.max(amountBig, amountSmall));
 	}
+
+	public void testFormat() throws Exception {
+		TimeAmount amount = new TimeAmount(2 * 60 * 60 * 1000 + 27 * 60 * 1000 + 36 * 1000 + 257);
+		assertEquals("2:27:36", amount.format());
+	}
+
+	public void testWithoutHours() throws Exception {
+		TimeAmount amount = new TimeAmount(7 * 60 * 1000 + 5 * 1000 + 348);
+		assertEquals("7:05", amount.format());
+	}
+
+	public void testWithoutMinutes() throws Exception {
+		TimeAmount amount = new TimeAmount(3 * 1000 + 550);
+		assertEquals("0:03.5", amount.format());
+	}
+
+	public void testFormatNegative() throws Exception {
+		TimeAmount amount = new TimeAmount(- 5 * 60 * 60 * 1000 - 12 * 60 * 1000 - 4 * 1000 - 852);
+		assertEquals("-5:12:04", amount.format());
+	}
+
 }

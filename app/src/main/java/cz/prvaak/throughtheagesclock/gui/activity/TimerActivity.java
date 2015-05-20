@@ -14,9 +14,9 @@ import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
-import cz.prvaak.throughtheagesclock.gui.view.PhaseView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerView;
+import cz.prvaak.throughtheagesclock.gui.view.display.PhaseDisplay;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.NormalPhase;
@@ -66,9 +66,9 @@ public class TimerActivity extends ActionBarActivity {
 	}
 
 	private void updatePhase() {
-		PhaseView.Phase phase = getCurrentPhase();
-		activePlayerView.setPhase(phase);
-		inactivePlayersListView.setPhase(phase);
+		PhaseDisplay.Phase phase = getCurrentPhase();
+		activePlayerView.updatePhase(phase);
+		inactivePlayersListView.updatePhase(phase);
 	}
 
 	private void updatePlayers() {
@@ -232,14 +232,14 @@ public class TimerActivity extends ActionBarActivity {
 		updatePhase();
 	}
 
-	private PhaseView.Phase getCurrentPhase() {
+	private PhaseDisplay.Phase getCurrentPhase() {
 		GamePhase phase = game.getCurrentPhase();
 		if (phase instanceof NormalPhase) {
-			return PhaseView.Phase.NORMAL;
+			return PhaseDisplay.Phase.NORMAL;
 		} else if (phase instanceof AuctionPhase) {
-			return PhaseView.Phase.AUCTION;
+			return PhaseDisplay.Phase.AUCTION;
 		} else {
-			return PhaseView.Phase.ONE_ON_ONE;
+			return PhaseDisplay.Phase.ONE_ON_ONE;
 		}
 	}
 }

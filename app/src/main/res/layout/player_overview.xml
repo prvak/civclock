@@ -14,8 +14,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/color_blue"
         android:id="@+id/player_name"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_centerVertical="true"/>
@@ -24,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="10:00 + 1:30 (0:30)"
-        android:id="@+id/time_settings_text"
+        android:text="10:00 + 1:30 + (0:30.0)"
+        android:id="@+id/time_overview_text"
         android:layout_centerVertical="true"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"/>

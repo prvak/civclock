@@ -10,11 +10,13 @@ import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
+import cz.prvaak.throughtheagesclock.gui.view.display.PhaseDisplay;
+import cz.prvaak.throughtheagesclock.gui.view.display.TimeDisplay;
 
 /**
  * View that displays information about one player.
  */
-public abstract class PlayerView extends RelativeLayout implements TimeView, PhaseView {
+public abstract class PlayerView extends RelativeLayout implements TimeDisplay, PhaseDisplay {
 
 	private PlayerClock playerClock;
 
@@ -35,9 +37,7 @@ public abstract class PlayerView extends RelativeLayout implements TimeView, Pha
 		PlayerColor playerColor = (PlayerColor) playerClock.getPlayerId();
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);
-		if (playerName != null) {
-			playerName.setText(playerColor.getNameResourceId());
-		}
+		playerName.setText(playerColor.getNameResourceId());
 
 		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 	}

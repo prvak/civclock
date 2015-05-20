@@ -1,9 +1,9 @@
-package cz.prvaak.throughtheagesclock.gui.view;
+package cz.prvaak.throughtheagesclock.gui.view.display;
 
 /**
  * Interface of a view that needs to change according to current phase.
  */
-public interface PhaseView {
+public interface PhaseDisplay {
 
 	/**
 	 * Available game phases.
@@ -13,5 +13,5 @@ public interface PhaseView {
 	}
 
 	/** Update view based on given phase. */
-	void setPhase(Phase phase);
+	void updatePhase(Phase phase);
 }

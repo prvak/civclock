@@ -23,7 +23,7 @@ public class ActivePlayerView extends PlayerView {
 	}
 
 	@Override
-	public void setPhase(Phase phase) {
+	public void updatePhase(Phase phase) {
 		Button bidButton = (Button) findViewById(R.id.bid_button);
 		Button passButton = (Button) findViewById(R.id.pass_button);
 		Button auctionButton = (Button) findViewById(R.id.auction_button);

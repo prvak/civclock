@@ -24,7 +24,7 @@ public class InactivePlayerView extends PlayerView {
 	}
 
 	@Override
-	public void setPhase(Phase phase) {
+	public void updatePhase(Phase phase) {
 		Button dealButton = (Button) findViewById(R.id.deal_button);
 		switch (phase) {
 			case NORMAL:

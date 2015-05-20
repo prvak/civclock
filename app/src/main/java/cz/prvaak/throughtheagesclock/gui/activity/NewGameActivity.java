@@ -13,16 +13,29 @@ import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
+import cz.prvaak.throughtheagesclock.gui.PlayerData;
+import cz.prvaak.throughtheagesclock.gui.view.NewPlayersListView;
 
 /**
  * Activity for starting a new game. It handles player selection and time settings.
  */
 public class NewGameActivity extends ActionBarActivity {
 
+	ArrayList<PlayerData> playerData = new ArrayList<>(PlayerColor.values().length);
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_game);
+
+		playerData.clear();
+		playerData.add(new PlayerData(PlayerColor.RED, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.GREEN, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.BLUE, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.YELLOW, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
+
+		NewPlayersListView newPlayersListView = (NewPlayersListView) findViewById(R.id.new_players_list_view);
+		newPlayersListView.setPlayerData(playerData);
 	}
 
 	@Override
@@ -35,10 +48,10 @@ public class NewGameActivity extends ActionBarActivity {
 	public void onStartGameButton(View view) {
 		Intent timerActivityIntent = new Intent(this, TimerActivity.class);
 		ArrayList<Player> playerClocks = new ArrayList<>(PlayerColor.values().length);
-		playerClocks.add(new Player(PlayerColor.RED, new TimeAmount(60000L), new TimeAmount(10000L), new TimeAmount(30000L)));
-		playerClocks.add(new Player(PlayerColor.GREEN, new TimeAmount(60000L), new TimeAmount(10000L), new TimeAmount(30000L)));
-		playerClocks.add(new Player(PlayerColor.BLUE, new TimeAmount(60000L), new TimeAmount(10000L), new TimeAmount(30000L)));
-		playerClocks.add(new Player(PlayerColor.YELLOW, new TimeAmount(60000L), new TimeAmount(10000L), new TimeAmount(30000L)));
+		for (PlayerData data: playerData) {
+			playerClocks.add(new Player(data));
+		}
+
 		Game game = new Game(playerClocks);
 		timerActivityIntent.putExtra("game", game);
 		startActivity(timerActivityIntent);

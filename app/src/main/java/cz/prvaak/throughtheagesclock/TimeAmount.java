@@ -75,6 +75,24 @@ public class TimeAmount implements Serializable {
 		return interval1.totalTimeMs > interval2.totalTimeMs ? interval1 : interval2;
 	}
 
+	public String format() {
+		StringBuilder text = new StringBuilder();
+		if (isNegative()) {
+			text.append("-");
+		}
+		if (getHours() > 0) {
+			// eg. 2:07:31
+			text.append(String.format("%d:%02d:%02d", getHours(), getMinutes(), getSeconds()));
+		} else if (getMinutes() > 0) {
+			// eg. 07:31
+			text.append(String.format("%d:%02d", getMinutes(), getSeconds()));
+		} else {
+			// eg. 0:31.6
+			text.append(String.format("0:%02d.%01d", getSeconds(), getMilliseconds() / 100));
+		}
+		return text.toString();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
