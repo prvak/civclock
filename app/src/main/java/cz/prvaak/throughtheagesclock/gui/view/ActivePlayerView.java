@@ -27,21 +27,29 @@ public class ActivePlayerView extends PlayerView {
 		Button bidButton = (Button) findViewById(R.id.bid_button);
 		Button passButton = (Button) findViewById(R.id.pass_button);
 		Button auctionButton = (Button) findViewById(R.id.auction_button);
+		Button newAgeButton = (Button) findViewById(R.id.new_age_button);
+		Button eventButton = (Button) findViewById(R.id.event_button);
 		switch (phase) {
 			case NORMAL:
 				bidButton.setVisibility(GONE);
 				passButton.setVisibility(GONE);
 				auctionButton.setVisibility(VISIBLE);
+				newAgeButton.setVisibility(VISIBLE);
+				eventButton.setVisibility(VISIBLE);
 				break;
 			case AUCTION:
 				bidButton.setVisibility(VISIBLE);
 				passButton.setVisibility(VISIBLE);
 				auctionButton.setVisibility(GONE);
+				newAgeButton.setVisibility(GONE);
+				eventButton.setVisibility(GONE);
 				break;
 			case ONE_ON_ONE:
 				bidButton.setVisibility(GONE);
 				passButton.setVisibility(GONE);
 				auctionButton.setVisibility(GONE);
+				newAgeButton.setVisibility(GONE);
+				eventButton.setVisibility(GONE);
 				break;
 		}
 	}

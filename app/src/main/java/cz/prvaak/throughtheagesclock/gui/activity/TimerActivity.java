@@ -3,10 +3,11 @@ package cz.prvaak.throughtheagesclock.gui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import cz.prvaak.throughtheagesclock.Game;
@@ -83,11 +84,18 @@ public class TimerActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+
+		super.onCreate(savedInstanceState);
+
+		// disable action bar
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.hide();
+		}
 
 		// Prevent screen from locking.
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
 
 		if (savedInstanceState == null) {
 			game = (Game) getIntent().getExtras().getSerializable("game");
@@ -171,13 +179,6 @@ public class TimerActivity extends ActionBarActivity {
 		super.onResume();
 		updateHandler.postDelayed(updateTask, UPDATE_DELAY_MS);
 	}
-
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_timer, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -12,6 +12,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Auction"
+            android:id="@+id/auction_button"
+            android:visibility="visible"
+            android:onClick="onAuctionButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Red"
+            android:id="@+id/player_name"
+            android:layout_below="@+id/auction_button"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -27,8 +48,7 @@
                 android:text="12:34"
                 android:id="@+id/remaining_reserve_time"
                 android:layout_gravity="center"
-                android:textSize="60dp"
-                android:elegantTextHeight="false"
+                android:textSize="60sp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
 
@@ -43,28 +63,6 @@
             android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
-
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Red"
-        android:id="@+id/player_name"
-        android:layout_gravity="top"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Auction"
-            android:id="@+id/auction_button"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:visibility="gone"
-            android:onClick="onAuctionButton"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -87,6 +85,23 @@
             android:layout_alignParentEnd="true"
             android:visibility="gone"
             android:onClick="onPassButton"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event"
+            android:id="@+id/event_button"
+            android:layout_alignBottom="@+id/auction_button"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New age"
+            android:id="@+id/new_age_button"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 </cz.prvaak.throughtheagesclock.gui.view.ActivePlayerView>
