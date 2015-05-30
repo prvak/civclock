@@ -5,6 +5,7 @@ import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.timer.LimitedTimer;
 import cz.prvaak.throughtheagesclock.clock.timer.Timer;
 import cz.prvaak.throughtheagesclock.clock.timer.TimerClock;
+import cz.prvaak.throughtheagesclock.clock.timer.UpkeepTimer;
 
 /**
  * Class for keeping track of how much time remains to a player.
@@ -49,7 +50,7 @@ public class PlayerClock implements Clock {
 
 		this.playerId = playerId;
 		this.reserveTime = new Timer(baseTime);
-		this.upkeepTime = new LimitedTimer(upkeepTime);
+		this.upkeepTime = new UpkeepTimer(upkeepTime);
 		this.overlapTime = new LimitedTimer(TimeAmount.EMPTY);
 		this.turnBonusTime = turnBonusTime;
 	}
@@ -110,8 +111,21 @@ public class PlayerClock implements Clock {
 	}
 
 	/**
+	 * Add predefined amount of time to upkeep protection period. This time is independent on
+	 * the base upkeep period. It does not refill when {@link #upkeep} is called but is not lost
+	 * either.
+	 *
+	 * @param when Current time in milliseconds.
+	 * @param amount How many milliseconds to add to the upkeep protection period.
+	 */
+	public void addUpkeepBonusTime(TimeInstant when, TimeAmount amount) {
+		upkeepTime.addTime(when, amount);
+	}
+
+	/**
 	 * Add predefined amount of time to the remaining time.
 	 * The amount is defined in constructor.
+	 *
 	 * @param when Current time in milliseconds.
 	 */
 	public void addTurnBonusTime(TimeInstant when) {

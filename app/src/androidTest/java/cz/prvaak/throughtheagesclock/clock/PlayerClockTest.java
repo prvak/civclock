@@ -62,6 +62,14 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		assertEquals(new TimeAmount(90000L), playerClock.getRemainingReserveTime(new TimeInstant(1000L)));
 	}
 
+	public void testAddUpkeepBonusTime() throws Exception {
+		PlayerClock playerClock = createPlayerClock();
+		playerClock.addUpkeepBonusTime(new TimeInstant(0L), new TimeAmount(10000));
+		assertEquals(new TimeAmount(9000L), playerClock.getRemainingUpkeepTime(new TimeInstant(1000L)));
+		playerClock.upkeep(new TimeInstant(2000L));
+		assertEquals(new TimeAmount(37000L), playerClock.getRemainingUpkeepTime(new TimeInstant(3000L)));
+	}
+
 	public void testUpkeepStartShort() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.upkeep(new TimeInstant(0L));

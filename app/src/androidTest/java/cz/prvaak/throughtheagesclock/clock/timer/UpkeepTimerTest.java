@@ -2,20 +2,22 @@ package cz.prvaak.throughtheagesclock.clock.timer;
 
 import android.test.InstrumentationTestCase;
 
+import junit.framework.Assert;
+
 import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 
 /**
- * Tests of {@link cz.prvaak.throughtheagesclock.clock.timer.DualTimer} class.
+ * Tests of {@link UpkeepTimer} class.
  */
-public class DualTimerTest extends InstrumentationTestCase {
+public class UpkeepTimerTest extends InstrumentationTestCase {
 
-	private DualTimer createTimer() {
-		return new DualTimer(new TimeAmount(10000L));
+	private UpkeepTimer createTimer() {
+		return new UpkeepTimer(new TimeAmount(10000L));
 	}
 
 	public void testRestart() throws Exception {
-		DualTimer timer = createTimer();
+		UpkeepTimer timer = createTimer();
 		timer.addTime(new TimeInstant(0L), new TimeAmount(5000L));
 		timer.start(new TimeInstant(0L));
 
@@ -26,7 +28,7 @@ public class DualTimerTest extends InstrumentationTestCase {
 	}
 
 	public void testRestartSoon() throws Exception {
-		DualTimer timer = createTimer();
+		UpkeepTimer timer = createTimer();
 		timer.addTime(new TimeInstant(0L), new TimeAmount(5000L));
 		timer.start(new TimeInstant(0L));
 
@@ -37,7 +39,7 @@ public class DualTimerTest extends InstrumentationTestCase {
 	}
 
 	public void testAddAndRestart() throws Exception {
-		DualTimer timer = createTimer();
+		UpkeepTimer timer = createTimer();
 		timer.addTime(new TimeInstant(0L), new TimeAmount(5000L));
 		timer.start(new TimeInstant(0L));
 
@@ -49,7 +51,7 @@ public class DualTimerTest extends InstrumentationTestCase {
 	}
 
 	public void testRestartAndAdd() throws Exception {
-		DualTimer timer = createTimer();
+		UpkeepTimer timer = createTimer();
 		timer.addTime(new TimeInstant(0L), new TimeAmount(5000L));
 		timer.start(new TimeInstant(0L));
 
@@ -61,7 +63,7 @@ public class DualTimerTest extends InstrumentationTestCase {
 	}
 
 	public void testAddAndStartLater() throws Exception {
-		DualTimer timer = createTimer();
+		UpkeepTimer timer = createTimer();
 		timer.addTime(new TimeInstant(0L), new TimeAmount(5000L));
 		timer.start(new TimeInstant(1000L));
 
@@ -70,5 +72,27 @@ public class DualTimerTest extends InstrumentationTestCase {
 		timer.restart(now);
 		timer.addTime(now, new TimeAmount(10000L));
 		assertEquals(new TimeAmount(20000L), timer.getRemainingTime(now));
+	}
+
+	public void testGetRemainingTimeOfStopped() throws Exception {
+		UpkeepTimer timer = createTimer();
+		assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(0L)));
+		assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(1000L)));
+	}
+
+	public void testGetRemainingTimeOfEmpty() throws Exception {
+		UpkeepTimer timer = new UpkeepTimer(new TimeAmount(0L));
+		timer.start(new TimeInstant(1000L));
+		assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(1000L)));
+		assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(2000L)));
+	}
+
+	public void testNegativeFixedTimeNotAllowed() throws Exception {
+		try {
+			new UpkeepTimer(new TimeAmount(-5000));
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
 	}
 }

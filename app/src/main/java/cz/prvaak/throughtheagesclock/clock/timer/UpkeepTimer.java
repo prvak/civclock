@@ -8,7 +8,7 @@ import cz.prvaak.throughtheagesclock.clock.counter.Counter;
  * Timer with fixed base time and variable extensible time. Time is always deducted from the
  * extensible portion first.
  */
-public class DualTimer implements TimerClock {
+public class UpkeepTimer implements TimerClock {
 
 	private final Counter counter;
 	/** Fixed time is reset to this value on restart. */
@@ -19,12 +19,14 @@ public class DualTimer implements TimerClock {
 	private TimeAmount remainingVariableTime;
 	/** Time elapsed since previous restart. */
 	private TimeAmount totalElapsedTime;
-	private boolean isStarted;
 
-	public DualTimer(TimeAmount fixedTime) {
+	public UpkeepTimer(TimeAmount fixedTime) {
+		if (fixedTime.isNegative()) {
+			throw new IllegalArgumentException("Fixed time cannot be negative!");
+		}
 		this.counter = new Counter();
 		this.fixedTime = fixedTime;
-		this.remainingFixedTime = fixedTime;
+		this.remainingFixedTime = TimeAmount.EMPTY;
 		this.remainingVariableTime = TimeAmount.EMPTY;
 		this.totalElapsedTime = TimeAmount.EMPTY;
 	}
@@ -48,7 +50,6 @@ public class DualTimer implements TimerClock {
 	public void restart(TimeInstant when) {
 		TimeAmount elapsedTime = counter.getElapsedTime(when);
 		TimeAmount variableTime = getRemainingVariableTime(elapsedTime);
-		isStarted = true;
 		counter.restart(when);
 		remainingFixedTime = fixedTime;
 		remainingVariableTime = variableTime;
@@ -59,7 +60,6 @@ public class DualTimer implements TimerClock {
 	public void restart(TimeInstant when, TimeAmount newBaseTime) {
 		TimeAmount elapsedTime = counter.getElapsedTime(when);
 		TimeAmount variableTime = getRemainingVariableTime(elapsedTime);
-		isStarted = true;
 		counter.restart(when);
 		fixedTime = newBaseTime;
 		remainingFixedTime = fixedTime;
@@ -72,9 +72,7 @@ public class DualTimer implements TimerClock {
 		TimeAmount elapsedTime = counter.getElapsedTime(when);
 		TimeAmount variableTime = getRemainingVariableTime(elapsedTime);
 		TimeAmount fixedTime = getRemainingFixedTime(elapsedTime);
-		if (isStarted) {
-			counter.restart(when);
-		}
+		counter.restart(when);
 		remainingFixedTime = fixedTime;
 		remainingVariableTime = variableTime.add(amount);
 		totalElapsedTime.add(elapsedTime);
@@ -95,14 +93,13 @@ public class DualTimer implements TimerClock {
 
 	@Override
 	public void stop(TimeInstant when) {
-		isStarted = false;
 		counter.stop(when);
 	}
 
 	@Override
 	public void start(TimeInstant when) {
-		isStarted = true;
-		counter.start(when); // counter may be already started by call to addTime
+		remainingFixedTime = fixedTime;
+		counter.restart(when); // counter may be already started by call to addTime
 	}
 
 	@Override

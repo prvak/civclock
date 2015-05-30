@@ -14,6 +14,7 @@ public class FakePlayerClock extends PlayerClock {
 	public boolean isPaused;
 	public boolean isUpkeepStarted;
 	public boolean isReserveAdded;
+	public boolean isBonusAdded;
 
 	public static ArrayList<PlayerClock> createPlayerClocks(int howMany) {
 		ArrayList<PlayerClock> playerClocks = new ArrayList<>(howMany);
@@ -56,6 +57,11 @@ public class FakePlayerClock extends PlayerClock {
 	@Override
 	public void upkeep(TimeInstant when) {
 		isUpkeepStarted = true;
+	}
+
+	@Override
+	public void addUpkeepBonusTime(TimeInstant when, TimeAmount amount) {
+		isBonusAdded = true;
 	}
 
 	@Override
