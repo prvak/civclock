@@ -12,7 +12,7 @@ public class UpkeepTransition implements PlayerTransition {
 	public void beforeSwitch(PlayerClock activePlayer, TimeInstant when) {
 		activePlayer.stop(when);
 		activePlayer.upkeep(when);
-		activePlayer.addTurnBonusTime();
+		activePlayer.addTurnBonusTime(when);
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class CounterToTimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public void addTime(TimeAmount amount) {
+	public void addTime(TimeInstant when, TimeAmount amount) {
 		baseTime = baseTime.add(amount);
 	}
 

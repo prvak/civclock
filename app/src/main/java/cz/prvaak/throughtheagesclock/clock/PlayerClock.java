@@ -57,7 +57,7 @@ public class PlayerClock implements Clock {
 	@Override
 	public void start(TimeInstant when) {
 		reserveTime.start(when);
-		reserveTime.addTime(overlapTime.getElapsedTime(when));
+		reserveTime.addTime(when, overlapTime.getElapsedTime(when));
 		overlapTime.restart(when, upkeepTime.getRemainingTime(when));
 		isStarted = true;
 	}
@@ -86,11 +86,11 @@ public class PlayerClock implements Clock {
 	/**
 	 * Add given amount of time to the reserve time.
 	 *
+	 * @param when Current time in milliseconds.
 	 * @param amount How many milliseconds to add to the reserve time. If the value is negative
-	 *	the reserve time is reduced.
 	 */
-	public void addReserveTime(TimeAmount amount) {
-		reserveTime.addTime(amount);
+	public void addReserveTime(TimeInstant when, TimeAmount amount) {
+		reserveTime.addTime(when, amount);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class PlayerClock implements Clock {
 	public void upkeep(TimeInstant when) {
 		upkeepTime.restart(when);
 		if (isStarted) {
-			reserveTime.addTime(overlapTime.getElapsedTime(when));
+			reserveTime.addTime(when, overlapTime.getElapsedTime(when));
 			overlapTime.restart(when, upkeepTime.getRemainingTime(when));
 		}
 	}
@@ -112,9 +112,10 @@ public class PlayerClock implements Clock {
 	/**
 	 * Add predefined amount of time to the remaining time.
 	 * The amount is defined in constructor.
+	 * @param when Current time in milliseconds.
 	 */
-	public void addTurnBonusTime() {
-		addReserveTime(turnBonusTime);
+	public void addTurnBonusTime(TimeInstant when) {
+		addReserveTime(when, turnBonusTime);
 	}
 
 	/**

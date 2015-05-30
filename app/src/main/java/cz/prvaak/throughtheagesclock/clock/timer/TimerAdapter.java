@@ -25,8 +25,8 @@ public class TimerAdapter implements TimerClock {
 	}
 
 	@Override
-	public void addTime(TimeAmount amount) {
-		target.addTime(amount);
+	public void addTime(TimeInstant when, TimeAmount amount) {
+		target.addTime(when, amount);
 	}
 
 	@Override

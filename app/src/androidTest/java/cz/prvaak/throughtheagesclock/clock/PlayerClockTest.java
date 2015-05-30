@@ -52,13 +52,13 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testAddReserveTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		playerClock.addReserveTime(new TimeAmount(1000L));
+		playerClock.addReserveTime(new TimeInstant(0L), new TimeAmount(1000L));
 		assertEquals(new TimeAmount(61000L), playerClock.getRemainingReserveTime(new TimeInstant(1000L)));
 	}
 
 	public void testAddTurnBonusTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		playerClock.addTurnBonusTime();
+		playerClock.addTurnBonusTime(new TimeInstant(0L));
 		assertEquals(new TimeAmount(90000L), playerClock.getRemainingReserveTime(new TimeInstant(1000L)));
 	}
 

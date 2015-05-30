@@ -49,7 +49,7 @@ public class FakePlayerClock extends PlayerClock {
 	}
 
 	@Override
-	public void addReserveTime(TimeAmount amount) {
+	public void addReserveTime(TimeInstant when, TimeAmount amount) {
 		isReserveAdded = true;
 	}
 

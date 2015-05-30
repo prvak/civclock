@@ -7,7 +7,7 @@ import cz.prvaak.throughtheagesclock.clock.counter.Counter;
  * Timer implementation that uses {@link cz.prvaak.throughtheagesclock.clock.counter.Counter}
  * in the background.
  */
-public class Timer extends CounterToTimerAdapter implements TimerClock {
+public class Timer extends CounterToTimerAdapter {
 
 	public Timer(TimeAmount baseTime) {
 		super(new Counter(), baseTime);

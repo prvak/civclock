@@ -27,7 +27,8 @@ public interface TimerClock extends CounterClock {
 	/**
 	 * Add given amount of time to remaining time.
 	 *
+	 * @param when Time in milliseconds when the time was added.
 	 * @param amount How many milliseconds to add.
 	 */
-	void addTime(TimeAmount amount);
+	void addTime(TimeInstant when, TimeAmount amount);
 }
