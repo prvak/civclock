@@ -70,4 +70,11 @@ public class Game implements Serializable {
 		}
 		throw new IllegalArgumentException(String.format("Unknown player id '%s'", playerId));
 	}
+
+	public void addUpkeepBonusTime(TimeInstant when) {
+		for (PlayerClock playerClock: remainingPlayers) {
+			playerClock.addUpkeepBonusTime(when);
+		}
+		isPaused = false;
+	}
 }

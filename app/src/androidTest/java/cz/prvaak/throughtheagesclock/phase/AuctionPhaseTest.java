@@ -52,6 +52,17 @@ public class AuctionPhaseTest extends InstrumentationTestCase {
 		assertEquals(allPlayers.get(2), auctionPhase.getCurrentPlayer());
 	}
 
+	public void testLastPassStartsInitiatingPlayer() throws Exception {
+		List<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(3);
+		AuctionPhase auctionPhase = new AuctionPhase(allPlayers, allPlayers.get(0));
+
+		auctionPhase.pass(new TimeInstant(1000L));
+		auctionPhase.pass(new TimeInstant(1000L));
+		FakePlayerClock currentPlayer = (FakePlayerClock) auctionPhase.getCurrentPlayer();
+		assertEquals(allPlayers.get(0), currentPlayer);
+		assertTrue(currentPlayer.isStarted);
+	}
+
 	public void testLastPlayerCannotBid() throws Exception {
 		List<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(2);
 		AuctionPhase auctionPhase = new AuctionPhase(allPlayers, allPlayers.get(0));

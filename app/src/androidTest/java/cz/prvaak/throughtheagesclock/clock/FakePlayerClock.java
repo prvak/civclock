@@ -19,14 +19,17 @@ public class FakePlayerClock extends PlayerClock {
 	public static ArrayList<PlayerClock> createPlayerClocks(int howMany) {
 		ArrayList<PlayerClock> playerClocks = new ArrayList<>(howMany);
 		for (int i = 0; i < howMany; i++) {
-			playerClocks.add(new FakePlayerClock());
+			playerClocks.add(new FakePlayerClock(i));
 		}
 		playerClocks.get(0).start(new TimeInstant(0L));
 		return playerClocks;
 	}
 
 	public FakePlayerClock() {
-		super(new FakePlayerId(), new TimeAmount(10000L), new TimeAmount(1000L),
+		this(0);
+	}
+	public FakePlayerClock(int index) {
+		super(new FakePlayerId(index), new TimeAmount(10000L), new TimeAmount(1000L),
 				new TimeAmount(10000L), new TimeAmount(10000L));
 	}
 
@@ -73,5 +76,10 @@ public class FakePlayerClock extends PlayerClock {
 	@Override
 	public TimeAmount getRemainingUpkeepTime(TimeInstant when) {
 		return TimeAmount.EMPTY;
+	}
+
+	@Override
+	public String toString() {
+		return getPlayerId().toString();
 	}
 }

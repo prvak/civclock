@@ -197,7 +197,6 @@ public class TimerActivity extends ActionBarActivity {
     }
 
 	public void onAuctionButton(View view) {
-		System.out.println("Auction button clicked.");
 		if (game.isPaused()) {
 			return;
 		}
@@ -207,8 +206,19 @@ public class TimerActivity extends ActionBarActivity {
 		updatePhase();
 	}
 
+	public void onNewAgeButton(View view) {
+		// Not implemented yet.
+	}
+
+	public void onEventButton(View view) {
+		if (game.isPaused()) {
+			return;
+		}
+
+		game.addUpkeepBonusTime(new TimeInstant());
+	}
+
 	public void onBidButton(View view) {
-		System.out.println("Bid button clicked.");
 		if (game.isPaused()) {
 			return;
 		}
@@ -220,7 +230,6 @@ public class TimerActivity extends ActionBarActivity {
 	}
 
 	public void onPassButton(View view) {
-		System.out.println("Pass button clicked.");
 		if (game.isPaused()) {
 			return;
 		}

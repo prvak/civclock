@@ -91,6 +91,7 @@
             android:layout_height="wrap_content"
             android:text="Event"
             android:id="@+id/event_button"
+            android:onClick="onEventButton"
             android:layout_alignBottom="@+id/auction_button"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
