@@ -66,7 +66,7 @@ public class TimeAmountTest extends InstrumentationTestCase {
 				-(1 * 60 * 60 * 1000L
 				+ 8 * 60 * 1000L
 				+ 17 * 1000L
-				+ 258L ));
+				+ 258L));
 		assertEquals(1L, amount.getHours());
 		assertEquals(8L, amount.getMinutes());
 		assertEquals(17L, amount.getSeconds());
@@ -108,7 +108,7 @@ public class TimeAmountTest extends InstrumentationTestCase {
 	}
 
 	public void testFormatNegative() throws Exception {
-		TimeAmount amount = new TimeAmount(- 5 * 60 * 60 * 1000 - 12 * 60 * 1000 - 4 * 1000 - 852);
+		TimeAmount amount = new TimeAmount(-5 * 60 * 60 * 1000 - 12 * 60 * 1000 - 4 * 1000 - 852);
 		assertEquals("-5:12:04", amount.format());
 	}
 

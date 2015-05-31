@@ -29,12 +29,17 @@ public class NewGameActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_new_game);
 
 		playerData.clear();
-		playerData.add(new PlayerData(PlayerColor.RED, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
-		playerData.add(new PlayerData(PlayerColor.GREEN, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
-		playerData.add(new PlayerData(PlayerColor.BLUE, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
-		playerData.add(new PlayerData(PlayerColor.YELLOW, new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.RED, new TimeAmount(600000L),
+				new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.GREEN, new TimeAmount(600000L),
+				new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.BLUE, new TimeAmount(600000L),
+				new TimeAmount(10000L), new TimeAmount(30000L)));
+		playerData.add(new PlayerData(PlayerColor.YELLOW, new TimeAmount(600000L),
+				new TimeAmount(10000L), new TimeAmount(30000L)));
 
-		NewPlayersListView newPlayersListView = (NewPlayersListView) findViewById(R.id.new_players_list_view);
+		NewPlayersListView newPlayersListView =
+				(NewPlayersListView) findViewById(R.id.new_players_list_view);
 		newPlayersListView.setPlayerData(playerData);
 	}
 

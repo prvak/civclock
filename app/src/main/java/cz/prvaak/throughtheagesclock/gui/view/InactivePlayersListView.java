@@ -32,13 +32,16 @@ public class InactivePlayersListView extends LinearLayout implements TimeDisplay
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayerClocks(List<PlayerClock> playerClocks, final PlayerButtonListener playerButtonListener) {
+	public void setPlayerClocks(List<PlayerClock> playerClocks,
+			final PlayerButtonListener playerButtonListener) {
 		removeAllViews();
 
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		for (final PlayerClock playerClock: playerClocks) {
-			PlayerView playerView = (PlayerView) inflater.inflate(R.layout.inactive_player_view, null);
+			PlayerView playerView = (PlayerView) inflater.inflate(R.layout.inactive_player_view,
+					null);
 			playerView.setPlayerClock(playerClock);
 			addView(playerView);
 

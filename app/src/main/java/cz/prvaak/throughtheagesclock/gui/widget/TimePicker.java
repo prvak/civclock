@@ -36,8 +36,8 @@ public class TimePicker extends RelativeLayout {
 		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
 		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
 		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
-		hoursPicker.setValue((int)amount.getHours());
-		minutesPicker.setValue((int)amount.getMinutes());
-		secondsPicker.setValue((int)amount.getSeconds());
+		hoursPicker.setValue((int) amount.getHours());
+		minutesPicker.setValue((int) amount.getMinutes());
+		secondsPicker.setValue((int) amount.getSeconds());
 	}
 }

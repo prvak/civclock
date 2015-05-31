@@ -49,28 +49,35 @@ public class LimitedTimerTest extends InstrumentationTestCase {
 	public void testRestart() throws Exception {
 		LimitedTimer timer = createTimer();
 		timer.start(new TimeInstant(0L));
-		Assert.assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(20000L)));
+		Assert.assertEquals(new TimeAmount(0L), timer.getRemainingTime(
+				new TimeInstant(20000L)));
 		timer.restart(new TimeInstant(30000L));
-		Assert.assertEquals(new TimeAmount(9000L), timer.getRemainingTime(new TimeInstant(31000L)));
-		Assert.assertEquals(new TimeAmount(0L), timer.getRemainingTime(new TimeInstant(40000L)));
+		Assert.assertEquals(new TimeAmount(9000L), timer.getRemainingTime(
+				new TimeInstant(31000L)));
+		Assert.assertEquals(new TimeAmount(0L), timer.getRemainingTime(
+				new TimeInstant(40000L)));
 	}
 
 	public void testFirstStartEqualsRestart() throws Exception {
 		LimitedTimer timer1 = createTimer();
 		timer1.start(new TimeInstant(30000L));
-		Assert.assertEquals(new TimeAmount(9000L), timer1.getRemainingTime(new TimeInstant(31000L)));
+		Assert.assertEquals(new TimeAmount(9000L), timer1.getRemainingTime(
+				new TimeInstant(31000L)));
 
 		LimitedTimer timer2 = createTimer();
 		timer2.restart(new TimeInstant(30000L));
-		Assert.assertEquals(new TimeAmount(9000L), timer2.getRemainingTime(new TimeInstant(31000L)));
+		Assert.assertEquals(new TimeAmount(9000L), timer2.getRemainingTime(
+				new TimeInstant(31000L)));
 	}
 
 	public void testGetElapsedTimeAfterRestartWithNewTimeLimit() throws Exception {
 		LimitedTimer timer = createTimer();
 		timer.start(new TimeInstant(0L));
-		Assert.assertEquals(new TimeAmount(10000L), timer.getElapsedTime(new TimeInstant(20000L)));
+		Assert.assertEquals(new TimeAmount(10000L), timer.getElapsedTime(
+				new TimeInstant(20000L)));
 		timer.restart(new TimeInstant(40000L), new TimeAmount(5000L));
-		Assert.assertEquals(new TimeAmount(5000L), timer.getElapsedTime(new TimeInstant(60000L)));
+		Assert.assertEquals(new TimeAmount(5000L), timer.getElapsedTime(
+				new TimeInstant(60000L)));
 	}
 
 	public void testNegativeTimeLimitNotAllowed() throws Exception {

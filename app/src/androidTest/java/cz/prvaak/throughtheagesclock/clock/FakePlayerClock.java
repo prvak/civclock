@@ -26,7 +26,8 @@ public class FakePlayerClock extends PlayerClock {
 	}
 
 	public FakePlayerClock() {
-		super(new FakePlayerId(), new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L), new TimeAmount(10000L));
+		super(new FakePlayerId(), new TimeAmount(10000L), new TimeAmount(1000L),
+				new TimeAmount(10000L), new TimeAmount(10000L));
 	}
 
 	@Override

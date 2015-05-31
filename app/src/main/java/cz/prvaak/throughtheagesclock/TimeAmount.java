@@ -95,17 +95,20 @@ public class TimeAmount implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		TimeAmount that = (TimeAmount) o;
-
 		return totalTimeMs == that.totalTimeMs;
 	}
 
 	@Override
 	public int hashCode() {
-		return (int) (totalTimeMs ^ (totalTimeMs >>> 32 ));
+		return (int) (totalTimeMs ^ (totalTimeMs >>> 32));
 	}
 
 	@Override

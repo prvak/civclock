@@ -16,7 +16,9 @@ public class Counter implements CounterClock {
 	private boolean isInitialized;
 	/** True when the clock is paused and to false when the clock is resumed. */
 	private boolean isPaused;
-	/** Set to true when the clock is started or restarted and to false when the clock is stopped. */
+	/**
+	 * Set to true when the clock is started or restarted and to false when the clock is stopped.
+	 */
 	private boolean isStopped = true;
 
 	@Override

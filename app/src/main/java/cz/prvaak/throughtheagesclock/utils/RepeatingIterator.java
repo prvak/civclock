@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * Iterator that iterates through the same list repeatedly.
  */
-public class RepeatingIterator<E> implements Iterator<E>{
+public class RepeatingIterator<E> implements Iterator<E> {
 
 	private final Collection<E> collection;
 	private Iterator<E> iterator;

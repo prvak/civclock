@@ -139,7 +139,8 @@ public class TimerActivity extends ActionBarActivity {
 			}
 		});
 
-		inactivePlayersListView = (InactivePlayersListView) findViewById(R.id.inactive_players_list_view);
+		inactivePlayersListView =
+				(InactivePlayersListView) findViewById(R.id.inactive_players_list_view);
 		updatePlayers();
 		updatePhase();
 	}

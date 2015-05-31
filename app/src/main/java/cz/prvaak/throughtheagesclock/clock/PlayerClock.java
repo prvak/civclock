@@ -10,10 +10,12 @@ import cz.prvaak.throughtheagesclock.clock.timer.UpkeepTimer;
 /**
  * Class for keeping track of how much time remains to a player.
  *
- * Limited upkeep protection period can be enabled by {@link #upkeep(cz.prvaak.throughtheagesclock.TimeInstant)}. Time reserve does not
+ * Limited upkeep protection period can be enabled by
+ * {@link #upkeep(cz.prvaak.throughtheagesclock.TimeInstant)}. Time reserve does not
  * decrease during upkeep period but upkeep timer is running even if the main timer is stopped.
  *
- * Clock can by paused by {@link Clock#pause(cz.prvaak.throughtheagesclock.TimeInstant)} method and resumed by {@link Clock#start(cz.prvaak.throughtheagesclock.TimeInstant)}. Both
+ * Clock can by paused by {@link Clock#pause(cz.prvaak.throughtheagesclock.TimeInstant)}
+ * method and resumed by {@link Clock#start(cz.prvaak.throughtheagesclock.TimeInstant)}. Both
  * main and upkeep timers are paused.
  */
 public class PlayerClock implements Clock {

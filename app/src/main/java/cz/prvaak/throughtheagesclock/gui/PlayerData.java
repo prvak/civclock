@@ -12,7 +12,8 @@ public class PlayerData {
 	public TimeAmount turnBonusTime;
 	public TimeAmount upkeepTime;
 
-	public PlayerData(PlayerColor playerColor, TimeAmount baseTime, TimeAmount turnBonusTime, TimeAmount upkeepTime) {
+	public PlayerData(PlayerColor playerColor, TimeAmount baseTime, TimeAmount turnBonusTime,
+			TimeAmount upkeepTime) {
 		this.playerColor = playerColor;
 		this.baseTime = baseTime;
 		this.turnBonusTime = turnBonusTime;

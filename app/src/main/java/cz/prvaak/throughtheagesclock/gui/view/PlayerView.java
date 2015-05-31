@@ -65,13 +65,15 @@ public abstract class PlayerView extends RelativeLayout implements TimeDisplay, 
 		}
 		if (time.getHours() > 0) {
 			// eg. 2:07:31
-			text.append(String.format("%d:%02d:%02d", time.getHours(), time.getMinutes(), time.getSeconds()));
-		} if (time.getMinutes() > 0) {
+			text.append(String.format("%d:%02d:%02d", time.getHours(), time.getMinutes(),
+					time.getSeconds()));
+		} else if (time.getMinutes() > 0) {
 			// eg. 07:31
 			text.append(String.format("%02d:%02d", time.getMinutes(), time.getSeconds()));
 		} else {
 			// eg. 0:31.6
-			text.append(String.format("0:%02d.%01d", time.getSeconds(), time.getMilliseconds() / 100));
+			text.append(String.format("0:%02d.%01d", time.getSeconds(),
+					time.getMilliseconds() / 100));
 		}
 		return text.toString();
 	}

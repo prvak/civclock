@@ -23,7 +23,8 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		ArrayList<PlayerClock> playerClocks = FakePlayerClock.createPlayerClocks(3);
 		try {
 			new PlayerSwitcher(playerClocks, new PlayerClock(new FakePlayerId(),
-					new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L), new TimeAmount(10000L)));
+					new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L),
+					new TimeAmount(10000L)));
 			Assert.fail("Should have thrown IllegalArgumentException!");
 		} catch (IllegalArgumentException e) {
 			// success

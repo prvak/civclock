@@ -19,22 +19,32 @@ public class LimitedCounterTest extends InstrumentationTestCase {
 	public void testGetTime() throws Exception {
 		LimitedCounter counter = createCounter();
 		counter.restart(new TimeInstant(0L));
-		Assert.assertEquals(new TimeAmount(2000L), counter.getElapsedTime(new TimeInstant(2000L)));
-		Assert.assertEquals(new TimeAmount(5000L), counter.getElapsedTime(new TimeInstant(5000L)));
-		Assert.assertEquals(new TimeAmount(9999L), counter.getElapsedTime(new TimeInstant(9999L)));
-		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(new TimeInstant(10000L)));
-		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(new TimeInstant(10001L)));
-		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(new TimeInstant(15000L)));
-		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(new TimeInstant(123000L)));
+		Assert.assertEquals(new TimeAmount(2000L), counter.getElapsedTime(
+				new TimeInstant(2000L)));
+		Assert.assertEquals(new TimeAmount(5000L), counter.getElapsedTime(
+				new TimeInstant(5000L)));
+		Assert.assertEquals(new TimeAmount(9999L), counter.getElapsedTime(
+				new TimeInstant(9999L)));
+		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(
+				new TimeInstant(10000L)));
+		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(
+				new TimeInstant(10001L)));
+		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(
+				new TimeInstant(15000L)));
+		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(
+				new TimeInstant(123000L)));
 	}
 
 	public void testRestart() throws Exception {
 		LimitedCounter counter = createCounter();
 		counter.restart(new TimeInstant(0L));
-		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(new TimeInstant(20000L)));
+		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(
+				new TimeInstant(20000L)));
 		counter.restart(new TimeInstant(30000L));
-		Assert.assertEquals(new TimeAmount(1000L), counter.getElapsedTime(new TimeInstant(31000L)));
-		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(new TimeInstant(40000L)));
+		Assert.assertEquals(new TimeAmount(1000L), counter.getElapsedTime(
+				new TimeInstant(31000L)));
+		Assert.assertEquals(new TimeAmount(10000L), counter.getElapsedTime(
+				new TimeInstant(40000L)));
 	}
 
 	public void testNegativeTimeLimitNotAllowed() throws Exception {
