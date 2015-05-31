@@ -31,21 +31,26 @@ public class PlayerClock implements Clock {
 	private final TimerClock overlapTime;
 	/** Amount of time that should be added after regular turn. */
 	private final TimeAmount turnBonusTime;
+	/** Amount of time that should be added after regular turn. */
+	private final TimeAmount upkeepBonusTime;
 	/** Whether the clock has been started and not stopped yet. */
 	private boolean isStarted;
 
 	/**
 	 * Create new clock.
-	 *
 	 * @param playerId Identification of the player.
 	 * @param baseTime How many milliseconds the player initially has.
 	 * @param upkeepTime How many milliseconds each upkeep protection has.
 	 * @param turnBonusTime How many milliseconds to add after each turn.
+	 * @param upkeepBonusTime How many milliseconds to add for bonus upkeep operations.
 	 */
 	public PlayerClock(PlayerId playerId, TimeAmount baseTime, TimeAmount upkeepTime,
-			TimeAmount turnBonusTime) {
+					   TimeAmount turnBonusTime, TimeAmount upkeepBonusTime) {
 		if (turnBonusTime.isNegative()) {
 			throw new IllegalArgumentException("Negative turn bonus time is not allowed!");
+		}
+		if (upkeepBonusTime.isNegative()) {
+			throw new IllegalArgumentException("Negative upkeep bonus time is not allowed!");
 		}
 
 		this.playerId = playerId;
@@ -53,6 +58,7 @@ public class PlayerClock implements Clock {
 		this.upkeepTime = new UpkeepTimer(upkeepTime);
 		this.overlapTime = new LimitedTimer(TimeAmount.EMPTY);
 		this.turnBonusTime = turnBonusTime;
+		this.upkeepBonusTime = upkeepBonusTime;
 	}
 
 	@Override
@@ -88,10 +94,20 @@ public class PlayerClock implements Clock {
 	 * Add given amount of time to the reserve time.
 	 *
 	 * @param when Current time in milliseconds.
-	 * @param amount How many milliseconds to add to the reserve time. If the value is negative
+	 * @param amount How many milliseconds to add to the reserve time.
 	 */
 	public void addReserveTime(TimeInstant when, TimeAmount amount) {
 		reserveTime.addTime(when, amount);
+	}
+
+	/**
+	 * Add given amount of time to the upkeep time.
+	 *
+	 * @param when Current time in milliseconds.
+	 * @param amount How many milliseconds to add to the upkeep time.
+	 */
+	public void addUpkeepTime(TimeInstant when, TimeAmount amount) {
+		upkeepTime.addTime(when, amount);
 	}
 
 	/**
@@ -111,15 +127,14 @@ public class PlayerClock implements Clock {
 	}
 
 	/**
-	 * Add predefined amount of time to upkeep protection period. This time is independent on
-	 * the base upkeep period. It does not refill when {@link #upkeep} is called but is not lost
-	 * either.
+	 * Add predefined amount of time to upkeep protection period. The time amount is defined
+	 * in constructor. This time is independent on the base upkeep period.
+	 * It does not refill when {@link #upkeep} is called but is not lost either.
 	 *
 	 * @param when Current time in milliseconds.
-	 * @param amount How many milliseconds to add to the upkeep protection period.
 	 */
-	public void addUpkeepBonusTime(TimeInstant when, TimeAmount amount) {
-		upkeepTime.addTime(when, amount);
+	public void addUpkeepBonusTime(TimeInstant when) {
+		addUpkeepTime(when, upkeepBonusTime);
 	}
 
 	/**

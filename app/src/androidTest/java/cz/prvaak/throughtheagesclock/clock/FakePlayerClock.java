@@ -26,7 +26,7 @@ public class FakePlayerClock extends PlayerClock {
 	}
 
 	public FakePlayerClock() {
-		super(new FakePlayerId(), new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L));
+		super(new FakePlayerId(), new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L), new TimeAmount(10000L));
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class FakePlayerClock extends PlayerClock {
 	}
 
 	@Override
-	public void addUpkeepBonusTime(TimeInstant when, TimeAmount amount) {
+	public void addUpkeepTime(TimeInstant when, TimeAmount amount) {
 		isBonusAdded = true;
 	}
 

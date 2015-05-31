@@ -16,7 +16,7 @@ public class Player extends PlayerClock implements Serializable {
 
 	public Player(PlayerColor playerColor, TimeAmount baseTime, TimeAmount upkeepTime,
 				  TimeAmount turnBonusTime) {
-		super(playerColor, baseTime, upkeepTime, turnBonusTime);
+		super(playerColor, baseTime, upkeepTime, turnBonusTime, new TimeAmount(10000L));
 	}
 
 	@Override

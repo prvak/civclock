@@ -16,7 +16,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 	/** Create player clock with 60 seconds for turn and 30 seconds for upkeep. */
 	public PlayerClock createPlayerClock() {
 		return new PlayerClock(new FakePlayerId(), new TimeAmount(60000L), new TimeAmount(30000L),
-				new TimeAmount(30000L));
+				new TimeAmount(30000L), new TimeAmount(10000L));
 	}
 
 	public void testGetRemainingTime() throws Exception {
@@ -56,6 +56,14 @@ public class PlayerClockTest extends InstrumentationTestCase {
 		assertEquals(new TimeAmount(61000L), playerClock.getRemainingReserveTime(new TimeInstant(1000L)));
 	}
 
+	public void testAddUpkeepTime() throws Exception {
+		PlayerClock playerClock = createPlayerClock();
+		playerClock.addUpkeepTime(new TimeInstant(0L), new TimeAmount(5000L));
+		assertEquals(new TimeAmount(4000L), playerClock.getRemainingUpkeepTime(new TimeInstant(1000L)));
+		playerClock.upkeep(new TimeInstant(2000L));
+		assertEquals(new TimeAmount(32000L), playerClock.getRemainingUpkeepTime(new TimeInstant(3000L)));
+	}
+
 	public void testAddTurnBonusTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
 		playerClock.addTurnBonusTime(new TimeInstant(0L));
@@ -64,7 +72,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testAddUpkeepBonusTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		playerClock.addUpkeepBonusTime(new TimeInstant(0L), new TimeAmount(10000));
+		playerClock.addUpkeepBonusTime(new TimeInstant(0L));
 		assertEquals(new TimeAmount(9000L), playerClock.getRemainingUpkeepTime(new TimeInstant(1000L)));
 		playerClock.upkeep(new TimeInstant(2000L));
 		assertEquals(new TimeAmount(37000L), playerClock.getRemainingUpkeepTime(new TimeInstant(3000L)));
@@ -176,7 +184,7 @@ public class PlayerClockTest extends InstrumentationTestCase {
 	public void testNegativeUpkeepTimeNotAllowed() throws Exception {
 		try {
 			new PlayerClock(new FakePlayerId(), new TimeAmount(60000), new TimeAmount(-5000),
-					new TimeAmount(20000));
+					new TimeAmount(20000), new TimeAmount(10000L));
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success
@@ -186,7 +194,17 @@ public class PlayerClockTest extends InstrumentationTestCase {
 	public void testNegativeTurnBonusTimeNotAllowed() throws Exception {
 		try {
 			new PlayerClock(new FakePlayerId(), new TimeAmount(60000), new TimeAmount(5000),
-					new TimeAmount(-20000));
+					new TimeAmount(-20000), new TimeAmount(10000L));
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testNegativeUpkeepBonusTimeNotAllowed() throws Exception {
+		try {
+			new PlayerClock(new FakePlayerId(), new TimeAmount(60000), new TimeAmount(5000),
+					new TimeAmount(20000), new TimeAmount(-10000L));
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success
