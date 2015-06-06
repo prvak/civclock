@@ -57,7 +57,8 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		PlayerSwitcher playerSwitcher = new PlayerSwitcher(allPlayers, allPlayers.get(1));
 		FakePlayerTransition transition = new FakePlayerTransition();
 
-		playerSwitcher.removeCurrentPlayerAndSwitchPlayers(transition, new TimeInstant(2000L));
+		playerSwitcher.removeCurrentPlayer();
+		playerSwitcher.switchPlayers(transition, new TimeInstant(2000L));
 		List<PlayerClock> nextPlayers = playerSwitcher.getNextPlayers();
 		assertEquals(1, nextPlayers.size());
 		assertEquals(allPlayers.get(0), nextPlayers.get(0));
@@ -66,9 +67,8 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 	public void testRemoveDoesNotChangeInsertedList() {
 		ArrayList<PlayerClock> allPlayers = FakePlayerClock.createPlayerClocks(3);
 		PlayerSwitcher playerSwitcher = new PlayerSwitcher(allPlayers, allPlayers.get(0));
-		FakePlayerTransition transition = new FakePlayerTransition();
 
-		playerSwitcher.removeCurrentPlayerAndSwitchPlayers(transition, new TimeInstant(1000L));
+		playerSwitcher.removeCurrentPlayer();
 		assertEquals(2, playerSwitcher.getPlayersCount());
 		assertEquals(2, playerSwitcher.getAllPlayers().size());
 		assertEquals(3, allPlayers.size());

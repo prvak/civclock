@@ -1,10 +1,13 @@
 package cz.prvaak.throughtheagesclock.phase;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
+import cz.prvaak.throughtheagesclock.phase.switcher.transition.FinalAuctionTransition;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.NormalTransition;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
 
@@ -15,9 +18,13 @@ public class AuctionPhase implements GamePhase {
 
 	private final PlayerSwitcher playerSwitcher;
 	private final PlayerTransition transition = new NormalTransition();
+	private final PlayerTransition finalTransition;
+	private final PlayerClock initiatingPlayer;
 
 	public AuctionPhase(List<? extends PlayerClock> allPlayers, PlayerClock currentPlayer) {
 		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
+		this.finalTransition = new FinalAuctionTransition(currentPlayer);
+		this.initiatingPlayer = currentPlayer;
 	}
 
 	/**
@@ -39,26 +46,48 @@ public class AuctionPhase implements GamePhase {
 	public void pass(TimeInstant when) {
 		checkThatAuctionIsNotOver();
 		playerSwitcher.removeCurrentPlayer();
-		playerSwitcher.switchPlayers(transition, when);
+		if (isAuctionOver()) {
+			playerSwitcher.switchPlayers(finalTransition, when);
+		} else {
+			playerSwitcher.switchPlayers(transition, when);
+		}
 	}
 
 	@Override
 	public List<PlayerClock> getAllPlayers() {
-		return playerSwitcher.getAllPlayers();
+		if (isAuctionOver()) {
+			return Collections.emptyList();
+		} else {
+			return playerSwitcher.getAllPlayers();
+		}
 	}
 
 	@Override
 	public List<PlayerClock> getNextPlayers() {
-		return playerSwitcher.getNextPlayers();
+		if (isAuctionOver()) {
+			ArrayList<PlayerClock> list = new ArrayList<>(1);
+			list.add(initiatingPlayer);
+			return list;
+		} else {
+			return playerSwitcher.getNextPlayers();
+		}
 	}
 
 	@Override
 	public PlayerClock getCurrentPlayer() {
-		return playerSwitcher.getCurrentPlayer();
+		if (isAuctionOver()) {
+			return initiatingPlayer;
+		} else {
+			return playerSwitcher.getCurrentPlayer();
+		}
+	}
+
+	private boolean isAuctionOver() {
+		return playerSwitcher.getPlayersCount() <= 1;
 	}
 
 	private void checkThatAuctionIsNotOver() {
-		if (playerSwitcher.getPlayersCount() <= 1) {
+		if (isAuctionOver()) {
 			throw new IllegalArgumentException("Auction is over!");
 		}
 	}

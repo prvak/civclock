@@ -4,9 +4,9 @@ import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 
 /**
- * Created by michal on 5/31/15.
+ * Transition that adds time to winner and starts the initiating player.
  */
-public class FinalAuctionTransition extends PlayerTransition {
+public class FinalAuctionTransition implements PlayerTransition {
 
 	private final PlayerClock initiatingPlayer;
 
@@ -16,11 +16,12 @@ public class FinalAuctionTransition extends PlayerTransition {
 
 	@Override
 	public void beforeSwitch(PlayerClock activePlayer, TimeInstant when) {
-
+		activePlayer.stop(when);
 	}
 
 	@Override
 	public void afterSwitch(PlayerClock activePlayer, TimeInstant when) {
-
+		activePlayer.addUpkeepBonusTime(when);
+		initiatingPlayer.start(when);
 	}
 }
