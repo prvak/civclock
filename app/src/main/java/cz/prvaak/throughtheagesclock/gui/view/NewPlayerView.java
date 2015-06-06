@@ -53,5 +53,18 @@ public class NewPlayerView extends LinearLayout {
 				removeButtonListener.onPlayerButtonClicked(playerColor);
 			}
 		});
+
+		View playerOverview = findViewById(R.id.player_overview);
+		playerOverview.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				View playerDetailsView = findViewById(R.id.player_details_view);
+				if (playerDetailsView.getVisibility() == GONE) {
+					playerDetailsView.setVisibility(VISIBLE);
+				} else {
+					playerDetailsView.setVisibility(GONE);
+				}
+			}
+		});
 	}
 }
