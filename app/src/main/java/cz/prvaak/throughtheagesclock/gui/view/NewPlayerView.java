@@ -2,15 +2,18 @@ package cz.prvaak.throughtheagesclock.gui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
 import cz.prvaak.throughtheagesclock.gui.widget.TimePicker;
 
 /**
- * Created by michal on 5/18/15.
+ * View that displays new player's settings.
  */
 public class NewPlayerView extends LinearLayout {
 
@@ -26,7 +29,8 @@ public class NewPlayerView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayerData(PlayerData playerData) {
+	public void setPlayerData(final PlayerColor playerColor, PlayerData playerData,
+			final PlayerButtonListener removeButtonListener) {
 		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
 		baseTimePicker.setTime(playerData.baseTime);
 		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
@@ -39,7 +43,15 @@ public class NewPlayerView extends LinearLayout {
 				playerData.turnBonusTime.format(), playerData.upkeepTime.format()));
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);
-		playerName.setText(playerData.playerColor.getNameResourceId());
-		setBackgroundColor(getResources().getColor(playerData.playerColor.getColorResourceId()));
+		playerName.setText(playerColor.getNameResourceId());
+		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
+
+		Button removePlayerButton = (Button) findViewById(R.id.remove_player_button);
+		removePlayerButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				removeButtonListener.onPlayerButtonClicked(playerColor);
+			}
+		});
 	}
 }

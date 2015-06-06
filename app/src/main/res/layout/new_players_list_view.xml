@@ -45,7 +45,8 @@
             android:text="Add"
             android:id="@+id/add_player_button"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:onClick="onAddPlayerButton"/>
 
     </RelativeLayout>
 

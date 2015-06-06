@@ -7,16 +7,21 @@ import cz.prvaak.throughtheagesclock.TimeAmount;
  */
 public class PlayerData {
 
-	public PlayerColor playerColor;
 	public TimeAmount baseTime;
 	public TimeAmount turnBonusTime;
 	public TimeAmount upkeepTime;
 
-	public PlayerData(PlayerColor playerColor, TimeAmount baseTime, TimeAmount turnBonusTime,
+	public PlayerData(TimeAmount baseTime, TimeAmount turnBonusTime,
 			TimeAmount upkeepTime) {
-		this.playerColor = playerColor;
 		this.baseTime = baseTime;
 		this.turnBonusTime = turnBonusTime;
 		this.upkeepTime = upkeepTime;
+	}
+
+	/** Create a copy of given PlayerData. */
+	public PlayerData(PlayerData other) {
+		this.baseTime = other.baseTime;
+		this.turnBonusTime = other.turnBonusTime;
+		this.upkeepTime = other.upkeepTime;
 	}
 }

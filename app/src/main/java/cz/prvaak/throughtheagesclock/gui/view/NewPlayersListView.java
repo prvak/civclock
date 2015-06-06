@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
@@ -30,7 +32,8 @@ public class NewPlayersListView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayerData(List<PlayerData> playerData) {
+	public void setPlayerData(LinkedHashMap<PlayerColor, PlayerData> activePlayers,
+			PlayerButtonListener removeButtonListener) {
 		if (newPlayerViews.isEmpty()) {
 			newPlayerViews.add((NewPlayerView) findViewById(R.id.new_player_0));
 			newPlayerViews.add((NewPlayerView) findViewById(R.id.new_player_1));
@@ -38,11 +41,17 @@ public class NewPlayersListView extends LinearLayout {
 			newPlayerViews.add((NewPlayerView) findViewById(R.id.new_player_3));
 		}
 
-		for (int i = 0; i < newPlayerViews.size(); i++) {
-			NewPlayerView view = newPlayerViews.get(i);
-			if (i < playerData.size()) {
-				PlayerData data = playerData.get(i);
-				view.setPlayerData(data);
+		Iterator<NewPlayerView> viewIterator = newPlayerViews.iterator();
+		Iterator<PlayerColor> playerIterator = activePlayers.keySet().iterator();
+		while (viewIterator.hasNext()) {
+			NewPlayerView view = viewIterator.next();
+			if (playerIterator.hasNext()) {
+				PlayerColor playerColor = playerIterator.next();
+				PlayerData playerData = activePlayers.get(playerColor);
+				view.setPlayerData(playerColor, playerData, removeButtonListener);
+				view.setVisibility(VISIBLE);
+			} else {
+				view.setVisibility(GONE);
 			}
 		}
 	}

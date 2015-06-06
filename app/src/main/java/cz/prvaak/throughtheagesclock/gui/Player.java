@@ -10,8 +10,8 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
  */
 public class Player extends PlayerClock implements Serializable {
 
-	public Player(PlayerData data) {
-		this(data.playerColor, data.baseTime, data.upkeepTime, data.turnBonusTime);
+	public Player(PlayerColor playerColor, PlayerData data) {
+		this(playerColor, data.baseTime, data.upkeepTime, data.turnBonusTime);
 	}
 
 	public Player(PlayerColor playerColor, TimeAmount baseTime, TimeAmount upkeepTime,
