@@ -110,6 +110,10 @@ public class PlayerClock implements Clock {
 	 */
 	public void addUpkeepTime(TimeInstant when, TimeAmount amount) {
 		upkeepTime.addTime(when, amount);
+		if (isStarted) {
+			reserveTime.addTime(when, overlapTime.getElapsedTime(when));
+			overlapTime.restart(when, upkeepTime.getRemainingTime(when));
+		}
 	}
 
 	/**

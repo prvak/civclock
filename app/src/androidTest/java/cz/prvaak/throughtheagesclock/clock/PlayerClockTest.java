@@ -75,12 +75,17 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testAddUpkeepTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		playerClock.addUpkeepTime(new TimeInstant(0L), new TimeAmount(5000L));
+		playerClock.start(new TimeInstant(0L));
+		playerClock.addUpkeepTime(new TimeInstant(1000L), new TimeAmount(5000L));
 		assertEquals(new TimeAmount(4000L), playerClock.getRemainingUpkeepTime(
-				new TimeInstant(1000L)));
+				new TimeInstant(2000L)));
+		assertEquals(new TimeAmount(59000L), playerClock.getRemainingReserveTime(
+				new TimeInstant(3000L)));
 		playerClock.upkeep(new TimeInstant(2000L));
 		assertEquals(new TimeAmount(32000L), playerClock.getRemainingUpkeepTime(
-				new TimeInstant(3000L)));
+				new TimeInstant(4000L)));
+		assertEquals(new TimeAmount(59000L), playerClock.getRemainingReserveTime(
+				new TimeInstant(4000L)));
 	}
 
 	public void testAddTurnBonusTime() throws Exception {
@@ -92,12 +97,17 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testAddUpkeepBonusTime() throws Exception {
 		PlayerClock playerClock = createPlayerClock();
-		playerClock.addUpkeepBonusTime(new TimeInstant(0L));
+		playerClock.start(new TimeInstant(0L));
+		playerClock.addUpkeepBonusTime(new TimeInstant(1000L));
 		assertEquals(new TimeAmount(9000L), playerClock.getRemainingUpkeepTime(
-				new TimeInstant(1000L)));
+				new TimeInstant(2000L)));
+		assertEquals(new TimeAmount(59000L), playerClock.getRemainingReserveTime(
+				new TimeInstant(3000L)));
 		playerClock.upkeep(new TimeInstant(2000L));
 		assertEquals(new TimeAmount(37000L), playerClock.getRemainingUpkeepTime(
-				new TimeInstant(3000L)));
+				new TimeInstant(4000L)));
+		assertEquals(new TimeAmount(59000L), playerClock.getRemainingReserveTime(
+				new TimeInstant(4000L)));
 	}
 
 	public void testUpkeepStartShort() throws Exception {
