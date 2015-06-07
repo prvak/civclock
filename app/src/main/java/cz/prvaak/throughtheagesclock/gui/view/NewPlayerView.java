@@ -39,7 +39,7 @@ public class NewPlayerView extends LinearLayout {
 		upkeepTimePicker.setTime(playerData.upkeepTime);
 
 		TextView timeOverview = (TextView) findViewById(R.id.time_overview_text);
-		timeOverview.setText(String.format("%s + %s + (%s)", playerData.baseTime.format(),
+		timeOverview.setText(String.format("%s + %s (%s)", playerData.baseTime.format(),
 				playerData.turnBonusTime.format(), playerData.upkeepTime.format()));
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);
@@ -67,4 +67,6 @@ public class NewPlayerView extends LinearLayout {
 			}
 		});
 	}
+
+
 }
