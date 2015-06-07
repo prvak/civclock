@@ -6,12 +6,12 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
+import cz.prvaak.throughtheagesclock.gui.PlayerSettings;
 
 /**
  * View containing new player's settings.
@@ -32,7 +32,7 @@ public class NewPlayersListView extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setPlayerData(LinkedHashMap<PlayerColor, PlayerData> activePlayers,
+	public void setPlayerData(PlayerSettings playerSettings,
 			PlayerButtonListener removeButtonListener) {
 		if (newPlayerViews.isEmpty()) {
 			newPlayerViews.add((NewPlayerView) findViewById(R.id.new_player_0));
@@ -42,12 +42,12 @@ public class NewPlayersListView extends LinearLayout {
 		}
 
 		Iterator<NewPlayerView> viewIterator = newPlayerViews.iterator();
-		Iterator<PlayerColor> playerIterator = activePlayers.keySet().iterator();
+		Iterator<PlayerColor> playerIterator = playerSettings.iterator();
 		while (viewIterator.hasNext()) {
 			NewPlayerView view = viewIterator.next();
 			if (playerIterator.hasNext()) {
 				PlayerColor playerColor = playerIterator.next();
-				PlayerData playerData = activePlayers.get(playerColor);
+				PlayerData playerData = playerSettings.getPlayerData(playerColor);
 				view.setPlayerData(playerColor, playerData, removeButtonListener);
 				view.setVisibility(VISIBLE);
 			} else {
