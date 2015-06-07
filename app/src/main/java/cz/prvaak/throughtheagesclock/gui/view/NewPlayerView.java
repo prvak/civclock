@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
+import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
 import cz.prvaak.throughtheagesclock.gui.widget.TimePicker;
@@ -35,12 +36,21 @@ public class NewPlayerView extends LinearLayout {
 
 	public void setPlayerData(final PlayerColor playerColor, PlayerData playerData,
 			final Listener buttonListener) {
+		TimePicker.Listener onChangeListener = new TimePicker.Listener() {
+			@Override
+			public void onValueChanged() {
+				buttonListener.onDataChanged(playerColor, getPlayerData());
+			}
+		};
 		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
 		baseTimePicker.setTime(playerData.baseTime);
+		baseTimePicker.setOnChangeListener(onChangeListener);
 		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
 		turnBonusTimePicker.setTime(playerData.turnBonusTime);
+		turnBonusTimePicker.setOnChangeListener(onChangeListener);
 		TimePicker upkeepTimePicker = (TimePicker) findViewById(R.id.upkeep_time_picker);
 		upkeepTimePicker.setTime(playerData.upkeepTime);
+		upkeepTimePicker.setOnChangeListener(onChangeListener);
 
 		TextView timeOverview = (TextView) findViewById(R.id.time_overview_text);
 		timeOverview.setText(String.format("%s + %s (%s)", playerData.baseTime.format(),
@@ -68,7 +78,7 @@ public class NewPlayerView extends LinearLayout {
 		setChangeColorButton(R.id.change_color_button_2, playerColor, otherColors.get(2),
 				buttonListener);
 
-		// Expand/Collapse when clicked on the
+		// Expand/Collapse when clicked on the overview.
 		View playerOverview = findViewById(R.id.player_overview);
 		playerOverview.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -81,6 +91,18 @@ public class NewPlayerView extends LinearLayout {
 				}
 			}
 		});
+	}
+
+	public PlayerData getPlayerData() {
+		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
+		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
+		TimePicker upkeepTimePicker = (TimePicker) findViewById(R.id.upkeep_time_picker);
+
+		TimeAmount baseTime = baseTimePicker.getTime();
+		TimeAmount turnBonusTime = turnBonusTimePicker.getTime();
+		TimeAmount upkeepTime = upkeepTimePicker.getTime();
+
+		return new PlayerData(baseTime, turnBonusTime, upkeepTime);
 	}
 
 	private void setChangeColorButton(int buttonId, final PlayerColor currentColor,

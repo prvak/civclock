@@ -2,6 +2,7 @@ package cz.prvaak.throughtheagesclock.gui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 
 import cz.prvaak.throughtheagesclock.R;
@@ -39,5 +40,27 @@ public class TimePicker extends RelativeLayout {
 		hoursPicker.setValue((int) amount.getHours());
 		minutesPicker.setValue((int) amount.getMinutes());
 		secondsPicker.setValue((int) amount.getSeconds());
+	}
+
+	public void setOnChangeListener(final Listener listener) {
+		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
+		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
+		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
+
+		NumberPicker.OnValueChangeListener changeListener =
+				new NumberPicker.OnValueChangeListener() {
+			@Override
+			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+				listener.onValueChanged();
+			}
+		};
+
+		hoursPicker.setOnValueChangedListener(changeListener);
+		minutesPicker.setOnValueChangedListener(changeListener);
+		secondsPicker.setOnValueChangedListener(changeListener);
+	}
+
+	public interface Listener {
+		void onValueChanged();
 	}
 }

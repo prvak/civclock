@@ -41,7 +41,8 @@ public class NewGameActivity extends ActionBarActivity {
 
 		@Override
 		public void onDataChanged(PlayerColor playerColor, PlayerData playerData) {
-
+			playerSettings.changeData(playerColor, playerData);
+			updatePlayers();
 		}
 	};
 
