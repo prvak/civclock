@@ -10,12 +10,12 @@ import java.util.ArrayList;
 
 import cz.prvaak.throughtheagesclock.Game;
 import cz.prvaak.throughtheagesclock.R;
-import cz.prvaak.throughtheagesclock.clock.PlayerId;
 import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
+import cz.prvaak.throughtheagesclock.gui.PlayerData;
 import cz.prvaak.throughtheagesclock.gui.PlayerSettings;
+import cz.prvaak.throughtheagesclock.gui.view.NewPlayerView;
 import cz.prvaak.throughtheagesclock.gui.view.NewPlayersListView;
-import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
 
 /**
  * Activity for starting a new game. It handles player selection and time settings.
@@ -25,15 +25,28 @@ public class NewGameActivity extends ActionBarActivity {
 	private PlayerSettings playerSettings;
 	private NewPlayersListView newPlayersListView;
 
-	private final PlayerButtonListener removeButtonListener = new PlayerButtonListener() {
+	private final NewPlayerView.Listener newPlayerListener = new NewPlayerView.Listener() {
+
 		@Override
-		public void onPlayerButtonClicked(PlayerId playerId) {
-			onRemovePlayerButton((PlayerColor) playerId);
+		public void onRemovePlayer(PlayerColor playerColor) {
+			playerSettings.removePlayer(playerColor);
+			updatePlayers();
+		}
+
+		@Override
+		public void onChangeColor(PlayerColor playerColor, PlayerColor newColor) {
+			playerSettings.changeColor(playerColor, newColor);
+			updatePlayers();
+		}
+
+		@Override
+		public void onDataChanged(PlayerColor playerColor, PlayerData playerData) {
+
 		}
 	};
 
 	private void updatePlayers() {
-		newPlayersListView.setPlayerData(playerSettings, removeButtonListener);
+		newPlayersListView.setPlayerData(playerSettings, newPlayerListener);
 	}
 
 	@Override
@@ -68,11 +81,6 @@ public class NewGameActivity extends ActionBarActivity {
 
 	public void onAddPlayerButton(View view) {
 		playerSettings.addPlayer();
-		updatePlayers();
-	}
-
-	public void onRemovePlayerButton(PlayerColor playerColor) {
-		playerSettings.removePlayer(playerColor);
 		updatePlayers();
 	}
 }

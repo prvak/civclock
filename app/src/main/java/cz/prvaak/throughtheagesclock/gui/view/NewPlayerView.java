@@ -7,6 +7,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
@@ -30,7 +34,7 @@ public class NewPlayerView extends LinearLayout {
 	}
 
 	public void setPlayerData(final PlayerColor playerColor, PlayerData playerData,
-			final PlayerButtonListener removeButtonListener) {
+			final Listener buttonListener) {
 		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
 		baseTimePicker.setTime(playerData.baseTime);
 		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
@@ -50,10 +54,21 @@ public class NewPlayerView extends LinearLayout {
 		removePlayerButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				removeButtonListener.onPlayerButtonClicked(playerColor);
+				buttonListener.onRemovePlayer(playerColor);
 			}
 		});
 
+		// Set change color buttons.
+		List<PlayerColor> otherColors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
+		otherColors.remove(playerColor);
+		setChangeColorButton(R.id.change_color_button_0, playerColor, otherColors.get(0),
+				buttonListener);
+		setChangeColorButton(R.id.change_color_button_1, playerColor, otherColors.get(1),
+				buttonListener);
+		setChangeColorButton(R.id.change_color_button_2, playerColor, otherColors.get(2),
+				buttonListener);
+
+		// Expand/Collapse when clicked on the
 		View playerOverview = findViewById(R.id.player_overview);
 		playerOverview.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -68,5 +83,25 @@ public class NewPlayerView extends LinearLayout {
 		});
 	}
 
+	private void setChangeColorButton(int buttonId, final PlayerColor currentColor,
+			final PlayerColor newColor, final Listener buttonListener) {
+		if (newColor == currentColor) {
+			throw new IllegalArgumentException("New and current color cannot be the same!");
+		}
+		Button button = (Button) findViewById(buttonId);
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				buttonListener.onChangeColor(currentColor, newColor);
+			}
+		});
 
+		button.setText(newColor.getNameResourceId());
+	}
+
+	public interface Listener {
+		void onRemovePlayer(PlayerColor playerColor);
+		void onChangeColor(PlayerColor playerColor, PlayerColor newColor);
+		void onDataChanged(PlayerColor playerColor, PlayerData playerData);
+	}
 }

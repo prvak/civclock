@@ -33,7 +33,7 @@ public class NewPlayersListView extends LinearLayout {
 	}
 
 	public void setPlayerData(PlayerSettings playerSettings,
-			PlayerButtonListener removeButtonListener) {
+			NewPlayerView.Listener newPlayerListener) {
 		if (newPlayerViews.isEmpty()) {
 			newPlayerViews.add((NewPlayerView) findViewById(R.id.new_player_0));
 			newPlayerViews.add((NewPlayerView) findViewById(R.id.new_player_1));
@@ -48,7 +48,7 @@ public class NewPlayersListView extends LinearLayout {
 			if (playerIterator.hasNext()) {
 				PlayerColor playerColor = playerIterator.next();
 				PlayerData playerData = playerSettings.getPlayerData(playerColor);
-				view.setPlayerData(playerColor, playerData, removeButtonListener);
+				view.setPlayerData(playerColor, playerData, newPlayerListener);
 				view.setVisibility(VISIBLE);
 			} else {
 				view.setVisibility(GONE);

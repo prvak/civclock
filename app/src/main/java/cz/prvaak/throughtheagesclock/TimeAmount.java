@@ -87,7 +87,7 @@ public class TimeAmount implements Serializable {
 			// eg. 07:31
 			text.append(String.format("%d:%02d", getMinutes(), getSeconds()));
 		} else {
-			// eg. 0:31.6
+			// eg. 31.6
 			text.append(String.format("%02d.%01d", getSeconds(), getMilliseconds() / 100));
 		}
 		return text.toString();
