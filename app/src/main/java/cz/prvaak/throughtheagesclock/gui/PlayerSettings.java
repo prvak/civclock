@@ -6,7 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import cz.prvaak.throughtheagesclock.TimeAmount;
@@ -19,10 +20,12 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 	private static final int MIN_PLAYERS = 2;
 	private static final int MAX_PLAYERS = 4;
 
-	private PlayerData defaultData;
-	private ArrayList<PlayerColor> playersOrder = new ArrayList<>(PlayerColor.values().length);
-	private HashMap<PlayerColor, PlayerData> activePlayers = new LinkedHashMap<>(
-			PlayerColor.values().length);
+	private PlayerData defaultData = new PlayerData(
+			new TimeAmount(600000L), new TimeAmount(10000L), new TimeAmount(30000L));
+	private List<PlayerColor> playersOrder = new ArrayList<>(PlayerColor.values().length);
+	private Map<PlayerColor, PlayerData> playersData = new HashMap<>(PlayerColor.values().length);
+	private Set<PlayerColor> uniquePlayers = new HashSet<>(PlayerColor.values().length);
+	private Set<PlayerColor> activePlayers = new HashSet<>(PlayerColor.values().length);
 	private Set<PlayerColor> inactivePlayers = new HashSet<>(PlayerColor.values().length);
 
 	public PlayerSettings(PlayerColor color1, PlayerColor color2) {
@@ -79,45 +82,77 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 	}
 
 	public void changeColor(PlayerColor oldColor, PlayerColor newColor) {
-		if (!activePlayers.containsKey(oldColor) && !activePlayers.containsKey(newColor)) {
+		if (oldColor.equals(newColor)) {
+			throw new IllegalArgumentException(
+					"Cannot change color to itself!");
+		} else if (!activePlayers.contains(oldColor) && !activePlayers.contains(newColor)) {
 			throw new IllegalArgumentException(
 					"Cannot change inactive color to another inactive color!");
-		} else if (!activePlayers.containsKey(oldColor)) {
+		} else if (!activePlayers.contains(oldColor)) {
 			// If one color is inactive, always change the active color to inactive color.
 			PlayerColor tmpColor = oldColor;
 			oldColor = newColor;
 			newColor = tmpColor;
 		}
 
-		if (activePlayers.containsKey(newColor)) {
+		if (activePlayers.contains(newColor)) {
 			// Switching between active colors.
-			PlayerData newData = activePlayers.get(newColor);
-			PlayerData oldData = activePlayers.get(oldColor);
-			activePlayers.put(newColor, oldData);
-			activePlayers.put(oldColor, newData);
+			PlayerData newData = playersData.get(newColor);
+			PlayerData oldData = playersData.get(oldColor);
+			playersData.put(newColor, oldData);
+			playersData.put(oldColor, newData);
+			boolean newUnique = uniquePlayers.contains(newColor);
+			boolean oldUnique = uniquePlayers.contains(oldColor);
+			uniquePlayers.remove(newColor);
+			uniquePlayers.remove(oldColor);
+			if (newUnique) {
+				uniquePlayers.add(oldColor);
+			}
+			if (oldUnique) {
+				uniquePlayers.add(newColor);
+			}
 			Collections.swap(playersOrder,
 					playersOrder.indexOf(oldColor), playersOrder.indexOf(newColor));
 		} else {
 			// Switching active color to an inactive color.
-			PlayerData oldData = activePlayers.get(oldColor);
-			activePlayers.put(newColor, oldData);
+			PlayerData oldData = playersData.get(oldColor);
+			playersData.put(newColor, oldData);
 			activePlayers.remove(oldColor);
+			activePlayers.add(newColor);
+			inactivePlayers.remove(newColor);
+			inactivePlayers.add(oldColor);
+			if (uniquePlayers.remove(oldColor)) {
+				uniquePlayers.add(newColor);
+			}
 			playersOrder.set(playersOrder.indexOf(oldColor), newColor);
 		}
 	}
 
-	public void changeData(PlayerColor playerColor, PlayerData playerData) {
-		defaultData = playerData;
-		activePlayers.put(playerColor, playerData);
+	public void setPlayerData(PlayerColor playerColor, PlayerData playerData) {
+		activePlayers.add(playerColor);
+		playersData.put(playerColor, playerData);
+		if (!uniquePlayers.contains(playerColor)) {
+			defaultData = playerData;
+		}
+	}
+
+	public void setHasUniqueTime(PlayerColor playerColor, boolean hasUniqueTime) {
+		if (hasUniqueTime) {
+			uniquePlayers.add(playerColor);
+		} else {
+			uniquePlayers.remove(playerColor);
+		}
 	}
 
 	public PlayerData getPlayerData(PlayerColor playerColor) {
-		PlayerData playerData = activePlayers.get(playerColor);
-		if (playerData == null) {
+		if (!activePlayers.contains(playerColor)) {
 			throw new IllegalArgumentException("Player is not active!");
 		}
-
-		return playerData;
+		if (uniquePlayers.contains(playerColor)) {
+			return playersData.get(playerColor);
+		} else {
+			return defaultData;
+		}
 	}
 
 	public int getPlayerCount() {
@@ -125,7 +160,7 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 	}
 
 	public boolean isPlayerActive(PlayerColor playerColor) {
-		return activePlayers.containsKey(playerColor);
+		return activePlayers.contains(playerColor);
 	}
 
 	@Override
@@ -134,10 +169,6 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 	}
 
 	private PlayerData newDefaultPlayer() {
-		if (defaultData == null) {
-			defaultData = new PlayerData(new TimeAmount(600000L),
-					new TimeAmount(10000L), new TimeAmount(30000L));
-		}
 		return new PlayerData(defaultData);
 	}
 
@@ -147,8 +178,7 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 	}
 
 	private void activatePlayer(PlayerColor playerColor) {
-		PlayerData playerData = activePlayers.get(playerColor);
-		if (playerData != null) {
+		if (activePlayers.contains(playerColor)) {
 			throw new IllegalStateException(
 					String.format("Player %s is already active!", playerColor));
 		}
@@ -158,7 +188,8 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 					String.format("Player %s is neither active nor inactive!", playerColor));
 		}
 
-		activePlayers.put(playerColor, newDefaultPlayer());
+		activePlayers.add(playerColor);
+		playersData.put(playerColor, newDefaultPlayer());
 		playersOrder.add(playerColor);
 	}
 

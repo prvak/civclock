@@ -41,7 +41,13 @@ public class NewGameActivity extends ActionBarActivity {
 
 		@Override
 		public void onDataChanged(PlayerColor playerColor, PlayerData playerData) {
-			playerSettings.changeData(playerColor, playerData);
+			playerSettings.setPlayerData(playerColor, playerData);
+			updatePlayers();
+		}
+
+		@Override
+		public void onHasUniqueTimeChanged(PlayerColor playerColor, boolean hasUniqueTime) {
+			playerSettings.setHasUniqueTime(playerColor, hasUniqueTime);
 			updatePlayers();
 		}
 	};
@@ -57,7 +63,6 @@ public class NewGameActivity extends ActionBarActivity {
 
 		newPlayersListView = (NewPlayersListView) findViewById(R.id.new_players_list_view);
 		playerSettings = new PlayerSettings(3);
-
 		updatePlayers();
 	}
 

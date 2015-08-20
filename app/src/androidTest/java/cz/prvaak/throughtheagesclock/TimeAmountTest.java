@@ -104,7 +104,7 @@ public class TimeAmountTest extends InstrumentationTestCase {
 
 	public void testWithoutMinutes() throws Exception {
 		TimeAmount amount = new TimeAmount(3 * 1000 + 550);
-		assertEquals("0:03.5", amount.format());
+		assertEquals("03.5", amount.format());
 	}
 
 	public void testFormatNegative() throws Exception {

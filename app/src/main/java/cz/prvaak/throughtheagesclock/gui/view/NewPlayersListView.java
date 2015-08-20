@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;

@@ -19,7 +19,7 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 	}
 
 	/** Create player data that differ for each player. */
-	private PlayerData createPlayerData(PlayerColor playerColor) {
+	private PlayerData createPlayerData(PlayerSettings playerSettings, PlayerColor playerColor) {
 		long baseTimeMs = 0L;
 		switch (playerColor) {
 			case RED:
@@ -35,7 +35,10 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 				baseTimeMs = 4000L;
 				break;
 		}
-		return createPlayerData(baseTimeMs);
+		PlayerData playerData = createPlayerData(baseTimeMs);
+		playerSettings.setHasUniqueTime(playerColor, true);
+		playerSettings.setPlayerData(playerColor, playerData);
+		return playerData;
 	}
 
 	/** Create player data with given base time. */
@@ -143,6 +146,33 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 		assertEquals(redData, yellowData);
 	}
 
+	public void testUniqueData() throws Exception {
+		PlayerSettings playerSettings = createPlayerSettings();
+		PlayerData blueData = playerSettings.getPlayerData(PlayerColor.BLUE);
+		PlayerData redData = playerSettings.getPlayerData(PlayerColor.RED);
+		PlayerData yellowData = createPlayerData(playerSettings, PlayerColor.YELLOW);
+
+		assertEquals(blueData, redData);
+		assertNotSame(redData, yellowData);
+		assertNotSame(blueData, yellowData);
+
+		playerSettings.setHasUniqueTime(PlayerColor.YELLOW, false);
+		PlayerData newYellowData = playerSettings.getPlayerData(PlayerColor.YELLOW);
+
+		assertEquals(redData, newYellowData);
+		assertEquals(blueData, newYellowData);
+	}
+
+	public void testChangingDefaultData() throws Exception {
+		PlayerSettings playerSettings = createPlayerSettings();
+		PlayerData newDefaultData = createPlayerData(12340L);
+		playerSettings.setPlayerData(PlayerColor.RED, newDefaultData);
+
+		assertEquals(newDefaultData, playerSettings.getPlayerData(PlayerColor.BLUE));
+		assertEquals(newDefaultData, playerSettings.getPlayerData(PlayerColor.RED));
+		assertEquals(newDefaultData, playerSettings.getPlayerData(PlayerColor.YELLOW));
+	}
+
 	public void testChangeData() throws Exception {
 		PlayerSettings playerSettings = createPlayerSettings();
 		PlayerData newData = createPlayerData(11000L);
@@ -150,11 +180,15 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 		PlayerData redData = playerSettings.getPlayerData(PlayerColor.RED);
 		PlayerData yellowData = playerSettings.getPlayerData(PlayerColor.YELLOW);
 
+		playerSettings.setHasUniqueTime(PlayerColor.BLUE, true);
+		playerSettings.setHasUniqueTime(PlayerColor.RED, true);
+		playerSettings.setHasUniqueTime(PlayerColor.YELLOW, true);
+
 		assertNotSame(newData, blueData);
 		assertNotSame(newData, redData);
 		assertNotSame(newData, yellowData);
 
-		playerSettings.changeData(PlayerColor.RED, newData);
+		playerSettings.setPlayerData(PlayerColor.RED, newData);
 
 		assertEquals(blueData, playerSettings.getPlayerData(PlayerColor.BLUE));
 		assertEquals(newData, playerSettings.getPlayerData(PlayerColor.RED));
@@ -163,10 +197,8 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 
 	public void testChangeActiveColorToActiveColor() throws Exception {
 		PlayerSettings playerSettings = createPlayerSettings();
-		PlayerData blueData = createPlayerData(PlayerColor.BLUE);
-		PlayerData yellowData = createPlayerData(PlayerColor.YELLOW);
-		playerSettings.changeData(PlayerColor.BLUE, blueData);
-		playerSettings.changeData(PlayerColor.YELLOW, yellowData);
+		PlayerData blueData = createPlayerData(playerSettings, PlayerColor.BLUE);
+		PlayerData yellowData = createPlayerData(playerSettings, PlayerColor.YELLOW);
 
 		playerSettings.changeColor(PlayerColor.BLUE, PlayerColor.YELLOW);
 
@@ -186,10 +218,8 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 
 	public void testChangeActiveColorToInactiveColor() throws Exception {
 		PlayerSettings playerSettings = createPlayerSettings();
+		PlayerData blueData = createPlayerData(playerSettings, PlayerColor.BLUE);
 
-		// Change player data so we can check that changing color does not change the data.
-		PlayerData blueData = createPlayerData(PlayerColor.BLUE);
-		playerSettings.changeData(PlayerColor.BLUE, blueData);
 		playerSettings.changeColor(PlayerColor.BLUE, PlayerColor.GREEN);
 
 		// Check that the player retains its original data when its color is changed.
@@ -210,10 +240,8 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 
 	public void testChangeInactiveColorToActiveColor() throws Exception {
 		PlayerSettings playerSettings = createPlayerSettings();
+		PlayerData blueData = createPlayerData(playerSettings, PlayerColor.BLUE);
 
-		// Change player data so we can check that changing color does not change the data.
-		PlayerData blueData = createPlayerData(PlayerColor.BLUE);
-		playerSettings.changeData(PlayerColor.BLUE, blueData);
 		playerSettings.changeColor(PlayerColor.GREEN, PlayerColor.BLUE);
 
 		// Check that the player retains its original data when its color is changed.
@@ -240,5 +268,32 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 		} catch (IllegalArgumentException e) {
 			// success
 		}
+	}
+
+	public void testChangeColorToItself() throws Exception {
+		PlayerSettings playerSettings = new PlayerSettings(PlayerColor.RED, PlayerColor.GREEN);
+		try {
+			playerSettings.changeColor(PlayerColor.RED, PlayerColor.RED);
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testAddingPlayerAfterColorChange() throws Exception {
+		PlayerSettings playerSettings = createPlayerSettings();
+
+		assertTrue(playerSettings.isPlayerActive(PlayerColor.BLUE));
+		assertFalse(playerSettings.isPlayerActive(PlayerColor.GREEN));
+
+		playerSettings.changeColor(PlayerColor.BLUE, PlayerColor.GREEN);
+
+		assertFalse(playerSettings.isPlayerActive(PlayerColor.BLUE));
+		assertTrue(playerSettings.isPlayerActive(PlayerColor.GREEN));
+
+		playerSettings.addPlayer();
+
+		assertTrue(playerSettings.isPlayerActive(PlayerColor.BLUE));
+		assertTrue(playerSettings.isPlayerActive(PlayerColor.GREEN));
 	}
 }

@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change time only for this player"
-            android:id="@+id/checkBox"
+            android:id="@+id/unique_time_checkbox"
             android:checked="false"
             android:layout_span="2"/>
     </TableRow>

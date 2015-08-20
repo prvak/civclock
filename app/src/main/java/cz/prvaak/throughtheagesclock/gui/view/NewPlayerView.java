@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,6 +70,14 @@ public class NewPlayerView extends LinearLayout {
 			}
 		});
 
+		CheckBox uniqueTimeCheckbox = (CheckBox) findViewById(R.id.unique_time_checkbox);
+		uniqueTimeCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				buttonListener.onHasUniqueTimeChanged(playerColor, isChecked);
+			}
+		});
+
 		// Set change color buttons.
 		List<PlayerColor> otherColors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
 		otherColors.remove(playerColor);
@@ -125,5 +135,6 @@ public class NewPlayerView extends LinearLayout {
 		void onRemovePlayer(PlayerColor playerColor);
 		void onChangeColor(PlayerColor playerColor, PlayerColor newColor);
 		void onDataChanged(PlayerColor playerColor, PlayerData playerData);
+		void onHasUniqueTimeChanged(PlayerColor playerColor, boolean hasUniqueTime);
 	}
 }
