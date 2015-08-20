@@ -1,5 +1,7 @@
 package cz.prvaak.throughtheagesclock.gui;
 
+import java.util.Arrays;
+
 import cz.prvaak.throughtheagesclock.TimeAmount;
 
 /**
@@ -8,20 +10,22 @@ import cz.prvaak.throughtheagesclock.TimeAmount;
 public class PlayerData {
 
 	public final TimeAmount baseTime;
-	public final TimeAmount turnBonusTime;
+	public final TimeAmount[] turnBonusTimes;
 	public final TimeAmount upkeepTime;
 
-	public PlayerData(TimeAmount baseTime, TimeAmount turnBonusTime,
+	public PlayerData(TimeAmount baseTime, TimeAmount[] turnBonusTimes,
 			TimeAmount upkeepTime) {
 		this.baseTime = baseTime;
-		this.turnBonusTime = turnBonusTime;
+		this.turnBonusTimes = turnBonusTimes;
 		this.upkeepTime = upkeepTime;
 	}
 
 	/** Create a copy of given PlayerData. */
 	public PlayerData(PlayerData other) {
 		this.baseTime = other.baseTime;
-		this.turnBonusTime = other.turnBonusTime;
+		this.turnBonusTimes = new TimeAmount[other.turnBonusTimes.length];
+		System.arraycopy(other.turnBonusTimes, 0, this.turnBonusTimes, 0,
+				other.turnBonusTimes.length);
 		this.upkeepTime = other.upkeepTime;
 	}
 
@@ -38,7 +42,7 @@ public class PlayerData {
 
 		if (!baseTime.equals(that.baseTime)) {
 			return false;
-		} else if (!turnBonusTime.equals(that.turnBonusTime)) {
+		} else if (!Arrays.equals(turnBonusTimes, that.turnBonusTimes)) {
 			return false;
 		} else if (!upkeepTime.equals(that.upkeepTime)) {
 			return false;
@@ -50,13 +54,23 @@ public class PlayerData {
 	@Override
 	public int hashCode() {
 		int result = baseTime != null ? baseTime.hashCode() : 0;
-		result = 31 * result + (turnBonusTime != null ? turnBonusTime.hashCode() : 0);
+		result = 31 * result + (turnBonusTimes != null ? Arrays.hashCode(turnBonusTimes) : 0);
 		result = 31 * result + (upkeepTime != null ? upkeepTime.hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s + %s (+ %s)", baseTime, turnBonusTime, upkeepTime);
+		StringBuilder builder = new StringBuilder();
+		builder.append(baseTime);
+		builder.append("+");
+		for (TimeAmount timeAmount: turnBonusTimes) {
+			builder.append(timeAmount);
+			builder.append("+");
+		}
+		builder.append("(");
+		builder.append(upkeepTime);
+		builder.append(")");
+		return builder.toString();
 	}
 }

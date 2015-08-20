@@ -15,6 +15,7 @@ import java.util.List;
 
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeAmount;
+import cz.prvaak.throughtheagesclock.gui.Player;
 import cz.prvaak.throughtheagesclock.gui.PlayerColor;
 import cz.prvaak.throughtheagesclock.gui.PlayerData;
 import cz.prvaak.throughtheagesclock.gui.widget.TimePicker;
@@ -48,15 +49,16 @@ public class NewPlayerView extends LinearLayout {
 		baseTimePicker.setTime(playerData.baseTime);
 		baseTimePicker.setOnChangeListener(onChangeListener);
 		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
-		turnBonusTimePicker.setTime(playerData.turnBonusTime);
+		turnBonusTimePicker.setTime(playerData.turnBonusTimes[0]);
 		turnBonusTimePicker.setOnChangeListener(onChangeListener);
 		TimePicker upkeepTimePicker = (TimePicker) findViewById(R.id.upkeep_time_picker);
 		upkeepTimePicker.setTime(playerData.upkeepTime);
 		upkeepTimePicker.setOnChangeListener(onChangeListener);
 
 		TextView timeOverview = (TextView) findViewById(R.id.time_overview_text);
-		timeOverview.setText(String.format("%s + %s (%s)", playerData.baseTime.format(),
-				playerData.turnBonusTime.format(), playerData.upkeepTime.format()));
+		timeOverview.setText(String.format("%s %s->%s->%s (%s)", playerData.baseTime.format(),
+				playerData.turnBonusTimes[0].format(), playerData.turnBonusTimes[1].format(),
+				playerData.turnBonusTimes[2].format(), playerData.upkeepTime.format()));
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);
 		playerName.setText(playerColor.getNameResourceId());
@@ -105,14 +107,19 @@ public class NewPlayerView extends LinearLayout {
 
 	public PlayerData getPlayerData() {
 		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
-		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
+		TimePicker turnBonusTimePicker1 = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
+		TimePicker turnBonusTimePicker2 = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
+		TimePicker turnBonusTimePicker3 = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
 		TimePicker upkeepTimePicker = (TimePicker) findViewById(R.id.upkeep_time_picker);
 
 		TimeAmount baseTime = baseTimePicker.getTime();
-		TimeAmount turnBonusTime = turnBonusTimePicker.getTime();
+		TimeAmount[] turnBonusTimes = new TimeAmount[Player.TIMES_PER_EPOCH];
+		turnBonusTimes[0] = turnBonusTimePicker1.getTime();
+		turnBonusTimes[2] = turnBonusTimePicker2.getTime();
+		turnBonusTimes[3] = turnBonusTimePicker3.getTime();
 		TimeAmount upkeepTime = upkeepTimePicker.getTime();
 
-		return new PlayerData(baseTime, turnBonusTime, upkeepTime);
+		return new PlayerData(baseTime, turnBonusTimes, upkeepTime);
 	}
 
 	private void setChangeColorButton(int buttonId, final PlayerColor currentColor,

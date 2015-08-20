@@ -1,6 +1,7 @@
 package cz.prvaak.throughtheagesclock.phase.switcher.transition;
 
 import cz.prvaak.throughtheagesclock.TimeInstant;
+import cz.prvaak.throughtheagesclock.clock.EpochId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 
 /**
@@ -9,14 +10,14 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 public class UpkeepTransition implements PlayerTransition {
 
 	@Override
-	public void beforeSwitch(PlayerClock activePlayer, TimeInstant when) {
+	public void beforeSwitch(PlayerClock activePlayer, TimeInstant when, EpochId epoch) {
 		activePlayer.stop(when);
 		activePlayer.upkeep(when);
-		activePlayer.addTurnBonusTime(when);
+		activePlayer.addTurnBonusTime(when, epoch);
 	}
 
 	@Override
-	public void afterSwitch(PlayerClock activePlayer, TimeInstant when) {
+	public void afterSwitch(PlayerClock activePlayer, TimeInstant when, EpochId epoch) {
 		activePlayer.start(when);
 	}
 }

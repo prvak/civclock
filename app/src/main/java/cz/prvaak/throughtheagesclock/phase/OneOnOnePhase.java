@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.TimeInstant;
+import cz.prvaak.throughtheagesclock.clock.EpochId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.NormalTransition;
@@ -17,21 +18,23 @@ public class OneOnOnePhase implements GamePhase {
 	private final PlayerSwitcher playerSwitcher;
 	private final PlayerTransition transition = new NormalTransition();
 
-	public OneOnOnePhase(TimeInstant when, PlayerClock targetPlayer, PlayerClock currentPlayer) {
+	public OneOnOnePhase(TimeInstant when, EpochId epoch, PlayerClock targetPlayer,
+				PlayerClock currentPlayer) {
 		ArrayList<PlayerClock> allPlayers = new ArrayList<>(2);
 		allPlayers.add(currentPlayer);
 		allPlayers.add(targetPlayer);
 		this.playerSwitcher = new PlayerSwitcher(allPlayers, currentPlayer);
-		playerSwitcher.switchPlayers(transition, when);
+		playerSwitcher.switchPlayers(transition, when, epoch);
 	}
 
 	/**
 	 * Terminates turn of current player.
 	 *
 	 * @param when Time in milliseconds when the turn is terminated.
+	 * @param epoch Current game epoch.
 	 */
-	public void turnDone(TimeInstant when) {
-		playerSwitcher.switchPlayers(transition, when);
+	public void turnDone(TimeInstant when, EpochId epoch) {
+		playerSwitcher.switchPlayers(transition, when, epoch);
 	}
 
 	@Override

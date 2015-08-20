@@ -21,7 +21,6 @@ import cz.prvaak.throughtheagesclock.gui.view.display.PhaseDisplay;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.NormalPhase;
-import cz.prvaak.throughtheagesclock.phase.OneOnOnePhase;
 
 
 public class TimerActivity extends ActionBarActivity {
@@ -113,15 +112,7 @@ public class TimerActivity extends ActionBarActivity {
 				}
 
 				TimeInstant now = new TimeInstant();
-				GamePhase currentPhase = game.getCurrentPhase();
-				if (currentPhase instanceof NormalPhase) {
-					NormalPhase phase = (NormalPhase) currentPhase;
-					phase.turnDone(now);
-				} else if (currentPhase instanceof OneOnOnePhase) {
-					OneOnOnePhase phase = (OneOnOnePhase) currentPhase;
-					phase.turnDone(now);
-					game.startRoundAboutPhase();
-				}
+				game.nextPlayer(now);
 				updatePlayers();
 				updatePhase();
 			}
@@ -207,7 +198,12 @@ public class TimerActivity extends ActionBarActivity {
 	}
 
 	public void onNewAgeButton(View view) {
-		// Not implemented yet.
+		if (!game.getCurrentAge().hasNextAge()) {
+			return;
+		}
+
+		TimeInstant now = new TimeInstant();
+		game.nextAge(now);
 	}
 
 	public void onEventButton(View view) {
@@ -224,7 +220,7 @@ public class TimerActivity extends ActionBarActivity {
 		}
 
 		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
-		phase.bid(new TimeInstant());
+		phase.bid(new TimeInstant(), game.getCurrentAge());
 		updatePlayers();
 		updatePhase();
 	}
@@ -235,7 +231,7 @@ public class TimerActivity extends ActionBarActivity {
 		}
 
 		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
-		phase.pass(new TimeInstant());
+		phase.pass(new TimeInstant(), game.getCurrentAge());
 		if (phase.getAllPlayers().size() <= 1) {
 			game.startRoundAboutPhase();
 		}

@@ -25,12 +25,19 @@ public class FakePlayerClock extends PlayerClock {
 		return playerClocks;
 	}
 
+	public static TimeAmountPerEpoch createTimeAmountPerEpoch() {
+		TimeAmountPerEpoch timeAmountPerEpoch = new TimeAmountPerEpoch();
+		timeAmountPerEpoch.put(FakeEpoch.ONE, new TimeAmount(10000L));
+		timeAmountPerEpoch.put(FakeEpoch.TWO, new TimeAmount(10000L));
+		return timeAmountPerEpoch;
+	}
+
 	public FakePlayerClock() {
 		this(0);
 	}
 	public FakePlayerClock(int index) {
 		super(new FakePlayerId(index), new TimeAmount(10000L), new TimeAmount(1000L),
-				new TimeAmount(10000L), new TimeAmount(10000L));
+				createTimeAmountPerEpoch(), new TimeAmount(10000L), new TimeAmount(10000L));
 	}
 
 	@Override

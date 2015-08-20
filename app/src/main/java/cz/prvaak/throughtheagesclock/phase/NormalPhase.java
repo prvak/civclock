@@ -3,6 +3,7 @@ package cz.prvaak.throughtheagesclock.phase;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.TimeInstant;
+import cz.prvaak.throughtheagesclock.clock.EpochId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.PlayerTransition;
@@ -25,9 +26,10 @@ public class NormalPhase implements GamePhase {
 	 * Terminates turn of current player.
 	 *
 	 * @param when Time in milliseconds when the turn is terminated.
+	 * @param epoch Current epoch.
 	 */
-	public void turnDone(TimeInstant when) {
-		playerSwitcher.switchPlayers(transition, when);
+	public void turnDone(TimeInstant when, EpochId epoch) {
+		playerSwitcher.switchPlayers(transition, when, epoch);
 	}
 
 	@Override

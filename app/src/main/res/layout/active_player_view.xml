@@ -101,6 +101,7 @@
             android:layout_height="wrap_content"
             android:text="New age"
             android:id="@+id/new_age_button"
+            android:onClick="onNewAgeButton"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
 

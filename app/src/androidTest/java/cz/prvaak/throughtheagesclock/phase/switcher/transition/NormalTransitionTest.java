@@ -3,6 +3,7 @@ package cz.prvaak.throughtheagesclock.phase.switcher.transition;
 import android.test.InstrumentationTestCase;
 
 import cz.prvaak.throughtheagesclock.TimeInstant;
+import cz.prvaak.throughtheagesclock.clock.FakeEpoch;
 import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
 
 /**
@@ -19,7 +20,7 @@ public class NormalTransitionTest extends InstrumentationTestCase {
 		assertFalse(player.isUpkeepStarted);
 		assertFalse(player.isReserveAdded);
 
-		transition.beforeSwitch(player, new TimeInstant(1000L));
+		transition.beforeSwitch(player, new TimeInstant(1000L), FakeEpoch.ONE);
 		assertFalse(player.isStarted);
 		assertFalse(player.isUpkeepStarted);
 		assertFalse(player.isReserveAdded);
@@ -33,7 +34,7 @@ public class NormalTransitionTest extends InstrumentationTestCase {
 		assertFalse(player.isUpkeepStarted);
 		assertFalse(player.isReserveAdded);
 
-		transition.afterSwitch(player, new TimeInstant(1000L));
+		transition.afterSwitch(player, new TimeInstant(1000L), FakeEpoch.ONE);
 		assertTrue(player.isStarted);
 		assertFalse(player.isUpkeepStarted);
 		assertFalse(player.isReserveAdded);

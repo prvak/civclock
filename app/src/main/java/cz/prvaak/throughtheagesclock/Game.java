@@ -5,6 +5,7 @@ import java.util.List;
 
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
+import cz.prvaak.throughtheagesclock.gui.Age;
 import cz.prvaak.throughtheagesclock.phase.AuctionPhase;
 import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.NormalPhase;
@@ -17,6 +18,7 @@ public class Game implements Serializable {
 	private final List<? extends PlayerClock> remainingPlayers;
 	private GamePhase currentPhase;
 	private boolean isPaused;
+	private Age age = Age.A;
 
 	public Game(List<? extends PlayerClock> allPlayers) {
 		this.remainingPlayers = allPlayers;
@@ -55,11 +57,15 @@ public class Game implements Serializable {
 	}
 
 	public void startOneOnOnePhase(TimeInstant when, PlayerClock targetPlayer) {
-		currentPhase = new OneOnOnePhase(when, targetPlayer, currentPhase.getCurrentPlayer());
+		currentPhase = new OneOnOnePhase(when, age, targetPlayer, currentPhase.getCurrentPlayer());
 	}
 
 	public GamePhase getCurrentPhase() {
 		return currentPhase;
+	}
+
+	public Age getCurrentAge() {
+		return age;
 	}
 
 	public PlayerClock getPlayer(PlayerId playerId) {
@@ -76,5 +82,23 @@ public class Game implements Serializable {
 			playerClock.addUpkeepBonusTime(when);
 		}
 		isPaused = false;
+	}
+
+	public void nextPlayer(TimeInstant when) {
+		GamePhase currentPhase = getCurrentPhase();
+		if (currentPhase instanceof NormalPhase) {
+			NormalPhase phase = (NormalPhase) currentPhase;
+			phase.turnDone(when, age);
+		} else if (currentPhase instanceof OneOnOnePhase) {
+			OneOnOnePhase phase = (OneOnOnePhase) currentPhase;
+			phase.turnDone(when, age);
+			startRoundAboutPhase();
+		}
+	}
+
+	public void nextAge(TimeInstant when) {
+		age = age.getNextAge();
+		currentPhase.getCurrentPlayer().addNewAgeBonusTime(when);
+
 	}
 }

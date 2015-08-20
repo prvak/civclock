@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cz.prvaak.throughtheagesclock.TimeInstant;
+import cz.prvaak.throughtheagesclock.clock.EpochId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 import cz.prvaak.throughtheagesclock.phase.switcher.PlayerSwitcher;
 import cz.prvaak.throughtheagesclock.phase.switcher.transition.FinalAuctionTransition;
@@ -31,10 +32,11 @@ public class AuctionPhase implements GamePhase {
 	 * Terminate turn of current player and keep him between active players.
 	 *
 	 * @param when Time in milliseconds when the bid was done.
+	 * @param epoch Current epoch.
 	 */
-	public void bid(TimeInstant when) {
+	public void bid(TimeInstant when, EpochId epoch) {
 		checkThatAuctionIsNotOver();
-		playerSwitcher.switchPlayers(transition, when);
+		playerSwitcher.switchPlayers(transition, when, epoch);
 	}
 
 	/**
@@ -42,14 +44,15 @@ public class AuctionPhase implements GamePhase {
 	 * Current player will no longer participate in current phase.
 	 *
 	 * @param when Time in milliseconds when the pass was done.
+	 * @param epoch Current epoch.
 	 */
-	public void pass(TimeInstant when) {
+	public void pass(TimeInstant when, EpochId epoch) {
 		checkThatAuctionIsNotOver();
 		playerSwitcher.removeCurrentPlayer();
 		if (isAuctionOver()) {
-			playerSwitcher.switchPlayers(finalTransition, when);
+			playerSwitcher.switchPlayers(finalTransition, when, epoch);
 		} else {
-			playerSwitcher.switchPlayers(transition, when);
+			playerSwitcher.switchPlayers(transition, when, epoch);
 		}
 	}
 

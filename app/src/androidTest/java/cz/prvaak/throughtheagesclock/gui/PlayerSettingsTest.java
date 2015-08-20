@@ -44,7 +44,7 @@ public class PlayerSettingsTest extends InstrumentationTestCase {
 	/** Create player data with given base time. */
 	private PlayerData createPlayerData(long baseTimeMs) {
 		TimeAmount baseTime = new TimeAmount(baseTimeMs);
-		TimeAmount turnBonusTime = new TimeAmount(30000L);
+		TimeAmount[] turnBonusTime = new TimeAmount[]{new TimeAmount(30000L)};
 		TimeAmount upkeepTime = new TimeAmount(10000L);
 		return new PlayerData(baseTime, turnBonusTime, upkeepTime);
 	}

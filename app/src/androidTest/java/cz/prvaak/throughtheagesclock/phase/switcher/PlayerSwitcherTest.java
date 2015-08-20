@@ -9,6 +9,8 @@ import java.util.List;
 
 import cz.prvaak.throughtheagesclock.TimeAmount;
 import cz.prvaak.throughtheagesclock.TimeInstant;
+import cz.prvaak.throughtheagesclock.clock.EpochId;
+import cz.prvaak.throughtheagesclock.clock.FakeEpoch;
 import cz.prvaak.throughtheagesclock.clock.FakePlayerClock;
 import cz.prvaak.throughtheagesclock.clock.FakePlayerId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
@@ -23,8 +25,9 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		ArrayList<PlayerClock> playerClocks = FakePlayerClock.createPlayerClocks(3);
 		try {
 			new PlayerSwitcher(playerClocks, new PlayerClock(new FakePlayerId(),
-					new TimeAmount(10000L), new TimeAmount(1000L), new TimeAmount(10000L),
-					new TimeAmount(10000L)));
+					new TimeAmount(10000L), new TimeAmount(1000L),
+					FakePlayerClock.createTimeAmountPerEpoch(),
+					new TimeAmount(10000L), new TimeAmount(10000L)));
 			Assert.fail("Should have thrown IllegalArgumentException!");
 		} catch (IllegalArgumentException e) {
 			// success
@@ -58,7 +61,7 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		FakePlayerTransition transition = new FakePlayerTransition();
 
 		playerSwitcher.removeCurrentPlayer();
-		playerSwitcher.switchPlayers(transition, new TimeInstant(2000L));
+		playerSwitcher.switchPlayers(transition, new TimeInstant(2000L), FakeEpoch.ONE);
 		List<PlayerClock> nextPlayers = playerSwitcher.getNextPlayers();
 		assertEquals(1, nextPlayers.size());
 		assertEquals(allPlayers.get(0), nextPlayers.get(0));
@@ -81,17 +84,17 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 
 		assertEquals(allPlayers.get(0), playerSwitcher.getCurrentPlayer());
 
-		playerSwitcher.switchPlayers(transition, new TimeInstant(0L));
+		playerSwitcher.switchPlayers(transition, new TimeInstant(0L), FakeEpoch.ONE);
 		assertEquals(allPlayers.get(1), playerSwitcher.getCurrentPlayer());
 		assertEquals(allPlayers.get(0), transition.playerBeforeSwitch);
 		assertEquals(allPlayers.get(1), transition.playerAfterSwitch);
 
-		playerSwitcher.switchPlayers(transition, new TimeInstant(1000L));
+		playerSwitcher.switchPlayers(transition, new TimeInstant(1000L), FakeEpoch.ONE);
 		assertEquals(allPlayers.get(2), playerSwitcher.getCurrentPlayer());
 		assertEquals(allPlayers.get(1), transition.playerBeforeSwitch);
 		assertEquals(allPlayers.get(2), transition.playerAfterSwitch);
 
-		playerSwitcher.switchPlayers(transition, new TimeInstant(2000L));
+		playerSwitcher.switchPlayers(transition, new TimeInstant(2000L), FakeEpoch.ONE);
 		assertEquals(allPlayers.get(0), playerSwitcher.getCurrentPlayer());
 		assertEquals(allPlayers.get(2), transition.playerBeforeSwitch);
 		assertEquals(allPlayers.get(0), transition.playerAfterSwitch);
@@ -104,14 +107,14 @@ public class PlayerSwitcherTest extends InstrumentationTestCase {
 		private TimeInstant switchTime;
 
 		@Override
-		public void beforeSwitch(PlayerClock activePlayer, TimeInstant when) {
+		public void beforeSwitch(PlayerClock activePlayer, TimeInstant when, EpochId epoch) {
 			playerBeforeSwitch = activePlayer;
 			switchTime = when;
 
 		}
 
 		@Override
-		public void afterSwitch(PlayerClock activePlayer, TimeInstant when) {
+		public void afterSwitch(PlayerClock activePlayer, TimeInstant when, EpochId epoch) {
 			playerAfterSwitch = activePlayer;
 			assertEquals(switchTime, when);
 		}

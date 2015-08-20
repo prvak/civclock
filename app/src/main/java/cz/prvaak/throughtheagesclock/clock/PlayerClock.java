@@ -31,8 +31,13 @@ public class PlayerClock implements Clock {
 	 * towards the reserve time.
 	 */
 	private final TimerClock overlapTime;
-	/** Amount of time that should be added after regular turn. */
-	private final TimeAmount turnBonusTime;
+	/**
+	 * Amount of time that should be added after regular turn. There may be different amounts
+	 * in different epochs of the game.
+	 */
+	private final TimeAmountPerEpoch turnBonusTimes;
+	/** Amount of time added to upkeep protection timer after new age begins. */
+	private final TimeAmount newAgeBonusTime;
 	/** Amount of time that should be added after regular turn. */
 	private final TimeAmount upkeepBonusTime;
 	/** Whether the clock has been started and not stopped yet. */
@@ -40,16 +45,20 @@ public class PlayerClock implements Clock {
 
 	/**
 	 * Create new clock.
+	 *
 	 * @param playerId Identification of the player.
 	 * @param baseTime How many milliseconds the player initially has.
 	 * @param upkeepTime How many milliseconds each upkeep protection has.
-	 * @param turnBonusTime How many milliseconds to add after each turn.
+	 * @param turnBonusTimes How many milliseconds to add after each turn.
 	 * @param upkeepBonusTime How many milliseconds to add for bonus upkeep operations.
 	 */
 	public PlayerClock(PlayerId playerId, TimeAmount baseTime, TimeAmount upkeepTime,
-					   TimeAmount turnBonusTime, TimeAmount upkeepBonusTime) {
-		if (turnBonusTime.isNegative()) {
-			throw new IllegalArgumentException("Negative turn bonus time is not allowed!");
+					   TimeAmountPerEpoch turnBonusTimes, TimeAmount newAgeBonusTime,
+					   TimeAmount upkeepBonusTime) {
+		for (TimeAmount turnBonusTime: turnBonusTimes) {
+			if (turnBonusTime.isNegative()) {
+				throw new IllegalArgumentException("Negative turn bonus time is not allowed!");
+			}
 		}
 		if (upkeepBonusTime.isNegative()) {
 			throw new IllegalArgumentException("Negative upkeep bonus time is not allowed!");
@@ -59,7 +68,8 @@ public class PlayerClock implements Clock {
 		this.reserveTime = new Timer(baseTime);
 		this.upkeepTime = new UpkeepTimer(upkeepTime);
 		this.overlapTime = new LimitedTimer(TimeAmount.EMPTY);
-		this.turnBonusTime = turnBonusTime;
+		this.turnBonusTimes = new TimeAmountPerEpoch(turnBonusTimes);
+		this.newAgeBonusTime = newAgeBonusTime;
 		this.upkeepBonusTime = upkeepBonusTime;
 	}
 
@@ -133,6 +143,15 @@ public class PlayerClock implements Clock {
 	}
 
 	/**
+	 * Add predefined amount of time to upkeep protection period.
+	 *
+	 * @param when Current time in milliseconds.
+	 */
+	public void addNewAgeBonusTime(TimeInstant when) {
+		addUpkeepTime(when, newAgeBonusTime);
+	}
+
+	/**
 	 * Add predefined amount of time to upkeep protection period. The time amount is defined
 	 * in constructor. This time is independent on the base upkeep period.
 	 * It does not refill when {@link #upkeep} is called but is not lost either.
@@ -148,9 +167,10 @@ public class PlayerClock implements Clock {
 	 * The amount is defined in constructor.
 	 *
 	 * @param when Current time in milliseconds.
+	 * @param epoch Current epoch of the game. Has influence on amount of time added.
 	 */
-	public void addTurnBonusTime(TimeInstant when) {
-		addReserveTime(when, turnBonusTime);
+	public void addTurnBonusTime(TimeInstant when, EpochId epoch) {
+		addReserveTime(when, turnBonusTimes.get(epoch));
 	}
 
 	/**
