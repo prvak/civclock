@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Blue"
+        android:text="@string/color_blue"
         android:id="@+id/player_name"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
@@ -51,7 +51,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deal"
+        android:text="@string/deal"
         android:id="@+id/deal_button"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"

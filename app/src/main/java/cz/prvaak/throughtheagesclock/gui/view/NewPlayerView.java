@@ -48,9 +48,15 @@ public class NewPlayerView extends LinearLayout {
 		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
 		baseTimePicker.setTime(playerData.baseTime);
 		baseTimePicker.setOnChangeListener(onChangeListener);
-		TimePicker turnBonusTimePicker = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
-		turnBonusTimePicker.setTime(playerData.turnBonusTimes[0]);
-		turnBonusTimePicker.setOnChangeListener(onChangeListener);
+		TimePicker turnBonusTimePicker1 = (TimePicker) findViewById(R.id.turn_bonus_time_picker1);
+		turnBonusTimePicker1.setTime(playerData.turnBonusTimes[0]);
+		turnBonusTimePicker1.setOnChangeListener(onChangeListener);
+		TimePicker turnBonusTimePicker2 = (TimePicker) findViewById(R.id.turn_bonus_time_picker2);
+		turnBonusTimePicker2.setTime(playerData.turnBonusTimes[1]);
+		turnBonusTimePicker2.setOnChangeListener(onChangeListener);
+		TimePicker turnBonusTimePicker3 = (TimePicker) findViewById(R.id.turn_bonus_time_picker3);
+		turnBonusTimePicker3.setTime(playerData.turnBonusTimes[2]);
+		turnBonusTimePicker3.setOnChangeListener(onChangeListener);
 		TimePicker upkeepTimePicker = (TimePicker) findViewById(R.id.upkeep_time_picker);
 		upkeepTimePicker.setTime(playerData.upkeepTime);
 		upkeepTimePicker.setOnChangeListener(onChangeListener);
@@ -107,16 +113,16 @@ public class NewPlayerView extends LinearLayout {
 
 	public PlayerData getPlayerData() {
 		TimePicker baseTimePicker = (TimePicker) findViewById(R.id.base_time_picker);
-		TimePicker turnBonusTimePicker1 = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
-		TimePicker turnBonusTimePicker2 = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
-		TimePicker turnBonusTimePicker3 = (TimePicker) findViewById(R.id.turn_bonus_time_picker);
+		TimePicker turnBonusTimePicker1 = (TimePicker) findViewById(R.id.turn_bonus_time_picker1);
+		TimePicker turnBonusTimePicker2 = (TimePicker) findViewById(R.id.turn_bonus_time_picker2);
+		TimePicker turnBonusTimePicker3 = (TimePicker) findViewById(R.id.turn_bonus_time_picker3);
 		TimePicker upkeepTimePicker = (TimePicker) findViewById(R.id.upkeep_time_picker);
 
 		TimeAmount baseTime = baseTimePicker.getTime();
 		TimeAmount[] turnBonusTimes = new TimeAmount[Player.TIMES_PER_EPOCH];
 		turnBonusTimes[0] = turnBonusTimePicker1.getTime();
-		turnBonusTimes[2] = turnBonusTimePicker2.getTime();
-		turnBonusTimes[3] = turnBonusTimePicker3.getTime();
+		turnBonusTimes[1] = turnBonusTimePicker2.getTime();
+		turnBonusTimes[2] = turnBonusTimePicker3.getTime();
 		TimeAmount upkeepTime = upkeepTimePicker.getTime();
 
 		return new PlayerData(baseTime, turnBonusTimes, upkeepTime);

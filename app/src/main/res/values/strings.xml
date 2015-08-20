@@ -10,8 +10,19 @@
     <string name="new_game">New Game</string>
     <string name="active_game">Active Game</string>
     <string name="base_time">Base time</string>
-    <string name="turn_bonus">Turn bonus</string>
+    <string name="turn_bonus1">Turn bonus (A, I)</string>
+    <string name="turn_bonus2">Turn bonus (II)</string>
+    <string name="turn_bonus3">Turn bonus (III, IV)</string>
     <string name="upkeep_time">Upkeep time</string>
     <string name="start_game">Start game</string>
+    <string name="change_time_for_this_player_only">Change time only for this player</string>
+    <string name="change_color">Color</string>
+    <string name="remove_player">Remove</string>
+    <string name="deal">Deal</string>
+    <string name="new_age">New age</string>
+    <string name="event">Event</string>
+    <string name="pass">Pass</string>
+    <string name="bid">Bid</string>
+    <string name="auction">Auction</string>
 
 </resources>

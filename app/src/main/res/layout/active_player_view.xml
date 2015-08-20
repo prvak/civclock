@@ -15,7 +15,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Auction"
+            android:text="@string/auction"
             android:id="@+id/auction_button"
             android:visibility="visible"
             android:onClick="onAuctionButton"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Red"
+            android:text="@string/color_red"
             android:id="@+id/player_name"
             android:layout_below="@+id/auction_button"
             android:layout_marginStart="10dp"
@@ -67,7 +67,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bid"
+            android:text="@string/bid"
             android:id="@+id/bid_button"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -78,7 +78,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pass"
+            android:text="@string/pass"
             android:id="@+id/pass_button"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
@@ -89,7 +89,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Event"
+            android:text="@string/event"
             android:id="@+id/event_button"
             android:onClick="onEventButton"
             android:layout_alignBottom="@+id/auction_button"
@@ -99,7 +99,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New age"
+            android:text="@string/new_age"
             android:id="@+id/new_age_button"
             android:onClick="onNewAgeButton"
             android:layout_alignParentTop="true"

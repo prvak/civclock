@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Change color"
+            android:text="@string/change_color"
             android:id="@+id/change_color_text"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
@@ -54,7 +54,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change time only for this player"
+            android:text="@string/change_time_for_this_player_only"
             android:id="@+id/unique_time_checkbox"
             android:checked="false"
             android:layout_span="2"/>
@@ -92,8 +92,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/turn_bonus"
-            android:id="@+id/textView2"
+            android:text="@string/turn_bonus1"
+            android:id="@+id/textView3"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_gravity="center_vertical"
@@ -101,7 +101,59 @@
 
         <include
             layout="@layout/time_picker_widget"
-            android:id="@+id/turn_bonus_time_picker"
+            android:id="@+id/turn_bonus_time_picker1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_column="1"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/turn_bonus2"
+            android:id="@+id/textView4"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_column="0"/>
+
+        <include
+            layout="@layout/time_picker_widget"
+            android:id="@+id/turn_bonus_time_picker2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_column="1"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/turn_bonus3"
+            android:id="@+id/textView5"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_column="0"/>
+
+        <include
+            layout="@layout/time_picker_widget"
+            android:id="@+id/turn_bonus_time_picker3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -119,7 +171,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/upkeep_time"
-            android:id="@+id/textView3"
+            android:id="@+id/textView6"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_gravity="center_vertical"/>
