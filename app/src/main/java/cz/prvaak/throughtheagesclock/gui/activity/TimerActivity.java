@@ -195,6 +195,9 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 	}
 
 	public void onNewAgeButton(View view) {
+		if (game.isPaused()) {
+			return;
+		}
 		if (!game.getCurrentAge().hasNextAge()) {
 			return;
 		}

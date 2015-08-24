@@ -99,6 +99,5 @@ public class Game implements Serializable {
 	public void nextAge(TimeInstant when) {
 		age = age.getNextAge();
 		currentPhase.getCurrentPlayer().addNewAgeBonusTime(when);
-
 	}
 }
