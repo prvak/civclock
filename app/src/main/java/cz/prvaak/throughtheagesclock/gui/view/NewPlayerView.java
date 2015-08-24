@@ -61,10 +61,12 @@ public class NewPlayerView extends LinearLayout {
 		upkeepTimePicker.setTime(playerData.upkeepTime);
 		upkeepTimePicker.setOnChangeListener(onChangeListener);
 
-		TextView timeOverview = (TextView) findViewById(R.id.time_overview_text);
-		timeOverview.setText(String.format("%s %s->%s->%s (%s)", playerData.baseTime.format(),
+		TextView baseTime = (TextView) findViewById(R.id.base_time_text);
+		baseTime.setText(String.format("%s", playerData.baseTime.format()));
+		TextView turnBonusTime = (TextView) findViewById(R.id.turn_bonuses_text);
+		turnBonusTime.setText(String.format("I: %s II: %s III: %s",
 				playerData.turnBonusTimes[0].format(), playerData.turnBonusTimes[1].format(),
-				playerData.turnBonusTimes[2].format(), playerData.upkeepTime.format()));
+				playerData.turnBonusTimes[2].format()));
 
 		TextView playerName = (TextView) findViewById(R.id.player_name);
 		playerName.setText(playerColor.getNameResourceId());

@@ -22,11 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="10:00 + 1:30 + (0:30.0)"
-        android:id="@+id/time_overview_text"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"/>
+        android:text="10:00"
+        android:id="@+id/base_time_text"
+        android:layout_above="@+id/turn_bonuses_text"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -36,5 +35,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="I: 1:00 II: 2:00 III: 3:00"
+        android:id="@+id/turn_bonuses_text"
+        android:layout_alignBottom="@+id/remove_player_button"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

@@ -23,7 +23,7 @@ public class PlayerSettings implements Iterable<PlayerColor> {
 	private PlayerData defaultData = new PlayerData(
 			new TimeAmount(600000L),
 			new TimeAmount[]{
-					new TimeAmount(10000L), new TimeAmount(10000L), new TimeAmount(10000L)},
+					new TimeAmount(60000L), new TimeAmount(120000L), new TimeAmount(180000L)},
 			new TimeAmount(30000L));
 	private List<PlayerColor> playersOrder = new ArrayList<>(PlayerColor.values().length);
 	private Map<PlayerColor, PlayerData> playersData = new HashMap<>(PlayerColor.values().length);
