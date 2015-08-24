@@ -42,6 +42,17 @@ public abstract class PlayerView extends RelativeLayout implements TimeDisplay, 
 		setBackgroundColor(getResources().getColor(playerColor.getColorResourceId()));
 	}
 
+	public void setGamePaused(boolean isGamePaused) {
+		TextView pauseHint = (TextView) findViewById(R.id.pause_hint_text);
+		if (pauseHint != null) {
+			if (isGamePaused) {
+				pauseHint.setText(R.string.hint_how_to_resume);
+			} else {
+				pauseHint.setText(R.string.hint_how_to_pause);
+			}
+		}
+	}
+
 	@Override
 	public void updateTime(TimeInstant now) {
 		TextView remainingReserveTime = (TextView) findViewById(R.id.remaining_reserve_time);

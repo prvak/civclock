@@ -27,5 +27,7 @@
     <string name="exit_confirmation">Are you sure you want to exit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="hint_how_to_pause">Hold to pause</string>
+    <string name="hint_how_to_resume">Hold to resume</string>
 
 </resources>

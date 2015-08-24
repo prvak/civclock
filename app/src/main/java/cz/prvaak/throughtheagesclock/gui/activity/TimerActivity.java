@@ -14,6 +14,7 @@ import cz.prvaak.throughtheagesclock.Game;
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
+import cz.prvaak.throughtheagesclock.gui.Age;
 import cz.prvaak.throughtheagesclock.gui.view.InactivePlayersListView;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerButtonListener;
 import cz.prvaak.throughtheagesclock.gui.view.PlayerView;
@@ -77,6 +78,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
 		// update active player
 		activePlayerView.setPlayerClock(currentPhase.getCurrentPlayer());
+		activePlayerView.setGamePaused(game.isPaused());
 
 		// update inactive players
 		inactivePlayersListView.setPlayerClocks(currentPhase.getNextPlayers(), dealButtonListener);
@@ -119,6 +121,8 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 				} else {
 					game.pause(now);
 				}
+				updatePlayers();
+				updatePhase();
 				return true;
 			}
 		});
@@ -248,23 +252,8 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 	public void updatePhase(Phase phase) {
 		switch (phase) {
 			case NORMAL:
-				switch (game.getCurrentAge()) {
-					case A:
-						setTitle("Age A");
-						break;
-					case I:
-						setTitle("Age I");
-						break;
-					case II:
-						setTitle("Age II");
-						break;
-					case III:
-						setTitle("Age III");
-						break;
-					case IV:
-						setTitle("Age IV");
-						break;
-				}
+				Age age = game.getCurrentAge();
+				setTitle("Age " + age.toString());
 				break;
 			case AUCTION:
 				setTitle(R.string.auction);
