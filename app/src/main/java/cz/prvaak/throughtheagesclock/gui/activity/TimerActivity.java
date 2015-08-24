@@ -3,11 +3,9 @@ package cz.prvaak.throughtheagesclock.gui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 
 import cz.prvaak.throughtheagesclock.Game;
@@ -23,7 +21,7 @@ import cz.prvaak.throughtheagesclock.phase.GamePhase;
 import cz.prvaak.throughtheagesclock.phase.NormalPhase;
 
 
-public class TimerActivity extends ActionBarActivity {
+public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
 	/** Object that contains all information about current state of the game. */
 	private Game game;
@@ -67,6 +65,7 @@ public class TimerActivity extends ActionBarActivity {
 
 	private void updatePhase() {
 		PhaseDisplay.Phase phase = getCurrentPhase();
+		updatePhase(phase);
 		activePlayerView.updatePhase(phase);
 		inactivePlayersListView.updatePhase(phase);
 	}
@@ -83,15 +82,7 @@ public class TimerActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-
 		super.onCreate(savedInstanceState);
-
-		// disable action bar
-		ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null) {
-			actionBar.hide();
-		}
 
 		// Prevent screen from locking.
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -204,6 +195,7 @@ public class TimerActivity extends ActionBarActivity {
 
 		TimeInstant now = new TimeInstant();
 		game.nextAge(now);
+		updatePhase();
 	}
 
 	public void onEventButton(View view) {
@@ -247,6 +239,37 @@ public class TimerActivity extends ActionBarActivity {
 			return PhaseDisplay.Phase.AUCTION;
 		} else {
 			return PhaseDisplay.Phase.ONE_ON_ONE;
+		}
+	}
+
+	@Override
+	public void updatePhase(Phase phase) {
+		switch (phase) {
+			case NORMAL:
+				switch (game.getCurrentAge()) {
+					case A:
+						setTitle("Age A");
+						break;
+					case I:
+						setTitle("Age I");
+						break;
+					case II:
+						setTitle("Age II");
+						break;
+					case III:
+						setTitle("Age III");
+						break;
+					case IV:
+						setTitle("Age IV");
+						break;
+				}
+				break;
+			case AUCTION:
+				setTitle(R.string.auction);
+				break;
+			case ONE_ON_ONE:
+				setTitle(R.string.deal);
+				break;
 		}
 	}
 }
