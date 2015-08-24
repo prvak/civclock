@@ -19,10 +19,6 @@ public class GameHistory {
 	private List<Game> history = new LinkedList<>();
 	private List<Game> future = new LinkedList<>();
 
-	public GameHistory() {
-
-	}
-
 	public boolean canUndo() {
 		return !history.isEmpty();
 	}
@@ -39,7 +35,7 @@ public class GameHistory {
 
 	public Game undo(TimeInstant now, Game game) {
 		Game clonedGame = pauseAndClone(now, game);
-		future.add(clonedGame);
+		future.add(0, clonedGame);
 		return history.remove(history.size() - 1);
 	}
 

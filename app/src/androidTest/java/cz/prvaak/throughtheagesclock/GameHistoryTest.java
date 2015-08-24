@@ -97,4 +97,29 @@ public class GameHistoryTest extends InstrumentationTestCase {
 
 		assertTrue(game.isPaused());
 	}
+
+	public void testUndoRedo() throws Exception {
+		GameHistory history = new GameHistory();
+		Game game = createGame();
+		game.start(new TimeInstant(0L));
+		history.add(new TimeInstant(0L), game);
+		history.add(new TimeInstant(1000L), game);
+		game.nextPlayer(new TimeInstant(1000L));
+		history.add(new TimeInstant(2000L), game);
+		game.nextPlayer(new TimeInstant(2000L));
+		history.add(new TimeInstant(3000L), game);
+		game.nextPlayer(new TimeInstant(3000L));
+
+		game = history.undo(new TimeInstant(4000L), game);
+		game = history.undo(new TimeInstant(4000L), game);
+
+		int turnBefore = game.getTurnCounter();
+		game = history.undo(new TimeInstant(4000L), game);
+		game = history.redo(new TimeInstant(4000L), game);
+		game = history.undo(new TimeInstant(4000L), game);
+		game = history.redo(new TimeInstant(4000L), game);
+		int turnAfter = game.getTurnCounter();
+
+		assertEquals(turnBefore, turnAfter);
+	}
 }
