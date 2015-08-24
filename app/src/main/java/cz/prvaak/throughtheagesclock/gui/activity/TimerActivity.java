@@ -243,8 +243,10 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 			return;
 		}
 
+		TimeInstant now = new TimeInstant();
+		history.add(now, game);
 		game.startAuctionPhase();
-		updatePlayers(new TimeInstant());
+		updatePlayers(now);
 		updatePhase();
 	}
 
@@ -257,6 +259,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		}
 
 		TimeInstant now = new TimeInstant();
+		history.add(now, game);
 		game.nextAge(now);
 		updatePhase();
 	}
@@ -266,7 +269,9 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 			return;
 		}
 
-		game.addUpkeepBonusTime(new TimeInstant());
+		TimeInstant now = new TimeInstant();
+		history.add(now, game);
+		game.addUpkeepBonusTime(now);
 	}
 
 	public void onBidButton(View view) {
@@ -274,8 +279,9 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 			return;
 		}
 
-		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
 		TimeInstant now = new TimeInstant();
+		history.add(now, game);
+		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
 		phase.bid(now, game.getCurrentAge());
 		updatePlayers(now);
 		updatePhase();
@@ -286,8 +292,9 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 			return;
 		}
 
-		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
 		TimeInstant now = new TimeInstant();
+		history.add(now, game);
+		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
 		phase.pass(now, game.getCurrentAge());
 		if (phase.getAllPlayers().size() <= 1) {
 			game.startRoundAboutPhase();
