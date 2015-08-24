@@ -1,5 +1,7 @@
 package cz.prvaak.throughtheagesclock.gui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -271,5 +273,19 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 				setTitle(R.string.deal);
 				break;
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+				.setMessage(getString(R.string.exit_confirmation))
+				.setCancelable(false)
+				.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						TimerActivity.this.finish();
+					}
+				})
+				.setNegativeButton(getString(R.string.no), null)
+				.show();
 	}
 }

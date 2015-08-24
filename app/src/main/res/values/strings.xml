@@ -24,5 +24,8 @@
     <string name="pass">Pass</string>
     <string name="bid">Bid</string>
     <string name="auction">Auction</string>
+    <string name="exit_confirmation">Are you sure you want to exit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>
