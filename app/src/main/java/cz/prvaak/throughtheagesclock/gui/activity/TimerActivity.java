@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
 import cz.prvaak.throughtheagesclock.Game;
+import cz.prvaak.throughtheagesclock.GameHistory;
 import cz.prvaak.throughtheagesclock.R;
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.PlayerId;
@@ -28,6 +30,8 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
 	/** Object that contains all information about current state of the game. */
 	private Game game;
+	/** Stored game states used for undo operations. */
+	private GameHistory history;
 
 	private PlayerView activePlayerView;
 	private InactivePlayersListView inactivePlayersListView;
@@ -95,8 +99,12 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		if (savedInstanceState == null) {
+			history = new GameHistory();
 			game = (Game) getIntent().getExtras().getSerializable("game");
-			game.start(new TimeInstant());
+			TimeInstant now = new TimeInstant();
+			game.start(now);
+			history.add(now, game); // Backup the initial state of the game.
+
 		}
 
 		setContentView(R.layout.activity_timer);
@@ -110,6 +118,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 				}
 
 				TimeInstant now = new TimeInstant();
+				history.add(now, game);
 				game.nextPlayer(now);
 				updatePlayers(now);
 				updatePhase();
@@ -136,6 +145,13 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 				(InactivePlayersListView) findViewById(R.id.inactive_players_list_view);
 		updatePlayers(new TimeInstant());
 		updatePhase();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_timer, menu);
+		return true;
 	}
 
 	@Override
@@ -189,13 +205,38 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_undo) {
+			onUndo();
             return true;
-        }
+        } else if (id == R.id.action_redo) {
+			onRedo();
+			return true;
+		}
 
         return super.onOptionsItemSelected(item);
     }
+
+	public void onUndo() {
+		if (!history.canUndo()) {
+			return;
+		}
+
+		TimeInstant now = new TimeInstant();
+		game = history.undo(now, game);
+		updatePlayers(now);
+		updatePhase();
+	}
+
+	public void onRedo() {
+		if (!history.canRedo()) {
+			return;
+		}
+
+		TimeInstant now = new TimeInstant();
+		game = history.redo(now, game);
+		updatePlayers(now);
+		updatePhase();
+	}
 
 	public void onAuctionButton(View view) {
 		if (game.isPaused()) {

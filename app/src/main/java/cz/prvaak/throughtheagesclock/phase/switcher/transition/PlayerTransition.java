@@ -1,5 +1,7 @@
 package cz.prvaak.throughtheagesclock.phase.switcher.transition;
 
+import java.io.Serializable;
+
 import cz.prvaak.throughtheagesclock.TimeInstant;
 import cz.prvaak.throughtheagesclock.clock.EpochId;
 import cz.prvaak.throughtheagesclock.clock.PlayerClock;
@@ -7,7 +9,7 @@ import cz.prvaak.throughtheagesclock.clock.PlayerClock;
 /**
  * Transition between active players.
  */
-public interface PlayerTransition {
+public interface PlayerTransition extends Serializable {
 
 	/**
 	 * Stop given player and possibly perform other operations.

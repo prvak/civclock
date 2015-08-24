@@ -1,5 +1,6 @@
 package cz.prvaak.throughtheagesclock.phase.switcher;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -14,7 +15,7 @@ import cz.prvaak.throughtheagesclock.utils.RepeatingIterator;
 /**
  * Class that performs transitions between active players.
  */
-public class PlayerSwitcher {
+public class PlayerSwitcher implements Serializable {
 
 	private final LinkedList<PlayerClock> allPlayers;
 	private RepeatingIterator<PlayerClock> iterator;
