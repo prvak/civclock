@@ -19,13 +19,7 @@
 
         <activity
             android:name=".gui.activity.TimerActivity"
-            android:label="@string/active_game"
-            android:parentActivityName=".gui.activity.NewGameActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".gui.activity.NewGameActivity" />
+            android:label="@string/active_game">
         </activity>
     </application>
 </manifest>
