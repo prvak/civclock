@@ -85,6 +85,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		activePlayerView.setPlayerClock(currentPhase.getCurrentPlayer());
 		activePlayerView.setGamePaused(game.isPaused());
 		activePlayerView.updateTime(now);
+		activePlayerView.updateTurn(game.getTurnCounter());
 
 		// update inactive players
 		inactivePlayersListView.setPlayerClocks(currentPhase.getNextPlayers(), dealButtonListener);

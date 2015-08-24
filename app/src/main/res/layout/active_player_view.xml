@@ -58,9 +58,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Turn 1"
+            android:id="@+id/turn_text"
+            android:layout_below="@+id/time_info_panel"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/hint_how_to_pause"
             android:id="@+id/pause_hint_text"
-            android:layout_below="@+id/time_info_panel"
+            android:layout_below="@+id/turn_text"
             android:layout_centerHorizontal="true"/>
 
         <Button

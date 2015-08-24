@@ -31,5 +31,6 @@
     <string name="no">No</string>
     <string name="hint_how_to_pause">Hold to pause</string>
     <string name="hint_how_to_resume">Hold to resume</string>
+    <string name="current_turn">Turn %d</string>
 
 </resources>

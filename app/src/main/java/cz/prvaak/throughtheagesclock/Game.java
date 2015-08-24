@@ -19,6 +19,7 @@ public class Game implements Serializable {
 	private GamePhase currentPhase;
 	private boolean isPaused;
 	private Age age = Age.A;
+	private int turnCounter;
 
 	public Game(List<? extends PlayerClock> allPlayers) {
 		this.remainingPlayers = allPlayers;
@@ -89,6 +90,7 @@ public class Game implements Serializable {
 		if (currentPhase instanceof NormalPhase) {
 			NormalPhase phase = (NormalPhase) currentPhase;
 			phase.turnDone(when, age);
+			turnCounter++;
 		} else if (currentPhase instanceof OneOnOnePhase) {
 			OneOnOnePhase phase = (OneOnOnePhase) currentPhase;
 			phase.turnDone(when, age);
@@ -99,5 +101,9 @@ public class Game implements Serializable {
 	public void nextAge(TimeInstant when) {
 		age = age.getNextAge();
 		currentPhase.getCurrentPlayer().addNewAgeBonusTime(when);
+	}
+
+	public int getTurnCounter() {
+		return turnCounter;
 	}
 }

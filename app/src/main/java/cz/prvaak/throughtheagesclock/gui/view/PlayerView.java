@@ -53,6 +53,11 @@ public abstract class PlayerView extends RelativeLayout implements TimeDisplay, 
 		}
 	}
 
+	public void updateTurn(int turn) {
+		TextView currentTurn = (TextView) findViewById(R.id.turn_text);
+		currentTurn.setText(String.format("Turn %d", turn + 1));
+	}
+
 	@Override
 	public void updateTime(TimeInstant now) {
 		TextView remainingReserveTime = (TextView) findViewById(R.id.remaining_reserve_time);
