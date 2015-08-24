@@ -60,6 +60,7 @@ public class NewGameActivity extends ActionBarActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_game);
+		setTitle(R.string.new_game);
 
 		newPlayersListView = (NewPlayersListView) findViewById(R.id.new_players_list_view);
 		playerSettings = new PlayerSettings(3);
@@ -69,7 +70,7 @@ public class NewGameActivity extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_new_game, menu);
+		//getMenuInflater().inflate(R.menu.menu_new_game, menu);
 		return true;
 	}
 
