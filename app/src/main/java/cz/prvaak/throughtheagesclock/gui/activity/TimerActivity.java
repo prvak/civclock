@@ -53,9 +53,10 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 				return;
 			}
 
-			game.startOneOnOnePhase(new TimeInstant(), game.getPlayer(playerId));
+			TimeInstant now = new TimeInstant();
+			game.startOneOnOnePhase(now, game.getPlayer(playerId));
 
-			updatePlayers();
+			updatePlayers(now);
 			updatePhase();
 		}
 	};
@@ -73,15 +74,17 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		inactivePlayersListView.updatePhase(phase);
 	}
 
-	private void updatePlayers() {
+	private void updatePlayers(TimeInstant now) {
 		GamePhase currentPhase = game.getCurrentPhase();
 
 		// update active player
 		activePlayerView.setPlayerClock(currentPhase.getCurrentPlayer());
 		activePlayerView.setGamePaused(game.isPaused());
+		activePlayerView.updateTime(now);
 
 		// update inactive players
 		inactivePlayersListView.setPlayerClocks(currentPhase.getNextPlayers(), dealButtonListener);
+		inactivePlayersListView.updateTime(now);
 	}
 
     @Override
@@ -108,7 +111,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
 				TimeInstant now = new TimeInstant();
 				game.nextPlayer(now);
-				updatePlayers();
+				updatePlayers(now);
 				updatePhase();
 			}
 		});
@@ -118,10 +121,12 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 				TimeInstant now = new TimeInstant();
 				if (game.isPaused()) {
 					game.resume(now);
+					resumeTimer();
 				} else {
 					game.pause(now);
+					pauseTimer();
 				}
-				updatePlayers();
+				updatePlayers(now);
 				updatePhase();
 				return true;
 			}
@@ -129,7 +134,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
 		inactivePlayersListView =
 				(InactivePlayersListView) findViewById(R.id.inactive_players_list_view);
-		updatePlayers();
+		updatePlayers(new TimeInstant());
 		updatePhase();
 	}
 
@@ -160,12 +165,20 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		updateHandler.removeCallbacks(updateTask);
+		pauseTimer();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		resumeTimer();
+	}
+
+	private void pauseTimer() {
+		updateHandler.removeCallbacks(updateTask);
+	}
+
+	private void resumeTimer() {
 		updateHandler.postDelayed(updateTask, UPDATE_DELAY_MS);
 	}
 
@@ -190,7 +203,7 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		}
 
 		game.startAuctionPhase();
-		updatePlayers();
+		updatePlayers(new TimeInstant());
 		updatePhase();
 	}
 
@@ -221,8 +234,9 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		}
 
 		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
-		phase.bid(new TimeInstant(), game.getCurrentAge());
-		updatePlayers();
+		TimeInstant now = new TimeInstant();
+		phase.bid(now, game.getCurrentAge());
+		updatePlayers(now);
 		updatePhase();
 	}
 
@@ -232,11 +246,12 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 		}
 
 		AuctionPhase phase = (AuctionPhase) game.getCurrentPhase();
-		phase.pass(new TimeInstant(), game.getCurrentAge());
+		TimeInstant now = new TimeInstant();
+		phase.pass(now, game.getCurrentAge());
 		if (phase.getAllPlayers().size() <= 1) {
 			game.startRoundAboutPhase();
 		}
-		updatePlayers();
+		updatePlayers(now);
 		updatePhase();
 	}
 
