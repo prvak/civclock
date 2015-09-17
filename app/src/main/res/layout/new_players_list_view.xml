@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cz.prvaak.throughtheagesclock.gui.view.NewPlayersListView
+<cz.prvaak.civclock.gui.view.NewPlayersListView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -50,4 +50,4 @@
 
     </RelativeLayout>
 
-</cz.prvaak.throughtheagesclock.gui.view.NewPlayersListView>
+</cz.prvaak.civclock.gui.view.NewPlayersListView>

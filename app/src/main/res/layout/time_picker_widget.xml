@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cz.prvaak.throughtheagesclock.gui.widget.TimePicker
+<cz.prvaak.civclock.gui.widget.TimePicker
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <cz.prvaak.throughtheagesclock.gui.widget.TimePartPicker
+    <cz.prvaak.civclock.gui.widget.TimePartPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time_picker_hours"
@@ -17,7 +17,7 @@
         max="10"
         default="0"/>
 
-    <cz.prvaak.throughtheagesclock.gui.widget.TimePartPicker
+    <cz.prvaak.civclock.gui.widget.TimePartPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time_picker_minutes"
@@ -29,7 +29,7 @@
         max="60"
         default="1"/>
 
-    <cz.prvaak.throughtheagesclock.gui.widget.TimePartPicker
+    <cz.prvaak.civclock.gui.widget.TimePartPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time_picker_seconds"
@@ -41,4 +41,4 @@
         max="60"
         default="30"/>
 
-</cz.prvaak.throughtheagesclock.gui.widget.TimePicker>
+</cz.prvaak.civclock.gui.widget.TimePicker>
