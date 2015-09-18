@@ -15,7 +15,7 @@ public class Player extends PlayerClock implements Serializable {
 
 	public Player(PlayerColor playerColor, PlayerData data) {
 		this(playerColor, data.baseTime, data.upkeepTime,
-				getTimeAmountPerEpoch(data.turnBonusTimes));
+				createEpochTimeAmount(data.turnBonusTimes));
 	}
 
 	public Player(PlayerColor playerColor, TimeAmount baseTime, TimeAmount upkeepTime,
@@ -29,7 +29,7 @@ public class Player extends PlayerClock implements Serializable {
 		return (PlayerColor) super.getPlayerId();
 	}
 
-	public static EpochTimeAmount getTimeAmountPerEpoch(TimeAmount[] timeAmounts) {
+	public static EpochTimeAmount createEpochTimeAmount(TimeAmount[] timeAmounts) {
 		if (timeAmounts.length != TIMES_PER_EPOCH) {
 			throw new IllegalArgumentException(String.format(
 					"There must be exactly %d time amounts, %d found instead!",
