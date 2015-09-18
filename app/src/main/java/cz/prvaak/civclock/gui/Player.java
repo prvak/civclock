@@ -3,8 +3,8 @@ package cz.prvaak.civclock.gui;
 import java.io.Serializable;
 
 import cz.prvaak.civclock.TimeAmount;
+import cz.prvaak.civclock.clock.EpochTimeAmount;
 import cz.prvaak.civclock.clock.PlayerClock;
-import cz.prvaak.civclock.clock.TimeAmountPerEpoch;
 
 /**
  * Player clock specific to Through the Ages.
@@ -19,7 +19,7 @@ public class Player extends PlayerClock implements Serializable {
 	}
 
 	public Player(PlayerColor playerColor, TimeAmount baseTime, TimeAmount upkeepTime,
-				  TimeAmountPerEpoch turnBonusTimes) {
+				  EpochTimeAmount turnBonusTimes) {
 		super(playerColor, baseTime, upkeepTime, turnBonusTimes, new TimeAmount(30000L),
 				new TimeAmount(10000L));
 	}
@@ -29,21 +29,21 @@ public class Player extends PlayerClock implements Serializable {
 		return (PlayerColor) super.getPlayerId();
 	}
 
-	public static TimeAmountPerEpoch getTimeAmountPerEpoch(TimeAmount[] timeAmounts) {
+	public static EpochTimeAmount getTimeAmountPerEpoch(TimeAmount[] timeAmounts) {
 		if (timeAmounts.length != TIMES_PER_EPOCH) {
 			throw new IllegalArgumentException(String.format(
 					"There must be exactly %d time amounts, %d found instead!",
 					TIMES_PER_EPOCH, timeAmounts.length));
 		}
 
-		TimeAmountPerEpoch timeAmountPerEpoch = new TimeAmountPerEpoch();
-		timeAmountPerEpoch.put(Age.A, timeAmounts[0]);
-		timeAmountPerEpoch.put(Age.I, timeAmounts[0]);
-		timeAmountPerEpoch.put(Age.II, timeAmounts[1]);
-		timeAmountPerEpoch.put(Age.III, timeAmounts[2]);
-		timeAmountPerEpoch.put(Age.IV, timeAmounts[2]);
+		EpochTimeAmount epochTimeAmount = new EpochTimeAmount();
+		epochTimeAmount.put(Age.A, timeAmounts[0]);
+		epochTimeAmount.put(Age.I, timeAmounts[0]);
+		epochTimeAmount.put(Age.II, timeAmounts[1]);
+		epochTimeAmount.put(Age.III, timeAmounts[2]);
+		epochTimeAmount.put(Age.IV, timeAmounts[2]);
 
-		return timeAmountPerEpoch;
+		return epochTimeAmount;
 	}
 
 

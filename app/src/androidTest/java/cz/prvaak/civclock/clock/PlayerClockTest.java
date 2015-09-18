@@ -15,11 +15,11 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	/** Create player clock with 60 seconds for turn and 30 seconds for upkeep. */
 	public PlayerClock createPlayerClock() {
-		TimeAmountPerEpoch timeAmountPerEpoch = new TimeAmountPerEpoch();
-		timeAmountPerEpoch.put(FakeEpoch.ONE, new TimeAmount(30000L));
-		timeAmountPerEpoch.put(FakeEpoch.TWO, new TimeAmount(30000L));
+		EpochTimeAmount epochTimeAmount = new EpochTimeAmount();
+		epochTimeAmount.put(FakeEpoch.ONE, new TimeAmount(30000L));
+		epochTimeAmount.put(FakeEpoch.TWO, new TimeAmount(30000L));
 		return new PlayerClock(new FakePlayerId(), new TimeAmount(60000L), new TimeAmount(30000L),
-				timeAmountPerEpoch, new TimeAmount(10000L), new TimeAmount(10000L));
+				epochTimeAmount, new TimeAmount(10000L), new TimeAmount(10000L));
 	}
 
 	public void testGetRemainingTime() throws Exception {
@@ -258,11 +258,11 @@ public class PlayerClockTest extends InstrumentationTestCase {
 
 	public void testNegativeTurnBonusTimeNotAllowed() throws Exception {
 		try {
-			TimeAmountPerEpoch timeAmountPerEpoch = new TimeAmountPerEpoch();
-			timeAmountPerEpoch.put(FakeEpoch.ONE, new TimeAmount(20000));
-			timeAmountPerEpoch.put(FakeEpoch.TWO, new TimeAmount(-20000));
+			EpochTimeAmount epochTimeAmount = new EpochTimeAmount();
+			epochTimeAmount.put(FakeEpoch.ONE, new TimeAmount(20000));
+			epochTimeAmount.put(FakeEpoch.TWO, new TimeAmount(-20000));
 			new PlayerClock(new FakePlayerId(), new TimeAmount(60000), new TimeAmount(5000),
-					timeAmountPerEpoch, new TimeAmount(-20000), new TimeAmount(10000L));
+					epochTimeAmount, new TimeAmount(-20000), new TimeAmount(10000L));
 			Assert.fail("Should have thrown IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			// success

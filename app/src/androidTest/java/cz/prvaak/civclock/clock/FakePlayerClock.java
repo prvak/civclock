@@ -25,11 +25,11 @@ public class FakePlayerClock extends PlayerClock {
 		return playerClocks;
 	}
 
-	public static TimeAmountPerEpoch createTimeAmountPerEpoch() {
-		TimeAmountPerEpoch timeAmountPerEpoch = new TimeAmountPerEpoch();
-		timeAmountPerEpoch.put(FakeEpoch.ONE, new TimeAmount(10000L));
-		timeAmountPerEpoch.put(FakeEpoch.TWO, new TimeAmount(10000L));
-		return timeAmountPerEpoch;
+	public static EpochTimeAmount createTimeAmountPerEpoch() {
+		EpochTimeAmount epochTimeAmount = new EpochTimeAmount();
+		epochTimeAmount.put(FakeEpoch.ONE, new TimeAmount(10000L));
+		epochTimeAmount.put(FakeEpoch.TWO, new TimeAmount(10000L));
+		return epochTimeAmount;
 	}
 
 	public FakePlayerClock() {

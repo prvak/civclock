@@ -10,14 +10,14 @@ import cz.prvaak.civclock.TimeAmount;
 /**
  * Storage for different time amounts for different epochs.
  */
-public class TimeAmountPerEpoch implements Serializable, Iterable<TimeAmount> {
+public class EpochTimeAmount implements Serializable, Iterable<TimeAmount> {
 	private final Map<EpochId, TimeAmount> amounts;
 
-	public TimeAmountPerEpoch() {
+	public EpochTimeAmount() {
 		this.amounts = new HashMap<>();
 	}
 
-	public TimeAmountPerEpoch(TimeAmountPerEpoch other) {
+	public EpochTimeAmount(EpochTimeAmount other) {
 		this.amounts = new HashMap<>(other.amounts);
 	}
 

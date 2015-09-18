@@ -35,7 +35,7 @@ public class PlayerClock implements Clock {
 	 * Amount of time that should be added after regular turn. There may be different amounts
 	 * in different epochs of the game.
 	 */
-	private final TimeAmountPerEpoch turnBonusTimes;
+	private final EpochTimeAmount turnBonusTimes;
 	/** Amount of time added to upkeep protection timer after new age begins. */
 	private final TimeAmount newAgeBonusTime;
 	/** Amount of time that should be added after regular turn. */
@@ -53,7 +53,7 @@ public class PlayerClock implements Clock {
 	 * @param upkeepBonusTime How many milliseconds to add for bonus upkeep operations.
 	 */
 	public PlayerClock(PlayerId playerId, TimeAmount baseTime, TimeAmount upkeepTime,
-					   TimeAmountPerEpoch turnBonusTimes, TimeAmount newAgeBonusTime,
+					   EpochTimeAmount turnBonusTimes, TimeAmount newAgeBonusTime,
 					   TimeAmount upkeepBonusTime) {
 		for (TimeAmount turnBonusTime: turnBonusTimes) {
 			if (turnBonusTime.isNegative()) {
@@ -68,7 +68,7 @@ public class PlayerClock implements Clock {
 		this.reserveTime = new Timer(baseTime);
 		this.upkeepTime = new UpkeepTimer(upkeepTime);
 		this.overlapTime = new LimitedTimer(TimeAmount.EMPTY);
-		this.turnBonusTimes = new TimeAmountPerEpoch(turnBonusTimes);
+		this.turnBonusTimes = new EpochTimeAmount(turnBonusTimes);
 		this.newAgeBonusTime = newAgeBonusTime;
 		this.upkeepBonusTime = upkeepBonusTime;
 	}
