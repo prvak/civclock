@@ -26,7 +26,11 @@ public class EpochTimeAmount implements Serializable, Iterable<TimeAmount> {
 	}
 
 	public TimeAmount get(EpochId epoch) {
-		return amounts.get(epoch);
+		TimeAmount amount = amounts.get(epoch);
+		if (amount == null) {
+			throw new IllegalArgumentException("No time stored for epoch " + epoch);
+		}
+		return amount;
 	}
 
 	@Override
