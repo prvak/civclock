@@ -10,6 +10,10 @@ public class TimeAmount implements Serializable {
 
 	public final static TimeAmount EMPTY = new TimeAmount(0L);
 
+	public enum Formatting {
+		SIMPLE, PRECISE
+	}
+
 	private final long totalTimeMs;
 	private final long hours;
 	private final long minutes;
@@ -37,6 +41,10 @@ public class TimeAmount implements Serializable {
 				+ TimeUnit.MINUTES.toMillis(minutes)
 				+ TimeUnit.SECONDS.toMillis(seconds)
 				+ milliseconds);
+	}
+
+	public TimeAmount(String text) {
+		this(textToMilliseconds(text));
 	}
 
 	public long getHours() {
@@ -75,7 +83,7 @@ public class TimeAmount implements Serializable {
 		return interval1.totalTimeMs > interval2.totalTimeMs ? interval1 : interval2;
 	}
 
-	public String format() {
+	public String format(Formatting formatting) {
 		StringBuilder text = new StringBuilder();
 		if (isNegative()) {
 			text.append("-");
@@ -87,8 +95,16 @@ public class TimeAmount implements Serializable {
 			// eg. 07:31
 			text.append(String.format("%d:%02d", getMinutes(), getSeconds()));
 		} else {
-			// eg. 31.6
-			text.append(String.format("%02d.%01d", getSeconds(), getMilliseconds() / 100));
+			switch (formatting) {
+				case SIMPLE:
+					// eg. 0:31
+					text.append(String.format("%d", getSeconds()));
+					break;
+				case PRECISE:
+					// eg. 31.6
+					text.append(String.format("%02d.%01d", getSeconds(), getMilliseconds() / 100));
+					break;
+			}
 		}
 		return text.toString();
 	}
@@ -114,5 +130,69 @@ public class TimeAmount implements Serializable {
 	@Override
 	public String toString() {
 		return String.format("%d", totalTimeMs);
+	}
+
+	private static long textToMilliseconds(final String originalText) {
+		String text = originalText;
+		if (text.isEmpty()) {
+			return 0L;
+		}
+
+		String[] times = new String[] {"0", "0", "0"};
+
+		long sign = 1;
+		if (text.startsWith("-")) {
+			text = text.substring(1, text.length());
+			sign = -1;
+		}
+
+		if (text.contains(":")) {
+			// Split the text by colons.
+			String[] parts = text.split(":");
+			if (parts.length > 3) {
+				throw new IllegalArgumentException(
+						String.format("Text %s contains too many colons!", originalText));
+			}
+			for (int i = 0; i < parts.length; i++) {
+				String part = parts[i];
+				if ((part.length() > 2 && i != 0) || (part.length() == 0)) {
+					throw new IllegalArgumentException(
+							String.format("Text %s is in a wrong format!", originalText));
+				}
+				times[parts.length - i - 1] = part;
+			}
+		} else {
+			// Split the text to two-digit parts.
+			int unit = 0;
+			while (text.length() > 0 && unit < times.length) {
+				if (text.length() >= 2 && unit <= 2) {
+					times[unit] = text.substring(text.length() - 2, text.length());
+					text = text.substring(0, text.length() - 2);
+				} else {
+					times[unit] = text;
+					text = "";
+				}
+				unit++;
+			}
+		}
+
+
+		try {
+			long seconds = Long.valueOf(times[0]);
+			long minutes = Long.valueOf(times[1]);
+			long hours = Long.valueOf(times[2]);
+
+			if (seconds >= 60 || minutes >= 60) {
+				throw new IllegalArgumentException(
+						String.format("Text %s does not contain a valid time!", originalText));
+			}
+
+			return sign * (TimeUnit.SECONDS.toMillis(seconds)
+					+ TimeUnit.MINUTES.toMillis(minutes)
+					+ TimeUnit.HOURS.toMillis(hours));
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(
+					String.format("Text %s does not contain a valid time!", originalText), e);
+		}
 	}
 }

@@ -2,8 +2,12 @@ package cz.prvaak.civclock.gui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.NumberPicker;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import cz.prvaak.civclock.R;
 import cz.prvaak.civclock.TimeAmount;
@@ -12,6 +16,14 @@ import cz.prvaak.civclock.TimeAmount;
  * Widget for selecting time.
  */
 public class TimePicker extends RelativeLayout {
+
+	/** Listener for reporting changes within this widget. */
+	public interface Listener {
+		void onValueChanged();
+	}
+
+	private EditText timePickerReference;
+	private TimeAmount lastValidTime;
 
 	public TimePicker(Context context) {
 		super(context);
@@ -26,41 +38,60 @@ public class TimePicker extends RelativeLayout {
 	}
 
 	public TimeAmount getTime() {
-		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
-		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
-		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
-		return new TimeAmount(hoursPicker.getValue(), minutesPicker.getValue(),
-				secondsPicker.getValue(), 0L);
+		EditText timePicker = getTimePicker();
+		String text = timePicker.getText().toString();
+		try {
+			lastValidTime = new TimeAmount(text);
+		} catch (IllegalArgumentException e) {
+			timePicker.setError(getContext().getResources().getText(R.string.wrong_time_format));
+		}
+		return lastValidTime;
 	}
 
 	public void setTime(TimeAmount amount) {
-		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
-		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
-		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
-		hoursPicker.setValue((int) amount.getHours());
-		minutesPicker.setValue((int) amount.getMinutes());
-		secondsPicker.setValue((int) amount.getSeconds());
+		if (amount.equals(lastValidTime)) {
+			return;
+		}
+		EditText timePicker = getTimePicker();
+		timePicker.setText(amount.format(TimeAmount.Formatting.SIMPLE));
+		timePicker.setError(null);
+		lastValidTime = amount;
 	}
 
 	public void setOnChangeListener(final Listener listener) {
-		TimePartPicker hoursPicker = (TimePartPicker) findViewById(R.id.time_picker_hours);
-		TimePartPicker minutesPicker = (TimePartPicker) findViewById(R.id.time_picker_minutes);
-		TimePartPicker secondsPicker = (TimePartPicker) findViewById(R.id.time_picker_seconds);
+		final EditText timePicker = getTimePicker();
 
-		NumberPicker.OnValueChangeListener changeListener =
-				new NumberPicker.OnValueChangeListener() {
+		timePicker.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
-			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-				listener.onValueChanged();
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					onValueChanged(listener);
+				}
+				return false;
 			}
-		};
-
-		hoursPicker.setOnValueChangedListener(changeListener);
-		minutesPicker.setOnValueChangedListener(changeListener);
-		secondsPicker.setOnValueChangedListener(changeListener);
+		});
+		timePicker.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					onValueChanged(listener);
+				}
+			}
+		});
 	}
 
-	public interface Listener {
-		void onValueChanged();
+	private EditText getTimePicker() {
+		if (timePickerReference == null) {
+			timePickerReference = (EditText) findViewById(R.id.raw_time_picker);
+		}
+		if (timePickerReference == null) {
+			throw new IllegalArgumentException("Time Picker view not found!");
+		}
+		return timePickerReference;
+	}
+
+	private void onValueChanged(Listener listener) {
+		getTime();
+		listener.onValueChanged();
 	}
 }

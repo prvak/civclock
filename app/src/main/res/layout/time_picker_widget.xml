@@ -5,40 +5,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <cz.prvaak.civclock.gui.widget.TimePartPicker
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/time_picker_hours"
-        android:orientation="vertical"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        separator=" h"
-        min="0"
-        max="10"
-        default="0"/>
-
-    <cz.prvaak.civclock.gui.widget.TimePartPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/time_picker_minutes"
-        android:orientation="vertical"
-        android:layout_toEndOf="@id/time_picker_hours"
-        android:layout_toRightOf="@id/time_picker_hours"
-        separator=" m"
-        min="0"
-        max="60"
-        default="1"/>
-
-    <cz.prvaak.civclock.gui.widget.TimePartPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/time_picker_seconds"
-        android:orientation="vertical"
-        android:layout_toEndOf="@id/time_picker_minutes"
-        android:layout_toRightOf="@id/time_picker_minutes"
-        separator=" s"
-        min="0"
-        max="60"
-        default="30"/>
+        android:inputType="time"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:id="@+id/raw_time_picker"/>
 
 </cz.prvaak.civclock.gui.widget.TimePicker>

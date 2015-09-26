@@ -2,6 +2,8 @@ package cz.prvaak.civclock;
 
 import android.test.InstrumentationTestCase;
 
+import junit.framework.Assert;
+
 /**
  * Tests of {@link TimeAmount} class.
  */
@@ -94,22 +96,119 @@ public class TimeAmountTest extends InstrumentationTestCase {
 
 	public void testFormat() throws Exception {
 		TimeAmount amount = new TimeAmount(2 * 60 * 60 * 1000 + 27 * 60 * 1000 + 36 * 1000 + 257);
-		assertEquals("2:27:36", amount.format());
+		assertEquals("2:27:36", amount.format(TimeAmount.Formatting.PRECISE));
 	}
 
 	public void testWithoutHours() throws Exception {
 		TimeAmount amount = new TimeAmount(7 * 60 * 1000 + 5 * 1000 + 348);
-		assertEquals("7:05", amount.format());
+		assertEquals("7:05", amount.format(TimeAmount.Formatting.PRECISE));
 	}
 
 	public void testWithoutMinutes() throws Exception {
 		TimeAmount amount = new TimeAmount(3 * 1000 + 550);
-		assertEquals("03.5", amount.format());
+		assertEquals("03.5", amount.format(TimeAmount.Formatting.PRECISE));
 	}
 
 	public void testFormatNegative() throws Exception {
 		TimeAmount amount = new TimeAmount(-5 * 60 * 60 * 1000 - 12 * 60 * 1000 - 4 * 1000 - 852);
-		assertEquals("-5:12:04", amount.format());
+		assertEquals("-5:12:04", amount.format(TimeAmount.Formatting.PRECISE));
 	}
 
+	public void testSimpleFormat() throws Exception {
+		TimeAmount amount = new TimeAmount(3 * 1000 + 550);
+		assertEquals("3", amount.format(TimeAmount.Formatting.SIMPLE));
+	}
+
+	public void testFromText() throws Exception {
+		TimeAmount amount = new TimeAmount(2 * 60 * 60 * 1000 + 27 * 60 * 1000 + 36 * 1000);
+		assertEquals(amount, new TimeAmount("2:27:36"));
+	}
+
+	public void testFromTextWithoutHours() throws Exception {
+		TimeAmount amount = new TimeAmount(7 * 60 * 1000 + 5 * 1000);
+		assertEquals(amount, new TimeAmount("7:05"));
+		assertEquals(amount, new TimeAmount("07:05"));
+		assertEquals(amount, new TimeAmount("0:07:05"));
+		assertEquals(amount, new TimeAmount("705"));
+		assertEquals(amount, new TimeAmount("00705"));
+	}
+
+	public void testFromTextWithoutMilliseconds() throws Exception {
+		TimeAmount amount = new TimeAmount(3 * 1000);
+		assertEquals(amount, new TimeAmount("3"));
+		assertEquals(amount, new TimeAmount("03"));
+		assertEquals(amount, new TimeAmount("0:03"));
+		assertEquals(amount, new TimeAmount("00:03"));
+		assertEquals(amount, new TimeAmount("003"));
+		assertEquals(amount, new TimeAmount("0003"));
+	}
+
+	public void testFromTextEmpty() throws Exception {
+		TimeAmount amount = new TimeAmount(0L);
+		assertEquals(amount, new TimeAmount(""));
+	}
+
+	public void testFromTextNegative() throws Exception {
+		TimeAmount amount = new TimeAmount(-5 * 60 * 60 * 1000 - 12 * 60 * 1000 - 4 * 1000);
+		assertEquals(amount, new TimeAmount("-5:12:04"));
+	}
+
+	public void testFromTextLongHours() throws Exception {
+		TimeAmount amount = new TimeAmount(123 * 60 * 60 * 1000 + 12 * 60 * 1000 + 4 * 1000);
+		assertEquals(amount, new TimeAmount("123:12:04"));
+	}
+
+	public void testFromTextTooManyColons() {
+		try {
+			new TimeAmount("0:00:00:03");
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testFromTextNotANumber() {
+		try {
+			new TimeAmount("00:X0:30");
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testFromTextNoDigits() {
+		try {
+			new TimeAmount("10::30");
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testFromTextTooManyDigits() {
+		try {
+			new TimeAmount("10:001:30");
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testFromTextBigMinutes() {
+		try {
+			new TimeAmount("10:61:30");
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
+
+	public void testFromTextBigSeconds() {
+		try {
+			new TimeAmount("10:16:62");
+			Assert.fail("Should have thrown IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			// success
+		}
+	}
 }
