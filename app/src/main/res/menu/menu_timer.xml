@@ -9,4 +9,8 @@
           android:title="@string/menu_redo"
           android:orderInCategory="200"
           app:showAsAction="never" />
+    <item android:id="@+id/action_resign"
+          android:title="@string/menu_resign"
+          android:orderInCategory="300"
+          app:showAsAction="never" />
 </menu>

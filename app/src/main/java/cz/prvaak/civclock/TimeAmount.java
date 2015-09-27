@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Representation of a time between to instants.
+ * Representation of a time between two instants.
  */
 public class TimeAmount implements Serializable {
 
@@ -97,7 +97,7 @@ public class TimeAmount implements Serializable {
 		} else {
 			switch (formatting) {
 				case SIMPLE:
-					// eg. 0:31
+					// eg. 31 or 5
 					text.append(String.format("%d", getSeconds()));
 					break;
 				case PRECISE:

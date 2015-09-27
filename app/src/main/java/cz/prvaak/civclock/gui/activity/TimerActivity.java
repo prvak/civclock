@@ -201,17 +201,18 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_undo) {
-			onUndo();
-            return true;
-        } else if (id == R.id.action_redo) {
-			onRedo();
-			return true;
+		switch (id) {
+			case R.id.action_undo:
+				onUndo();
+				return true;
+			case R.id.action_redo:
+				onRedo();
+				return true;
+			case R.id.action_resign:
+				onResign();
+				return true;
 		}
 
         return super.onOptionsItemSelected(item);
@@ -235,6 +236,18 @@ public class TimerActivity extends ActionBarActivity implements PhaseDisplay {
 
 		TimeInstant now = new TimeInstant();
 		game = history.redo(now, game);
+		updatePlayers(now);
+		updatePhase();
+	}
+
+	public void onResign() {
+		if (game.isPaused() || !game.canCurrentPlayerResign()) {
+			// Resignation is only possible during players turn.
+			return;
+		}
+		TimeInstant now = new TimeInstant();
+		history.add(now, game);
+		game.resignCurrentPlayer(now);
 		updatePlayers(now);
 		updatePhase();
 	}

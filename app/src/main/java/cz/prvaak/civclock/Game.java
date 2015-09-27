@@ -103,6 +103,20 @@ public class Game implements Serializable {
 		currentPhase.getCurrentPlayer().addNewAgeBonusTime(when);
 	}
 
+	public boolean canCurrentPlayerResign() {
+		return (currentPhase instanceof NormalPhase) && remainingPlayers.size() >= 2;
+
+	}
+	public void resignCurrentPlayer(TimeInstant when) {
+		if (!canCurrentPlayerResign()) {
+			throw new IllegalStateException("Player cannot resign!");
+		}
+
+		remainingPlayers.remove(currentPhase.getCurrentPlayer());
+		NormalPhase phase = (NormalPhase) currentPhase;
+		phase.resign(when, age);
+	}
+
 	public int getTurnCounter() {
 		return turnCounter;
 	}

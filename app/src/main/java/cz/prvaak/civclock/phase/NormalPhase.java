@@ -32,6 +32,11 @@ public class NormalPhase implements GamePhase {
 		playerSwitcher.switchPlayers(transition, when, epoch);
 	}
 
+	public void resign(TimeInstant when, EpochId epoch) {
+		playerSwitcher.removeCurrentPlayer();
+		playerSwitcher.switchPlayers(transition, when, epoch);
+	}
+
 	@Override
 	public PlayerClock getCurrentPlayer() {
 		return playerSwitcher.getCurrentPlayer();
